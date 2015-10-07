@@ -14,3 +14,7 @@
   (GET "/L1/T/Landsat/8/SurfaceReflectance/tiles" [] (sr/get-tiles))
   (GET "/L1/T/Landsat/8/SurfaceReflectance/rod" [] (sr/get-rod))
   (GET "/manage/status" [] (management/get-status)))
+
+;; XXX add app + handler(s)
+
+;; XXX add query-param wrapper for extraction
