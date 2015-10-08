@@ -13,4 +13,4 @@
                  [clojurewerkz/cassaforte "2.0.0"]
                  [ch.qos.logback/logback-classic "1.1.3"]]
   :plugins [[lein-ring "0.9.7"]]
-  :main lcmap-rest.main)
+  :main lcmap-rest.core)
