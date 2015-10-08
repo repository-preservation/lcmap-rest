@@ -10,9 +10,9 @@
 ;; Accept: application/vnd.usgs-lcmap.v1+json
 
 (defroutes v1
-  (GET "/L1/T/Landsat/8/SurfaceReflectance" [] (l8-sr/get-resource-children))
-  (GET "/L1/T/Landsat/8/SurfaceReflectance/tiles" [] (l8-sr/get-tiles))
-  (GET "/L1/T/Landsat/8/SurfaceReflectance/rod" [] (l8-sr/get-rod))
+  (GET "/api/L1/T/Landsat/8/SurfaceReflectance" [] (l8-sr/get-resource-children))
+  (GET "/api/L1/T/Landsat/8/SurfaceReflectance/tiles" [] (l8-sr/get-tiles))
+  (GET "/api/L1/T/Landsat/8/SurfaceReflectance/rod" [] (l8-sr/get-rod))
   ;; XXX this needs to go into a protected area
   (GET "/manage/status" [] (management/get-status)))
 
