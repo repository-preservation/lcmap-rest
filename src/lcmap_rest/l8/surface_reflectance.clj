@@ -1,16 +1,22 @@
 (ns lcmap-rest.l8.surface-reflectance
-  (:require [clojurewerkz.cassaforte.client :as cc]
+  (:require [clojure.tools.logging :as log]
+            [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
-            [clojurewerkz.cassaforte.query :refer :all]))
+            [clojurewerkz.cassaforte.query :refer :all]
+            [ring.util.response :refer [response]]
+            [lcmap-rest.l8.core :as lcmap]))
 
-(defn get-resources []
-  ""
-  "TBD: children forthcoming")
+(def context (str lcmap/context "/SurfaceReflectance"))
+  
+(defn get-resources [context]
+  (response
+   {:links
+    (map (fn [x] (str context x)) [:tiles :rod])}))
 
-(defn get-tiles []
-  ""
-  "TBD: tiles forthcoming")
+(defn get-tiles [point extent time band request]
+  (str "point: " point ", extent: " extent ", time: " time
+       ", band: " band))
 
-(defn get-rod []
-  ""
-  "TBD: rod forthcoming")
+(defn get-rod [point time band request]
+  (str "point: " point ", time: " time ", band: " band
+       "user agent: " request))

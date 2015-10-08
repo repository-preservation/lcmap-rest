@@ -1,4 +1,4 @@
-(ns lcmap-rest.core
+(ns lcmap-rest.main
   (:require [clojure.tools.logging :as log]
             [org.httpkit.server :as httpkit]
             [lcmap-rest.routes :as routes])
@@ -10,4 +10,4 @@
   'lein run' will use this as well as 'java -jar'."
   [& args]
   (log/info "Starting Compojure server ...")
-  (httpkit/run-server #'routes/v1 {:port 8080}))
+  (httpkit/run-server #'routes/app {:port 8080}))
