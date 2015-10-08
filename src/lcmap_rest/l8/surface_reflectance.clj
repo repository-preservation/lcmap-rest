@@ -3,7 +3,7 @@
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :refer :all]))
 
-(defn get-resource-children []
+(defn get-resources []
   ""
   "TBD: children forthcoming")
 
