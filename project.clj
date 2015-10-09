@@ -14,6 +14,19 @@
                  [com.cemerick/friend "0.2.1"]
                  [clojurewerkz/cassaforte "2.0.0"]
                  [ch.qos.logback/logback-classic "1.1.3"]
-                 [gov.usgs/lcmap-client-clj "0.1.0-dev"]]
+                 ;;[gov.usgs/lcmap-client-clj "0.1.0-dev"]
+                 ;; XXX once lcmap-client-clj is released and is not longer
+                 ;; being used from the local checkouts directory, we will
+                 ;; uncomment the dependancy above and remove the dependancies
+                 ;; below.
+                 ;; XXX note that we may still need to explicitly include the
+                 ;; Apache Java HTTP client, since the version used by the LCMAP
+                 ;; client is more recent than that used by Chas Emerick's
+                 ;; 'friend' library (the conflict causes a compile error which
+                 ;; is worked around by explicitly including Apache Java HTTP
+                 ;; client library).
+                 [org.apache.httpcomponents/httpclient "4.5"]
+                 [clj-http "2.0.0"]
+                 [leiningen-core "2.5.3"]]
   :plugins [[lein-ring "0.9.7"]]
   :main lcmap-rest.main)
