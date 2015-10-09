@@ -17,4 +17,4 @@
 
 (defn get-rod [point time band request]
   (str "point: " point ", time: " time ", band: " band
-       "user agent: " request))
+       ", user agent: " request))
