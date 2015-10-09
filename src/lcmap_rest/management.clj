@@ -1,6 +1,7 @@
 (ns lcmap-rest.management
   (:import [java.lang Runtime])
-  (:require [clojure.data.xml :as xml]))
+  (:require [clojure.data.xml :as xml]
+            [clojure.tools.logging :as log]))
 
 (defn get-status []
   (xml/emit-str

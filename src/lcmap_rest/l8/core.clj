@@ -1,4 +1,6 @@
+;;;; This module is for Landsat8-specific code independent of both the routes
+;;;; and main modules, providing a means of averting cyclic dependencies.
 (ns lcmap-rest.l8.core
-  (:require [lcmap-rest.core :as lcmap]))
+  (:require [clojure.tools.logging :as log]))
 
-(def context (str lcmap/context "/L1/T/Landsat/8"))
+(def noop :noop)

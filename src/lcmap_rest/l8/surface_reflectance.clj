@@ -4,14 +4,12 @@
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :refer :all]
             [ring.util.response :refer [response]]
-            [lcmap-rest.l8.core :as lcmap]))
-
-(def context (str lcmap/context "/SurfaceReflectance"))
+            [lcmap-client.l8.surface-reflectance :as sr]))
   
 (defn get-resources [context]
   (response
    {:links
-    (map (fn [x] (str context x)) [:tiles :rod])}))
+    (map (fn [x] (str sr/context x)) [:tiles :rod])}))
 
 (defn get-tiles [point extent time band request]
   (str "point: " point ", extent: " extent ", time: " time

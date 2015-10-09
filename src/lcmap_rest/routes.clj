@@ -5,6 +5,7 @@
             [compojure.core :refer [GET context defroutes]]
             [compojure.handler :as handler]
             [compojure.route :as route]
+            [lcmap-client.l8.surface-reflectance :as sr]
             [lcmap-rest.l8.surface-reflectance :as l8-sr]
             [lcmap-rest.management :as management]))
 
@@ -14,7 +15,7 @@
 ;; Accept: application/vnd.usgs-lcmap.v1+json
 
 (defroutes surface-reflectance
-  (context l8-sr/context []
+  (context sr/context []
     (GET "/" req
       (l8-sr/get-resources (:uri req)))
     (GET "/tiles" [point extent time band :as req]
