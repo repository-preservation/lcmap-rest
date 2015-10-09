@@ -8,12 +8,12 @@
             [lcmap-client.core]
             [lcmap-client.l8.surface-reflectance]
             [lcmap-rest.l8.surface-reflectance :as l8-sr]
-            [lcmap-rest.management :as management]))
+            [lcmap-rest.management :as management]
+            [lcmap-rest.util :as util]))
 
-;; XXX for now use straight-up Compojure; switch to Liberator for the
-;; convenience of handlers, content negotiation, etc. We'll also need
-;; routes-per-version a la the accept header, e.g.:
-;; Accept: application/vnd.usgs-lcmap.v1+json
+(declare v0)
+
+(def default-api-version #'v0)
 
 (defroutes surface-reflectance
   (context lcmap-client.l8.surface-reflectance/context []
@@ -32,14 +32,29 @@
     ;; XXX add more management resources
     ))
 
-(defroutes v1
+(defroutes v0
   surface-reflectance
   management
   (route/not-found "Resource not found"))
 
+(defroutes v1
+  management
+  (route/not-found "Resource not found"))
+
+(defroutes v2
+  management
+  (route/not-found "Resource not found"))
+
+(defn get-api-version [version default]
+  (cond
+    (and (>= version 0.0) (< version 1.0)) #'v0
+    (and (>= version 1.0) (< version 2.0)) #'v1
+    (and (>= version 2.0) (< version 3.0)) #'v2
+    :else default))
+
 (defn version-handler
-  ""
-  [handler]
+  "This is a custom handler "
+  [default-api]
   (fn [request]
     (let [headers (:headers request)
           ;; This next line is nuts and took a while to figure out -- results
@@ -48,15 +63,15 @@
           ;; and error, it was discovered that the header keys are actually in
           ;; lower-case strings at this point in the middleware chain.
           accept (headers "accept")
-          foo "bar"]
-      (response/render (#'v1 request) request))))
+          {version :version} (util/parse-accept-version accept)
+          api (get-api-version version default-api)]
+      (response/render (api request) request))))
 
 (defroutes app
-  (-> #'v1
+  (-> default-api-version
       version-handler
-      ;; Once we support SSL, site-defaults needs to be changed to
-      ;; secure-site-defaults
+      ;; XXX once we support SSL, api-defaults needs to be changed to
+      ;; secure-api-defaults
       (wrap-defaults api-defaults)
-      (wrap-json-response)
-      ))
+      (wrap-json-response)))
 
