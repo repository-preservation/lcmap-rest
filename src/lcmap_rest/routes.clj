@@ -3,9 +3,10 @@
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
             [compojure.core :refer [GET context defroutes]]
-            [compojure.handler :as handler]
+            [compojure.response :as response]
             [compojure.route :as route]
-            [lcmap-client.l8.surface-reflectance :as sr]
+            [lcmap-client.core]
+            [lcmap-client.l8.surface-reflectance]
             [lcmap-rest.l8.surface-reflectance :as l8-sr]
             [lcmap-rest.management :as management]))
 
@@ -15,7 +16,7 @@
 ;; Accept: application/vnd.usgs-lcmap.v1+json
 
 (defroutes surface-reflectance
-  (context sr/context []
+  (context lcmap-client.l8.surface-reflectance/context []
     (GET "/" req
       (l8-sr/get-resources (:uri req)))
     (GET "/tiles" [point extent time band :as req]
@@ -36,11 +37,25 @@
   management
   (route/not-found "Resource not found"))
 
+(defn version-handler
+  ""
+  [handler]
+  (log/info "Handler: " handler)
+  (log/info "V1 route: " v1)
+  (fn [request]
+    (let [headers (:headers request)
+          accept (get headers "accept")
+          foo "bar"]
+      (log/info "Headers: " headers)
+      (log/info "Accept: " accept)
+      (response/render (#'v1 request) request))))
+
 (defroutes app
   (-> #'v1
-      (handler/site)
-      (wrap-json-response)
+      version-handler
       ;; Once we support SSL, site-defaults needs to be changed to
       ;; secure-site-defaults
-      (wrap-defaults api-defaults)))
+      (wrap-defaults api-defaults)
+      (wrap-json-response)
+      ))
 
