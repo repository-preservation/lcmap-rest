@@ -40,14 +40,15 @@
 (defn version-handler
   ""
   [handler]
-  (log/info "Handler: " handler)
-  (log/info "V1 route: " v1)
   (fn [request]
     (let [headers (:headers request)
-          accept (get headers "accept")
+          ;; This next line is nuts and took a while to figure out -- results
+          ;; are rendered in log files as symbols, but (headers 'accept) and
+          ;; ('accept headers) didn't work. After an inordinate amount of trial
+          ;; and error, it was discovered that the header keys are actually in
+          ;; lower-case strings at this point in the middleware chain.
+          accept (headers "accept")
           foo "bar"]
-      (log/info "Headers: " headers)
-      (log/info "Accept: " accept)
       (response/render (#'v1 request) request))))
 
 (defroutes app
