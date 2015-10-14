@@ -3,10 +3,13 @@
             [org.httpkit.server :as httpkit]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
+            [compojure.core :refer [defroutes]]
             [compojure.response :as response]
             [lcmap-rest.routes :as routes]
-            [lcmap-rest.util :as util]))
+            [lcmap-rest.util :as util])
   (:gen-class))
+
+(def default-api-version #'routes/v0)
 
 (defn get-api-version [version default]
   (cond
@@ -28,6 +31,11 @@
           accept (headers "accept")
           {version :version} (util/parse-accept-version accept)
           api (get-api-version version default-api)]
+      ;; XXX debug
+      (log/info (str "Headers: " headers))
+      (log/info (str "Accept: " accept))
+      (log/info (str "Version: " version))
+      (log/info (str "API: " api))
       (response/render (api request) request))))
 
 (defroutes app
