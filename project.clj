@@ -29,4 +29,4 @@
                  [clj-http "2.0.0"]
                  [leiningen-core "2.5.3"]]
   :plugins [[lein-ring "0.9.7"]]
-  :main lcmap-rest.main)
+  :main lcmap-rest.app)
