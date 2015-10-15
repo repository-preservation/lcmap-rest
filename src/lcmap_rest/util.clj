@@ -14,7 +14,7 @@
 (def accept-version-regex (re-pattern #"application/vnd\.(usgs\.lcmap.)(v(\d(\.\d)?))\+([^;]+)"))
 
 (defn parse-accept-version [string]
-  (log/info (str "Parsing: " string))
+  ;;(log/info (str "Parsing: " string))
   (let [string (or string "")
         [_ vend str-vers vers _ ct] (re-find accept-version-regex string)]
     {:vendor (or vend "NoVendor")

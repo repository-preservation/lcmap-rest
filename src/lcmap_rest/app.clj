@@ -31,11 +31,11 @@
           accept (headers "accept")
           {version :version} (util/parse-accept-version accept)
           api (get-api-version version default-api)]
-      ;; XXX debug
-      (log/info (str "Headers: " headers))
-      (log/info (str "Accept: " accept))
-      (log/info (str "Version: " version))
-      (log/info (str "API: " api))
+      ;; ;; XXX debug
+      ;; (log/info (str "Headers: " headers))
+      ;; (log/info (str "Accept: " accept))
+      ;; (log/info (str "Version: " version))
+      ;; (log/info (str "API: " api))
       (response/render (api request) request))))
 
 (defroutes app
