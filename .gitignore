@@ -1,5 +1,5 @@
 target
 checkouts
-.lein-failures
-.lein-repl-history
+.lein*
+.nrepl*
 *.*~
