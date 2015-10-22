@@ -4,6 +4,6 @@
   (:require [clojure.tools.logging :as log]
             [lcmap-rest.util :as util]
             [lcmap-rest.l8 :as l8]
+            [lcmap-rest.ccdc :as ccdc]
             [lcmap-rest.l8.surface-reflectance]))
 
-(def noop :noop)
