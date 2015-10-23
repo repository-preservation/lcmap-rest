@@ -1,10 +1,10 @@
-(ns lcmap-rest.l8.surface-reflectance
+(ns lcmap-rest.api.l8.surface-reflectance
   (:require [clojure.tools.logging :as log]
             [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :refer :all]
             [ring.util.response :refer [response]]))
-  
+
 (defn get-resources [context]
   (log/info (str "get-resources: " context))
   (response

@@ -1,4 +1,4 @@
-(ns lcmap-rest.routes
+(ns lcmap-rest.api.routes
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [compojure.route :as route]
@@ -8,9 +8,9 @@
             [lcmap-client.ccdc.job]
             [lcmap-client.ccdc.model]
             [lcmap-client.l8.surface-reflectance]
-            [lcmap-rest.ccdc :as ccdc]
-            [lcmap-rest.l8.surface-reflectance :as l8-sr]
-            [lcmap-rest.management :as management]
+            [lcmap-rest.api.ccdc :as ccdc]
+            [lcmap-rest.api.l8.surface-reflectance :as l8-sr]
+            [lcmap-rest.api.management :as management]
             [lcmap-rest.util :as util]))
 
 (defroutes ccdc-science-model

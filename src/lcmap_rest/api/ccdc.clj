@@ -1,4 +1,4 @@
-(ns lcmap-rest.ccdc
+(ns lcmap-rest.api.ccdc
   (:require [clojure.tools.logging :as log]))
 
 (defn get-resources [request]

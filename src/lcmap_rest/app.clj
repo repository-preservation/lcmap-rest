@@ -5,7 +5,7 @@
             [ring.middleware.json :refer [wrap-json-response]]
             [compojure.core :refer [defroutes]]
             [compojure.response :as response]
-            [lcmap-rest.routes :as routes]
+            [lcmap-rest.api.routes :as routes]
             [lcmap-rest.util :as util])
   (:gen-class))
 

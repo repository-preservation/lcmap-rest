@@ -1,4 +1,4 @@
-(ns lcmap-rest.management
+(ns lcmap-rest.api.management
   (:import [java.lang Runtime])
   (:require [clojure.data.xml :as xml]
             [clojure.tools.logging :as log]))
