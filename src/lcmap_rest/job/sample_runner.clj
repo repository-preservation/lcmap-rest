@@ -14,4 +14,4 @@
   ;; Define some vars for pedagogical clarity
   (let [func #'long-running-func
         args [job-id seconds year]]
-    (jt/track-job [func args])))
+    (jt/track-job [job-id func args])))
