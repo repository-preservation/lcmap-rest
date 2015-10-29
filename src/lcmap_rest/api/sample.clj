@@ -1,6 +1,7 @@
 (ns lcmap-rest.api.sample
   (:require [clojure.tools.logging :as log]
             [ring.util.response :refer [response]]
+            [clojure.tools.logging :as log]
             [lcmap-client.sample.model]
             [lcmap-rest.job.sample-runner :as sample-runner]
             [lcmap-rest.util :as util]))
