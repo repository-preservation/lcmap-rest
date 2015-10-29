@@ -27,31 +27,3 @@
 
 (defn get-model-resources [request]
   "model resources tbd")
-
-;;; Functions for sample job and model -- for testing purposes only
-
-(defn create-sample-job [seconds directory]
-  ;; generate job-id from hash of args
-  ;; run query to create row in job-tracking table
-  ;; return status code 200 with body that has link to where sample result will
-  ;;   be
-  (let [job-id "abc123"]
-    {"result" {"link" (str lcmap-client.ccdc.model/context
-                           "/sample/"
-                           job-id)}}))
-
-(defn get-sample-job-result [job-id]
-  ;; query job tracking databas
-  ;; do results exist?
-  ;; if not, return 202
-  ;; if so, return data from query
-  "")
-
-(defn update-sample-job [job-id]
-  "")
-
-(defn get-sample-info [job-id]
-  "")
-
-(defn run-sample-model [job-id]
-  (sample-runner/run-sample-model job-id))

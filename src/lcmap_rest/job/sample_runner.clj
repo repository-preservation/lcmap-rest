@@ -9,7 +9,7 @@
     @(exec/sh ["sleep" (str sleep-time)])
     (exec/sh ["ls" "-l"])))
 
-(defn run-sample-model [job-id]
+(defn run-model [job-id]
   ;; Define some vars for pedagogical clarity
   (let [func #'long-running-func
         args [job-id]]
