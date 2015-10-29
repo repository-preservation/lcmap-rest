@@ -3,11 +3,14 @@
             [clj-commons-exec :as exec]
             [lcmap-rest.job.tracker :as jt]))
 
-(defn long-running-func []
+(defn long-running-func [fake-id]
   (let [sleep-time 10]
-    (log/debug (str "\n\nWaiting for " sleep-time " seconds ...\n"))
+    (log/debug (str "\n\nRunning job " fake-id " (waiting for " sleep-time " seconds) ...\n"))
     @(exec/sh ["sleep" (str sleep-time)])
     (exec/sh ["ls" "-l"])))
 
-(defn run-sample []
-  (jt/track-job #'long-running-func))
+(defn run-sample-model [job-id]
+  ;; Define some vars for pedagogical clarity
+  (let [func #'long-running-func
+        args [job-id]]
+    (jt/track-job [func args])))

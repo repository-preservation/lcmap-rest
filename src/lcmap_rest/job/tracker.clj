@@ -38,17 +38,17 @@
                            :result result
                            :service service}))
 
-(pulsar/defsfn run-job [service job-func]
+(pulsar/defsfn run-job [service [job-func job-args]]
   (log/debug "Running the job ...")
-  (let [job-data @(job-func)]
+  (let [job-data @(job-func job-args)]
     (log/debug "Finished job.")
     (actors/notify! service {:type :job-save-data
                              :result job-data
                              :service service})))
 
-(pulsar/defsfn save-job-data [service result]
+(pulsar/defsfn save-job-data [service job-output]
   ;; XXX update results data store
-  (log/debug (str "Saved job data <" result "> with <insert id>."))
+  (log/debug (str "Saved job data <" job-output "> with <insert id>."))
   ;; XXX the update returns an id that you can use to refer to this
   ;; job -- pass that on
   (actors/notify! service {:type :job-track-finish

@@ -13,28 +13,43 @@
             [lcmap-rest.api.management :as management]
             [lcmap-rest.util :as util]))
 
+;; XXX combine ccdc routes here and test to make sure that works
+(defroutes ccdc-top
+  (context lcmap-client.ccdc/context []
+    (GET "/" request
+      (ccdc/get-resources (:uri request)))))
+
 (defroutes ccdc-science-model
   (context lcmap-client.ccdc.model/context []
+    (GET "/" request
+      (ccdc/get-model-resources (:uri request)))
     (POST "/" [arg1 arg2 :as request]
-      (ccdc/run-model arg1 arg2))))
+      (ccdc/run-model arg1 arg2))
+    (GET "/:job-id" [job-id]
+      (ccdc/get-job-result [job-id]))
+    (POST "/run/:job-id" [job-id]
+      (ccdc/run-model job-id :arg1 :arg2))
+    (POST "/run-sample/:job-id" [job-id]
+      (ccdc/run-sample-model job-id))))
 
 (defroutes ccdc-job-management
   (context lcmap-client.ccdc.job/context []
+    (GET "/" request
+      (ccdc/get-job-resources (:uri request)))
     (POST "/" [arg1 arg2 :as request]
       (ccdc/create-job arg1 arg2))
-    (GET "/:id" [id]
-      (ccdc/get-job-result id))
-    (PUT "/:id" [id]
-      (ccdc/update-job id))
-    (HEAD "/:id" [id]
-      (ccdc/get-info id))))
+    (GET "/:job-id" [job-id]
+      (ccdc/get-job-result job-id))
+    (PUT "/:job-id" [job-id]
+      (ccdc/update-job job-id))
+    (HEAD "/:job-id" [job-id]
+      (ccdc/get-info job-id))
+    (POST "/run/:job-id" [job-id]
+      (ccdc/run-model job-id :arg1 :arg2))
+    (POST "/run-sample/:job-id" [job-id]
+      (ccdc/run-sample-model job-id))))
 
-(defroutes ccdc
-  (context lcmap-client.ccdc/context []
-    (GET "/" request
-      (ccdc/get-resources (:uri request)))
-    ccdc-science-model
-    ccdc-job-management))
+;; XXX add routes for sample
 
 (defroutes surface-reflectance
   (context lcmap-client.l8.surface-reflectance/context []
@@ -54,7 +69,9 @@
     ))
 
 (defroutes v0
-  ccdc
+  ccdc-top
+  ccdc-science-model
+  ccdc-job-management
   surface-reflectance
   management
   (route/not-found "Resource not found"))
