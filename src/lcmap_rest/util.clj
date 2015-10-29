@@ -1,5 +1,9 @@
 (ns lcmap-rest.util
-  (:require [clojure.tools.logging :as log]))
+  (:require [clojure.string :as string]
+            [clojure.tools.logging :as log]
+            [digest])
+  (:import [java.security.MessageDigest]
+           [java.math.BigInteger]))
 
 (def accept-regex (re-pattern #"([^;]+)\s*(?:;q=([0-9+\.]+))?\s*(;.+)*"))
 
@@ -21,3 +25,17 @@
      :string-version (or str-vers "v0.0")
      :version  (java.lang.Double. (or vers "1"))
      :content-type (or ct "")}))
+
+(defn serialize [args]
+  (cond (list? args)
+          (string/join (sort (map #'str args)))
+        (map? args)
+          (str (into (sorted-map) args))
+        :else
+          (str args)))
+
+(defn get-args-hash [model-name & args]
+  (->> args
+       (serialize)
+       (str model-name)
+       (digest/md5)))

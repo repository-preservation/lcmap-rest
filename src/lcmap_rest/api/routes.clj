@@ -54,8 +54,8 @@
   (context lcmap-client.sample.model/context []
     (GET "/" request
       (sample/get-model-resources (:uri request)))
-    (POST "/" [seconds directory :as request]
-      (sample/run-model seconds directory))))
+    (POST "/" [seconds year :as request]
+      (sample/run-model seconds year))))
 
 (defroutes sample-job-management
   (context lcmap-client.sample.job/context []
