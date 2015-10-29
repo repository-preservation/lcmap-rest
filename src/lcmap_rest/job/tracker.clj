@@ -15,19 +15,19 @@
   ;; else return false
   false)
 
-(pulsar/defsfn init-job-track [service result]
+(pulsar/defsfn init-job-track [service func-args]
   (log/debug "Starting job tracking ...")
   ;; XXX check to see if result already exists
   ;; (result-exists? ...)
   (let [exists? (result-exists? :fix-me!)]
     (if exists?
       (actors/notify! service {:type :job-result-exists
-                               :result result
+                               :result func-args
                                :service service})))
       ;; XXX calculate hash for job and populate job tracking table with
       ;; currently known data and a status of "pending"
       (actors/notify! service {:type :job-run
-                               :result result
+                               :result func-args
                                :service service}))
 
 (pulsar/defsfn return-existing-result [service result]
@@ -39,7 +39,7 @@
                            :service service}))
 
 (pulsar/defsfn run-job [service [job-func job-args]]
-  (log/debug "Running the job ...")
+  (log/debug (format "Running the job with args %s ..." job-args))
   (let [job-data @(job-func job-args)]
     (log/debug "Finished job.")
     (actors/notify! service {:type :job-save-data
@@ -79,11 +79,11 @@
     [:job-track-finish] (finish-job-track service result)
     [:done] (done service result)))
 
-(defn track-job [job-func]
+(defn track-job [func-args]
   (log/debug "Creating event server ...")
   (let [event-server (actors/spawn (actors/gen-event))]
     (actors/add-handler! event-server #'dispatch-handler)
     (log/debug "Added event handler.")
     (actors/notify! event-server {:type :job-track-init
-                                  :result job-func
+                                  :result func-args
                                   :service event-server})))

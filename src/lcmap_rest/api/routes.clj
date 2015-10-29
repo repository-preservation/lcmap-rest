@@ -54,27 +54,19 @@
   (context lcmap-client.sample.model/context []
     (GET "/" request
       (sample/get-model-resources (:uri request)))
-    (POST "/" [arg1 arg2 :as request]
-      (sample/run-model arg1 arg2))
-    (GET "/:job-id" [job-id]
-      (sample/get-job-result [job-id]))
-    (POST "/run/:job-id" [job-id]
-      (sample/run-model job-id :arg1 :arg2))))
+    (POST "/" [seconds directory :as request]
+      (sample/run-model seconds directory))))
 
 (defroutes sample-job-management
   (context lcmap-client.sample.job/context []
     (GET "/" request
       (sample/get-job-resources (:uri request)))
-    (POST "/" [arg1 arg2 :as request]
-      (sample/create-job arg1 arg2))
     (GET "/:job-id" [job-id]
       (sample/get-job-result job-id))
     (PUT "/:job-id" [job-id]
       (sample/update-job job-id))
     (HEAD "/:job-id" [job-id]
-      (sample/get-info job-id))
-    (POST "/run/:job-id" [job-id]
-      (sample/run-model job-id :arg1 :arg2))))
+      (sample/get-info job-id))))
 
 (defroutes sample-routes
   (context lcmap-client.sample/context []

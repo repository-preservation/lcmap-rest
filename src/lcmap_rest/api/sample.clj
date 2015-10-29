@@ -9,16 +9,6 @@
 (defn get-job-resources [request]
   "sample job resources tbd")
 
-(defn create-job [seconds directory]
-  ;; generate job-id from hash of args
-  ;; run query to create row in job-tracking table
-  ;; return status code 200 with body that has link to where sample result will
-  ;;   be
-  (let [job-id "abc123"]
-    {"result" {"link" (str lcmap-client.ccdc.model/context
-                           "/sample/"
-                           job-id)}}))
-
 (defn get-job-result [job-id]
   ;; query job tracking databas
   ;; do results exist?
@@ -32,9 +22,19 @@
 (defn get-info [job-id]
   "sample job info tbd")
 
-(defn run-model [job-id arg1 arg2]
-  (log/debug (str "sample model run (job id: " job-id ")"))
-  (sample-runner/run-model job-id))
-
 (defn get-model-resources [request]
   "sample model resources tbd")
+
+(defn run-model [seconds year]
+  ;; generate job-id from hash of args
+  ;; return status code 200 with body that has link to where sample result will
+  ;; be
+  (log/debug (format "run-model got args: [%s %s]" seconds year))
+  (let [job-id "abc123"]
+    (log/debug (format "sample model run (job id: %s)" job-id))
+    (sample-runner/run-model job-id seconds year)
+    {:result
+      {:link (format "%s/%s"
+                     lcmap-client.sample.model/context
+                     job-id)}}))
+
