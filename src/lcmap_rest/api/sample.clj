@@ -3,8 +3,14 @@
             [ring.util.response :refer [response]]
             [clojure.tools.logging :as log]
             [lcmap-client.sample.model]
+            [lcmap-rest.job.db :as db]
             [lcmap-rest.job.sample-runner :as sample-runner]
             [lcmap-rest.util :as util]))
+
+(def science-model-name "sample model")
+(def result-keyspace "lcmap")
+(def result-table "samplemodel")
+(def pending-status 202)
 
 (defn get-resources [request]
   (response "sample resources tbd"))
@@ -33,9 +39,21 @@
   ;; return status code 200 with body that has link to where sample result will
   ;; be
   (log/debug (format "run-model got args: [%s %s]" seconds year))
-  (let [job-id (util/get-args-hash "sample model" seconds year)]
+  (let [job-id (util/get-args-hash "sample model" seconds year)
+        default-row {:science_model_name science-model-name
+                     :result_keyspace result-keyspace
+                     :result_table result-table
+                     :result_id job-id
+                     :status pending-status}
+        db-conn (db/connect)]
     (log/debug (format "sample model run (job id: %s)" job-id))
-    (sample-runner/run-model job-id seconds year)
+    (log/debug (format "default row: %s" default-row))
+    (sample-runner/run-model job-id
+                             db-conn
+                             default-row
+                             result-table
+                             seconds
+                             year)
     (log/debug "Called sample-runner ...")
     (response
       {:result
