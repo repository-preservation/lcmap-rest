@@ -8,10 +8,14 @@
                      fake-id
                      sleep-time))
   @(exec/sh ["sleep" (str sleep-time)])
-  (exec/sh ["cal" year]))
+  (:out @(exec/sh ["cal" year])))
 
-(defn run-model [job-id seconds year]
+(defn run-model [job-id db-conn default-row result-table seconds year]
   ;; Define some vars for pedagogical clarity
   (let [func #'long-running-func
         args [job-id seconds year]]
-    (jt/track-job [job-id func args])))
+    (jt/track-job job-id
+                  db-conn
+                  default-row
+                  result-table
+                  [func args])))
