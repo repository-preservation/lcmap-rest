@@ -55,7 +55,9 @@
     (GET "/" request
       (sample/get-model-resources (:uri request)))
     (POST "/" [seconds year :as request]
-      (sample/run-model seconds year))))
+      (sample/run-model seconds year))
+    (GET "/:job-id" [job-id]
+      (sample/get-job-result job-id))))
 
 (defroutes sample-job-management
   (context lcmap-client.sample.job/context []
@@ -66,7 +68,9 @@
     (PUT "/:job-id" [job-id]
       (sample/update-job job-id))
     (HEAD "/:job-id" [job-id]
-      (sample/get-info job-id))))
+      (sample/get-info job-id))
+    (GET "/status/:job-id" [job-id]
+      (sample/get-job-status job-id))))
 
 (defroutes sample-routes
   (context lcmap-client.sample/context []

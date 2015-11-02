@@ -22,19 +22,38 @@
                        hosts db-cfg))
     (cc/connect hosts db-cfg)))
 
-(defn job? [db-conn job-id]
-  (cql/select db-conn
-              job-table
-              (query/where [[= :job_id job-id]])))
+(defn job?
+  ([job-id]
+    (job? (connect) job-id))
+  ([db-conn job-id]
+    (first (cql/select db-conn
+                       job-table
+                       (query/where [[= :job_id job-id]])
+                       (query/limit 1)))))
 
-(defn insert-default [db-conn job-id default-row]
-  (cql/insert-async db-conn
-                    job-table
-                    (into default-row {:job_id job-id})))
+(defn result?
+  ([result-table result-id]
+    (result? (connect) result-table result-id))
+  ([db-conn result-table result-id]
+    (first (cql/select db-conn
+                       result-table
+                       (query/where [[= :result_id result-id]])
+                       (query/limit 1)))))
 
-(defn update-status [db-conn job-id new-status]
-  (cql/update-async db-conn
-                    job-table
-                    {:status new-status}
-                    (query/where [[= :job_id job-id]])))
+(defn insert-default
+  ([job-id default-row]
+    (insert-default (connect) job-id default-row))
+  ([db-conn job-id default-row]
+    (cql/insert-async db-conn
+                      job-table
+                      (into default-row {:job_id job-id}))))
+
+(defn update-status
+  ([job-id new-status]
+    (update-status (connect) job-id new-status))
+  ([db-conn job-id new-status]
+    (cql/update-async db-conn
+                      job-table
+                      {:status new-status}
+                      (query/where [[= :job_id job-id]]))))
 
