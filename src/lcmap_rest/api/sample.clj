@@ -38,23 +38,14 @@
       (ring/status
         (ring/response {:error "Job not found."})
         status/no-resource)
-    ;; XXX we can remove 200 before alpha; it was just used internally for testing
-    [({:status status/ok} :as result)]
-      (ring/status
-        (ring/response {:result (get-result-path job-id)})
-        status/ok)
-    [({:status status/pending-link} :as result)]
-      (ring/status
-        (ring/response {:result (get-result-path job-id)})
-        status/pending-link)
-    [({:status status/permanant-link} :as result)]
-      (ring/status
-        (ring/response {:result (get-result-path job-id)})
-        status/permanant-link)
-    [({:status status/pending} :as result)]
+    [({:status (st :guard #'status/pending?)} :as result)]
       (ring/status
         (ring/response {:result :pending})
-        status/pending)))
+        status/pending)
+    [({:status st} :as result)]
+      (ring/status
+        (ring/response {:result (get-result-path job-id)})
+        st)))
 
 (defn get-job-result [job-id]
   (match [(db/result? result-table job-id)]
