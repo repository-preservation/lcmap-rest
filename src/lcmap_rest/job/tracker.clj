@@ -14,6 +14,8 @@
 
 (declare dispatch-handler)
 
+(def resource-ready-status 307)
+
 (defn job-result-exists? [db-conn args-or-hash]
   ;; XXX query the database, if the result exists, return the data,
   ;; else return false
@@ -66,7 +68,7 @@
 (pulsar/defsfn finish-job-track
   [{job-id :job-id db-conn :db-conn service :service result :result :as args}]
   ;; XXX update tracking data with information on completed job
-  @(db/update-status db-conn job-id 200)
+  @(db/update-status db-conn job-id resource-ready-status)
   (log/debug (str "Updated job traking data with " result))
   (actors/notify! service
                   (into args {:type :done})))
