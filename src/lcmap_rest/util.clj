@@ -1,7 +1,8 @@
 (ns lcmap-rest.util
   (:require [clojure.string :as string]
             [clojure.tools.logging :as log]
-            [digest])
+            [digest]
+            [leiningen.core.project :as lein-prj])
   (:import [java.security.MessageDigest]
            [java.math.BigInteger]))
 
@@ -39,3 +40,9 @@
        (serialize)
        (str model-name)
        (digest/md5)))
+
+(def get-config
+  (memoize
+    (fn []
+      (log/debug "Memoizing LCMAP configuration ...")
+      (lein-prj/read))))

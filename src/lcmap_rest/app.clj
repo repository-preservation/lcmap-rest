@@ -51,5 +51,8 @@
 
   'lein run' will use this as well as 'java -jar'."
   [& args]
-  (log/info "Starting Compojure server ...")
-  (httpkit/run-server #'app {:port 8080}))
+  (let [cfg (util/get-config)
+        http-cfg (:http cfg)]
+    (log/debug "Using lein profile:" (:active-profile cfg))
+    (log/info (format "Starting Compojure server with config: %s ..." http-cfg))
+    (httpkit/run-server #'app http-cfg)))

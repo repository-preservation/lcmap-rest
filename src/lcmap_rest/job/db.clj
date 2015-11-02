@@ -2,16 +2,25 @@
   (:require [clojure.tools.logging :as log]
             [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
-            [clojurewerkz.cassaforte.query :as query]))
+            [clojurewerkz.cassaforte.query :as query]
+            [lcmap-rest.util :as util]))
 
 (def job-namespace "lcmap")
 (def job-table "job")
 
-(defn connect [& {:keys [keyspace hosts protocol-version default-row]
-                  :or {hosts ["127.0.0.1"] ; XXX pull hosts from profile env
-                       keyspace job-namespace
-                       protocol-version 3}}]
-  (cc/connect hosts {:keyspace keyspace :protocol-version protocol-version}))
+(defn connect [& {:keys [keyspace hosts protocol-version default-row]}]
+  (let [default-db-cfg (:db (util/get-config))
+        keyspace (or keyspace (:keyspace default-db-cfg))
+        protocol-version (or protocol-version (:protocol-version default-db-cfg))
+        hosts (or hosts (:hosts default-db-cfg))
+        db-cfg (dissoc
+                 (into default-db-cfg
+                       {:keyspace keyspace
+                        :protocol-version protocol-version})
+                 :hosts)]
+    (log/debug (format "Connecting to database hosts %s with config: %s ..."
+                       hosts db-cfg))
+    (cc/connect hosts db-cfg)))
 
 (defn job? [db-conn job-id]
   (cql/select db-conn

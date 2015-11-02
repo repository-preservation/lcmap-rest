@@ -24,7 +24,7 @@
                  [digest "1.4.4"]
                  ;; DB
                  [clojurewerkz/cassaforte "2.0.0"]
-                 ;; XXX once lcmap-client-clj is released and is not longer
+                 ;; XXX once lcmap-client-clj is released and is no longer
                  ;; being used from the local checkouts directory, we will
                  ;; uncomment the dependancy below and remove the its
                  ;; dependancies below.
@@ -39,7 +39,38 @@
                  [clj-http "2.0.0"]
                  ;; Project metadata
                  [leiningen-core "2.5.3"]]
-  :plugins [[lein-ring "0.9.7"]]
+  :plugins [[lein-ring "0.9.7"]
+            [lein-pprint "1.1.1"]]
   :java-agents [[co.paralleluniverse/quasar-core "0.7.3"]]
   :jvm-opts ["-Dco.paralleluniverse.fibers.detectRunawayFibers=false"]
-  :main lcmap-rest.app)
+  :main lcmap-rest.app
+  :target-path "target/%s"
+  :profiles {
+    ;; overrride local properties in ./profiles.clj: {:local {...}}
+    :local
+      {:active-profile "local"
+       :db {:hosts ["127.0.0.1"]
+            :port 9042
+            :protocol-version 3
+            :keyspace "lcmap"}
+        :http {:port 8080}}
+    ;; configuration for dev environment
+    :dev
+      {:active-profile "dev"
+       :db {:hosts ["127.0.0.1"]
+            :port 9042
+            :protocol-version 3
+            :keyspace "lcmap"}
+        :http {:port 8080}}
+    ;; configuration for testing environment
+    :testing
+      {:active-profile "testing"
+       :db {}}
+    ;; configuration for staging environment
+    :staging
+      {:active-profile "staging"
+       :db {}}
+    ;; configuration for prod environment
+    :prod
+      {:active-profile "prod"
+       :db {}}})
