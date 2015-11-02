@@ -35,6 +35,8 @@
   ([result-table result-id]
     (result? (connect) result-table result-id))
   ([db-conn result-table result-id]
+    (log/debug (format "Checking for result of if %s in table '%s' ..."
+                       result-id result-table))
     (first (cql/select db-conn
                        result-table
                        (query/where [[= :result_id result-id]])

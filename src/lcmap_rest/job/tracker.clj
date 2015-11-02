@@ -15,25 +15,25 @@
 
 (declare dispatch-handler)
 
-(defn job-result-exists? [db-conn args-or-hash]
-  ;; XXX query the database, if the result exists, return the data,
-  ;; else return false
-  false)
+(defn job-result-exists? [db-conn result-table job-id]
+  (match [(db/result? db-conn result-table job-id)]
+    [[]] false
+    [nil] false
+    [_] true))
 
 (pulsar/defsfn init-job-track
   [{job-id :job-id db-conn :db-conn default-row :default-row service :service
-   func-args :result :as args}]
+   result-table :result-table func-args :result :as args}]
   (log/debug "Starting job tracking ...")
   ;; XXX check to see if result already exists
   ;; (result-exists? ...)
-  (let [exists? (job-result-exists? db-conn job-id)]
-    (if exists?
+  (if (job-result-exists? db-conn result-table job-id)
+    (actors/notify! service
+                    (into args {:type :job-result-exists}))
+    (do
+      @(db/insert-default db-conn job-id default-row)
       (actors/notify! service
-                      (into args {:type :job-result-exists}))
-      (do
-        @(db/insert-default db-conn job-id default-row)
-        (actors/notify! service
-                        (into args {:type :job-run}))))))
+                      (into args {:type :job-run})))))
 
 (pulsar/defsfn return-existing-result
   [{service :service :as args}]
@@ -68,14 +68,14 @@
   [{job-id :job-id db-conn :db-conn service :service result :result :as args}]
   ;; XXX update tracking data with information on completed job
   @(db/update-status db-conn job-id status/permanant-link)
-  (log/debug (str "Updated job traking data with " result))
+  (log/debug "Updated job traking data with" result)
   (actors/notify! service
                   (into args {:type :done})))
 
 (pulsar/defsfn done
   [{job-id :job-id :as args}]
   ;; XXX Perform any needed cleanup
-  (log/debug "Finished tracking for job %s." job-id)
+  (log/debug (format "Finished tracking for job %s." job-id))
   ;;(actors/remove-handler! service #'dispatch-handler)
   ;;(actors/shutdown! event-server)
   ;;(log/debug "Removed event handler.")
