@@ -5,12 +5,12 @@
             [lcmap-client.sample.model]
             [lcmap-rest.job.db :as db]
             [lcmap-rest.job.sample-runner :as sample-runner]
+            [lcmap-rest.status-codes :as status]
             [lcmap-rest.util :as util]))
 
 (def science-model-name "sample model")
 (def result-keyspace "lcmap")
 (def result-table "samplemodel")
-(def pending-status 202)
 
 (defn get-result-path
   [result-id]
@@ -19,33 +19,42 @@
           result-id))
 
 (defn get-resources [request]
-  (ring/response "sample resources tbd"))
+  (ring/status
+    (ring/response "sample resources tbd")
+    status/ok))
 
 (defn get-job-resources [request]
-  (ring/response "sample job resources tbd"))
+  (ring/status
+    (ring/response "sample job resources tbd")
+    status/ok))
 
 (defn get-job-status [job-id]
   (match [(db/job? job-id)]
     [[]]
       (ring/status
         (ring/response {:error "Job not found."})
-        404)
+        status/no-resource)
     [nil]
       (ring/status
         (ring/response {:error "Job not found."})
-        404)
+        status/no-resource)
     ;; XXX we can remove 200 before alpha; it was just used internally for testing
-    [({:status 200} :as result)]
-      (ring/response {:result (get-result-path job-id)})
-    ;; XXX define status codes -- as used by lcmap-rest -- in a separate modules
-    [({:status 307} :as result)]
+    [({:status status/ok} :as result)]
       (ring/status
         (ring/response {:result (get-result-path job-id)})
-        307)
-    [({:status 202} :as result)]
+        status/ok)
+    [({:status status/pending-link} :as result)]
+      (ring/status
+        (ring/response {:result (get-result-path job-id)})
+        status/pending-link)
+    [({:status status/permanant-link} :as result)]
+      (ring/status
+        (ring/response {:result (get-result-path job-id)})
+        status/permanant-link)
+    [({:status status/pending} :as result)]
       (ring/status
         (ring/response {:result :pending})
-        202)))
+        status/pending)))
 
 (defn get-job-result [job-id]
   (match [(db/result? result-table job-id)]
@@ -54,12 +63,14 @@
     [nil]
       (get-job-status job-id)
     [{:result result}]
-      (ring/response {:result result})))
+      (ring/status
+        (ring/response {:result result})
+        status/ok)))
 
 (defn update-job [job-id]
   (ring/status
     (ring/response "sample job update tbd")
-    307))
+    status/pending))
 
 (defn get-info [job-id]
   (ring/response "sample job info tbd"))
@@ -77,7 +88,7 @@
                      :result_keyspace result-keyspace
                      :result_table result-table
                      :result_id job-id
-                     :status pending-status}
+                     :status status/pending}
         db-conn (db/connect)]
     ;;(log/debug (format "sample model run (job id: %s)" job-id))
     ;;(log/debug (format "default row: %s" default-row))
@@ -92,5 +103,5 @@
       (ring/response
         {:result
           {:link (get-result-path job-id)}})
-      307)))
+      status/pending-link)))
 

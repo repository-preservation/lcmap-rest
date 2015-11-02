@@ -6,15 +6,14 @@
             [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :as query]
-            [lcmap-rest.job.db :as db])
+            [lcmap-rest.job.db :as db]
+            [lcmap-rest.status-codes :as status])
   (:refer-clojure :exclude [promise await bean])
   (:import [co.paralleluniverse.common.util Debug]
            [co.paralleluniverse.actors LocalActor]
            [co.paralleluniverse.strands Strand]))
 
 (declare dispatch-handler)
-
-(def resource-ready-status 307)
 
 (defn job-result-exists? [db-conn args-or-hash]
   ;; XXX query the database, if the result exists, return the data,
@@ -39,15 +38,15 @@
 (pulsar/defsfn return-existing-result
   [{service :service :as args}]
   (log/debug "Returning ID for existing job results ...")
-  ;; XXX get job ID to the function that needs it ... still need to give this
-  ;; some thought
   (actors/notify! service
                   (into args {:type :done})))
 
 (pulsar/defsfn run-job
-  [{service :service [job-func job-args] :result :as args}]
+  [{job-id :job-id db-conn :db-conn service :service
+    [job-func job-args] :result :as args}]
   (log/debug (format "Running the job with args %s ..." job-args))
   (let [job-data (job-func job-args)]
+    @(db/update-status db-conn job-id status/pending-link)
     (log/debug "Finished job.")
     (actors/notify! service
                     (into args {:type :job-save-data
@@ -68,7 +67,7 @@
 (pulsar/defsfn finish-job-track
   [{job-id :job-id db-conn :db-conn service :service result :result :as args}]
   ;; XXX update tracking data with information on completed job
-  @(db/update-status db-conn job-id resource-ready-status)
+  @(db/update-status db-conn job-id status/permanant-link)
   (log/debug (str "Updated job traking data with " result))
   (actors/notify! service
                   (into args {:type :done})))
