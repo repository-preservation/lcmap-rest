@@ -50,18 +50,15 @@
       (wrap-json-response)))
 
 (defn -main
-  "This is the entry point.
+  "This is the entry point. Note, however, that the system components are
+  defined in lcmap-rest.components. In particular, lcmap-rest.components.system
+  brings together all the defined (and active) components; that is the module
+  which is used to bring the system up when component/start is called.
 
   'lein run' will use this as well as 'java -jar'."
   [& args]
   (let [cfg (assoc (util/get-config) :app #'app)
         sys (system/init cfg)]
     (log/debug "Using lein profile:" (:active-profile cfg))
-    ;; XXX DEBUG
-    ;;(log/debug "app:" (:app cfg))
-    ;;(log/debug "httpd:" (:http cfg))
-    ;; XXX END DEBUG
     (component/start sys)
-    (util/add-shutdown-handler #(component/stop sys))
-    ;;(httpkit/run-server #'app http-cfg)))
-    ))
+    (util/add-shutdown-handler #(component/stop sys))))
