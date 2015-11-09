@@ -46,3 +46,7 @@
     (fn []
       (log/debug "Memoizing LCMAP configuration ...")
       (lein-prj/read))))
+
+(defn add-shutdown-handler [func]
+  (.addShutdownHook (Runtime/getRuntime)
+                    (Thread. func)))

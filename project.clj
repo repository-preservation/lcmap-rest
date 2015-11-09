@@ -4,6 +4,8 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/core.match "0.3.0-alpha4"]
                  [org.clojure/data.xml "0.0.8"]
+                 ;; Componentization
+                 [com.stuartsierra/component "0.3.0"]
                  ;; Logging
                  [org.clojure/tools.logging "0.3.1"]
                  [ch.qos.logback/logback-classic "1.1.3"]
@@ -53,7 +55,8 @@
             :port 9042
             :protocol-version 3
             :keyspace "lcmap"}
-        :http {:port 8080}}
+        :http {:port 8080
+               :ip "127.0.0.1"}}
     ;; configuration for dev environment
     :dev
       {:active-profile "dev"
@@ -61,7 +64,8 @@
             :port 9042
             :protocol-version 3
             :keyspace "lcmap"}
-        :http {:port 8080}}
+        :http {:port 8080
+               :ip "127.0.0.1"}}
     ;; configuration for testing environment
     :testing
       {:active-profile "testing"

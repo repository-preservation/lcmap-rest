@@ -1,11 +1,13 @@
 (ns lcmap-rest.app
   (:require [clojure.tools.logging :as log]
+            [com.stuartsierra.component :as component]
             [org.httpkit.server :as httpkit]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
             [compojure.core :refer [defroutes]]
             [compojure.response :as response]
             [lcmap-rest.api.routes :as routes]
+            [lcmap-rest.components.system :as system]
             [lcmap-rest.util :as util])
   (:gen-class))
 
@@ -31,11 +33,12 @@
           accept (headers "accept")
           {version :version} (util/parse-accept-version accept)
           api (get-api-version version default-api)]
-      ;; ;; XXX debug
+      ;; XXX DEBUG
       ;; (log/info (str "Headers: " headers))
       ;; (log/info (str "Accept: " accept))
       ;; (log/info (str "Version: " version))
       ;; (log/info (str "API: " api))
+      ;; XXX END DEBUG
       (response/render (api request) request))))
 
 (defroutes app
@@ -51,8 +54,14 @@
 
   'lein run' will use this as well as 'java -jar'."
   [& args]
-  (let [cfg (util/get-config)
-        http-cfg (:http cfg)]
+  (let [cfg (assoc (util/get-config) :app #'app)
+        sys (system/init cfg)]
     (log/debug "Using lein profile:" (:active-profile cfg))
-    (log/info (format "Starting Compojure server with config: %s ..." http-cfg))
-    (httpkit/run-server #'app http-cfg)))
+    ;; XXX DEBUG
+    ;;(log/debug "app:" (:app cfg))
+    ;;(log/debug "httpd:" (:http cfg))
+    ;; XXX END DEBUG
+    (component/start sys)
+    (util/add-shutdown-handler #(component/stop sys))
+    ;;(httpkit/run-server #'app http-cfg)))
+    ))
