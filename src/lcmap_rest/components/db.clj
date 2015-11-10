@@ -3,15 +3,17 @@
             [com.stuartsierra.component :as component]
             [clojurewerkz.cassaforte.client :as cc]))
 
-(defrecord JobTrackerDBClient [db-cfg]
+(defrecord JobTrackerDBClient [ ]
   component/Lifecycle
 
   (start [component]
     (log/info "Starting DB client ...")
-    (log/debug "Using config:" db-cfg)
-    (let [conn (cc/connect (:hosts db-cfg) (dissoc db-cfg :hosts))]
-      (log/debug "Successfully created db connection:" conn)
-      (assoc component :conn conn)))
+    (let [db-cfg (get-in component [:cfg :db])]
+      (log/debug "Using config:" db-cfg)
+      (let [conn (cc/connect (:hosts db-cfg) (dissoc db-cfg :hosts))]
+        (log/debug "Successfully created db connection:" conn)
+        (log/debug "Component keys:" (keys component))
+        (assoc component :conn conn))))
 
   (stop [component]
     (log/info "Stopping DB server ...")
@@ -20,5 +22,5 @@
           (cc/disconnect conn)))
     (dissoc component :conn)))
 
-(defn new-client [db-cfg]
-  (->JobTrackerDBClient db-cfg))
+(defn new-job-client []
+  (->JobTrackerDBClient))

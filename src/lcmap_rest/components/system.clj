@@ -1,10 +1,11 @@
 (ns lcmap-rest.components.system
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
+            [lcmap-rest.components.config :as config]
             [lcmap-rest.components.db :as db]
             [lcmap-rest.components.httpd :as httpd]))
 
-(defrecord LCMAPSystem [cfg]
+(defrecord LCMAPSystem []
   component/Lifecycle
 
   (start [component]
@@ -17,16 +18,21 @@
     ;; XXX add any tear-down needed for system as a whole
     ))
 
-(defn new-lcmap-system [cfg]
-  (map->LCMAPSystem {:cfg cfg}))
+(defn new-lcmap-system []
+  (->LCMAPSystem))
 
-(defn init [cfg]
+(defn init [app]
   (component/system-map
-    :db (db/new-client (:db cfg))
+    :cfg (config/new-configuration)
+    :jobdb (component/using
+             (db/new-job-client)
+             [:cfg])
     :httpd (component/using
-             (httpd/new-server (:app cfg) (:http cfg))
-             [:db])
+             (httpd/new-server app)
+             [:cfg
+              :jobdb])
     :sys (component/using
-           (new-lcmap-system cfg)
-           [:db
+           (new-lcmap-system)
+           [:cfg
+            :jobdb
             :httpd])))

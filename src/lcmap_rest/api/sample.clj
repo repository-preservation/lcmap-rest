@@ -28,8 +28,8 @@
     (ring/response "sample job resources tbd")
     status/ok))
 
-(defn get-job-status [job-id]
-  (match [(db/job? job-id)]
+(defn get-job-status [db job-id]
+  (match [(first @(db/job? (:conn db) job-id))]
     [[]]
       (ring/status
         (ring/response {:error "Job not found."})
@@ -44,32 +44,32 @@
         status/pending)
     [({:status st} :as result)]
       (ring/status
-        (ring/response {:result (get-result-path job-id)})
+        (ring/response {:result (get-result-path (:conn db) job-id)})
         st)))
 
-(defn get-job-result [job-id]
-  (match [(db/result? result-table job-id)]
+(defn get-job-result [db job-id]
+  (match [(first @(db/result? (:conn db) result-table job-id))]
     [[]]
-      (get-job-status job-id)
+      (get-job-status db job-id)
     [nil]
-      (get-job-status job-id)
+      (get-job-status db job-id)
     [{:result result}]
       (ring/status
         (ring/response {:result result})
         status/ok)))
 
-(defn update-job [job-id]
+(defn update-job [db job-id]
   (ring/status
     (ring/response "sample job update tbd")
     status/pending))
 
-(defn get-info [job-id]
+(defn get-info [db job-id]
   (ring/response "sample job info tbd"))
 
 (defn get-model-resources [request]
   (ring/response "sample model resources tbd"))
 
-(defn run-model [seconds year]
+(defn run-model [db seconds year]
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where sample result will
   ;; be
@@ -79,12 +79,11 @@
                      :result_keyspace result-keyspace
                      :result_table result-table
                      :result_id job-id
-                     :status status/pending}
-        db-conn (db/connect)]
+                     :status status/pending}]
     ;;(log/debug (format "sample model run (job id: %s)" job-id))
     ;;(log/debug (format "default row: %s" default-row))
-    (sample-runner/run-model job-id
-                             db-conn
+    (sample-runner/run-model (:conn db)
+                             job-id
                              default-row
                              result-table
                              seconds

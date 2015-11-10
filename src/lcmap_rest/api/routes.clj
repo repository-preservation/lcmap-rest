@@ -17,6 +17,8 @@
             [lcmap-rest.api.management :as management]
             [lcmap-rest.util :as util]))
 
+(def jobdb-key :lcmap-rest.components.httpd/jobdb)
+
 (defroutes ccdc-science-model
   (context lcmap-client.ccdc.model/context []
     (GET "/" request
@@ -55,22 +57,23 @@
     (GET "/" request
       (sample/get-model-resources (:uri request)))
     (POST "/" [seconds year :as request]
-      (sample/run-model seconds year))
-    (GET "/:job-id" [job-id]
-      (sample/get-job-result job-id))))
+      ;;(log/debug "Request data keys in routes:" (keys request))
+      (sample/run-model (jobdb-key request) seconds year))
+    (GET "/:job-id" [job-id :as request]
+      (sample/get-job-result (jobdb-key request) job-id))))
 
 (defroutes sample-job-management
   (context lcmap-client.sample.job/context []
     (GET "/" request
       (sample/get-job-resources (:uri request)))
-    (GET "/:job-id" [job-id]
-      (sample/get-job-result job-id))
-    (PUT "/:job-id" [job-id]
-      (sample/update-job job-id))
-    (HEAD "/:job-id" [job-id]
-      (sample/get-info job-id))
-    (GET "/status/:job-id" [job-id]
-      (sample/get-job-status job-id))))
+    (GET "/:job-id" [job-id :as request]
+      (sample/get-job-result (jobdb-key request) job-id))
+    (PUT "/:job-id" [job-id :as request]
+      (sample/update-job (jobdb-key request) job-id))
+    (HEAD "/:job-id" [job-id :as request]
+      (sample/get-info (jobdb-key request) job-id))
+    (GET "/status/:job-id" [job-id :as request]
+      (sample/get-job-status (jobdb-key request) job-id))))
 
 (defroutes sample-routes
   (context lcmap-client.sample/context []

@@ -57,8 +57,6 @@
 
   'lein run' will use this as well as 'java -jar'."
   [& args]
-  (let [cfg (assoc (util/get-config) :app #'app)
-        sys (system/init cfg)]
-    (log/debug "Using lein profile:" (:active-profile cfg))
+  (let [sys (system/init #'app)]
     (component/start sys)
     (util/add-shutdown-handler #(component/stop sys))))

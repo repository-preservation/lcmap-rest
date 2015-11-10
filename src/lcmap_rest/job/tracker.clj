@@ -2,6 +2,7 @@
   (:require [clojure.tools.logging :as log]
             [clojure.core.match :refer [match]]
             [co.paralleluniverse.pulsar.core :as pulsar]
+            [co.paralleluniverse.pulsar.core :refer [defsfn]]
             [co.paralleluniverse.pulsar.actors :as actors]
             [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
@@ -15,13 +16,14 @@
 
 (declare dispatch-handler)
 
-(defn job-result-exists? [db-conn result-table job-id]
-  (match [(db/result? db-conn result-table job-id)]
+(defsfn job-result-exists? [db-conn result-table job-id]
+  (log/debug "Got args:" db-conn result-table job-id)
+  (match [(first @(db/result? db-conn result-table job-id))]
     [[]] false
     [nil] false
     [_] true))
 
-(pulsar/defsfn init-job-track
+(defsfn init-job-track
   [{job-id :job-id db-conn :db-conn default-row :default-row service :service
    result-table :result-table func-args :result :as args}]
   (log/debug "Starting job tracking ...")
@@ -35,13 +37,13 @@
       (actors/notify! service
                       (into args {:type :job-run})))))
 
-(pulsar/defsfn return-existing-result
+(defsfn return-existing-result
   [{service :service :as args}]
   (log/debug "Returning ID for existing job results ...")
   (actors/notify! service
                   (into args {:type :done})))
 
-(pulsar/defsfn run-job
+(defsfn run-job
   [{job-id :job-id db-conn :db-conn service :service
     [job-func job-args] :result :as args}]
   (log/debug (format "Running the job with args %s ..." job-args))
@@ -52,7 +54,7 @@
                     (into args {:type :job-save-data
                                 :result job-data}))))
 
-(pulsar/defsfn save-job-data
+(defsfn save-job-data
   [{job-id :job-id db-conn :db-conn result-table :result-table service :service
     job-output :result :as args}]
   (log/debug (format "Saving job data \n%s with id %s to %s ..."
@@ -64,7 +66,7 @@
   (actors/notify! service
                   (into args {:type :job-track-finish})))
 
-(pulsar/defsfn finish-job-track
+(defsfn finish-job-track
   [{job-id :job-id db-conn :db-conn service :service result :result :as args}]
   ;; XXX update tracking data with information on completed job
   @(db/update-status db-conn job-id status/permanant-link)
@@ -72,7 +74,7 @@
   (actors/notify! service
                   (into args {:type :done})))
 
-(pulsar/defsfn done
+(defsfn done
   [{job-id :job-id :as args}]
   ;; XXX Perform any needed cleanup
   (log/debug (format "Finished tracking for job %s." job-id))
@@ -81,7 +83,7 @@
   ;;(log/debug "Removed event handler.")
   )
 
-(pulsar/defsfn dispatch-handler
+(defsfn dispatch-handler
   [{type :type :as args}]
   (match [type]
     [:job-track-init] (init-job-track args)
@@ -92,8 +94,8 @@
     [:done] (done args)))
 
 (defn track-job
-  [job-id db-conn default-row result-table func-args]
-  (log/debug "Creating event server ...")
+  [db-conn job-id default-row result-table func-args]
+  (log/debug "Creating event server with db connection" db-conn)
   (let [event-server (actors/spawn (actors/gen-event))]
     (actors/add-handler! event-server #'dispatch-handler)
     (log/debug "Added event handler.")
