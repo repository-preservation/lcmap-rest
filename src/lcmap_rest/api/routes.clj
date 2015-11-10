@@ -18,6 +18,7 @@
             [lcmap-rest.util :as util]))
 
 (def jobdb-key :lcmap-rest.components.httpd/jobdb)
+(def eventd-key :lcmap-rest.components.httpd/eventd)
 
 (defroutes ccdc-science-model
   (context lcmap-client.ccdc.model/context []
@@ -58,7 +59,10 @@
       (sample/get-model-resources (:uri request)))
     (POST "/" [seconds year :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
-      (sample/run-model (jobdb-key request) seconds year))
+      (sample/run-model (jobdb-key request)
+                        (eventd-key request)
+                        seconds
+                        year))
     (GET "/:job-id" [job-id :as request]
       (sample/get-job-result (jobdb-key request) job-id))))
 

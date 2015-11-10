@@ -69,7 +69,7 @@
 (defn get-model-resources [request]
   (ring/response "sample model resources tbd"))
 
-(defn run-model [db seconds year]
+(defn run-model [db eventd seconds year]
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where sample result will
   ;; be
@@ -83,6 +83,7 @@
     ;;(log/debug (format "sample model run (job id: %s)" job-id))
     ;;(log/debug (format "default row: %s" default-row))
     (sample-runner/run-model (:conn db)
+                             (:eventd eventd)
                              job-id
                              default-row
                              result-table

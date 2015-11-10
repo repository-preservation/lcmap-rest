@@ -68,19 +68,16 @@
 
 (defsfn finish-job-track
   [{job-id :job-id db-conn :db-conn service :service result :result :as args}]
-  ;; XXX update tracking data with information on completed job
   @(db/update-status db-conn job-id status/permanant-link)
   (log/debug "Updated job traking data with" result)
   (actors/notify! service
                   (into args {:type :done})))
 
 (defsfn done
-  [{job-id :job-id :as args}]
-  ;; XXX Perform any needed cleanup
+  [{job-id :job-id :as args service :service}]
   (log/debug (format "Finished tracking for job %s." job-id))
   ;;(actors/remove-handler! service #'dispatch-handler)
-  ;;(actors/shutdown! event-server)
-  ;;(log/debug "Removed event handler.")
+  ;;(log/debug "Removed job event-handler.")
   )
 
 (defsfn dispatch-handler
@@ -94,16 +91,13 @@
     [:done] (done args)))
 
 (defn track-job
-  [db-conn job-id default-row result-table func-args]
-  (log/debug "Creating event server with db connection" db-conn)
-  (let [event-server (actors/spawn (actors/gen-event))]
-    (actors/add-handler! event-server #'dispatch-handler)
-    (log/debug "Added event handler.")
-    (actors/notify! event-server
-                    {:type :job-track-init
-                     :job-id job-id
-                     :db-conn db-conn
-                     :default-row default-row
-                     :result-table result-table
-                     :result func-args
-                     :service event-server})))
+  [db-conn event-server job-id default-row result-table func-args]
+  (log/debug "Using event server" event-server "with db connection" db-conn)
+  (actors/notify! event-server
+                  {:type :job-track-init
+                   :job-id job-id
+                   :db-conn db-conn
+                   :default-row default-row
+                   :result-table result-table
+                   :result func-args
+                   :service event-server}))

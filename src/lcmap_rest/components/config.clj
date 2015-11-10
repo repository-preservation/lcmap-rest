@@ -10,11 +10,13 @@
     (log/info "Setting up LCMAP configuration ...")
     (let [cfg (util/get-config)]
       (log/info "Using lein profile:" (:active-profile cfg))
+      (log/debug "Successfully generated LCMAP configuration.")
       cfg))
 
   (stop [component]
     (log/info "Tearing down LCMAP configuration ...")
-    (dissoc component :cfg)))
+    (log/debug "Component keys" (keys component))
+    (assoc component :cfg nil)))
 
 (defn new-configuration []
   (->Configuration))
