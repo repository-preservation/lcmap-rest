@@ -20,13 +20,13 @@
 (defn new-lcmap-system [cfg]
   (map->LCMAPSystem {:cfg cfg}))
 
-(def system-deps [:httpd
-                  :db])
-
 (defn init [cfg]
   (component/system-map
-    :httpd (httpd/new-server (:app cfg) (:http cfg))
     :db (db/new-client (:db cfg))
+    :httpd (component/using
+             (httpd/new-server (:app cfg) (:http cfg))
+             [:db])
     :sys (component/using
            (new-lcmap-system cfg)
-           system-deps)))
+           [:db
+            :httpd])))
