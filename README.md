@@ -1,10 +1,13 @@
 # LCMAP REST Service
 
+
 ## About
 
 TBD
 
+
 ## Usage
+
 
 ### Development
 
@@ -34,11 +37,11 @@ to lcmap-rest files:
 
 ```clojure
 lcmap-rest.dev=> (run)
-17:14:29.863 [nREPL-worker-6] INFO  lcmap-rest.components.config - Setting up LCMAP configuration ...
-17:14:29.864 [nREPL-worker-6] INFO  lcmap-rest.components.config - Using lein profile: dev
-17:14:29.864 [nREPL-worker-6] INFO  lcmap-rest.components.logger - Setting up LCMAP logging ...
-17:14:29.864 [nREPL-worker-6] INFO  lcmap-rest.components.logger - Using log-level :info
-17:14:29.907 [nREPL-worker-6] INFO  lcmap-rest.components.db - Starting DB client ...
+17:14:29.863 [nREPL-worker-6] INFO  l-r.c.config - Setting up LCMAP configuration ...
+17:14:29.864 [nREPL-worker-6] INFO  l-r.c.config - Using lein profile: dev
+17:14:29.864 [nREPL-worker-6] INFO  l-r.c.logger - Setting up LCMAP logging ...
+17:14:29.864 [nREPL-worker-6] INFO  l-r.c.logger - Using log-level :info
+17:14:29.907 [nREPL-worker-6] INFO  l-r.c.db - Starting DB client ...
 ```
 
 Any subsequent changes to source files (including ``project.clj``) can be
@@ -46,14 +49,17 @@ brought into the REPL by resetting (reloading, rereading, etc.):
 
 ```clojure
 lcmap-rest.dev=> (reset)
+:reloading (lcmap-rest.util lcmap-rest.job.db)
 ```
 
-A quick test for this is to change the ``log-level`` in ``project.clj`` as the
-change is immediately obvious.
+A quick test for this is to change the ``log-level`` in ``project.clj`` and
+then run ``(reset)``, since the difference in log output will be obvious.
+
 
 ### Production
 
 TBD
+
 
 ## Versioned Service API
 
