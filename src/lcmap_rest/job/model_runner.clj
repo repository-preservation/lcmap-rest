@@ -1,5 +1,6 @@
 (ns lcmap-rest.job.model-runner
-  (:require [lcmap-rest.job.tracker :as jt]))
+  (:require [clojure.tools.logging :as log]
+            [lcmap-rest.job.tracker :as jt]))
 
 (defn model-func []
     :noop)

@@ -73,15 +73,15 @@
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where sample result will
   ;; be
-  (log/debug (format "run-model got args: [%s %s]" seconds year))
+  (log/debugf "run-model got args: [%s %s]" seconds year)
   (let [job-id (util/get-args-hash "sample model" seconds year)
         default-row {:science_model_name science-model-name
                      :result_keyspace result-keyspace
                      :result_table result-table
                      :result_id job-id
                      :status status/pending}]
-    ;;(log/debug (format "sample model run (job id: %s)" job-id))
-    ;;(log/debug (format "default row: %s" default-row))
+    ;;(log/debugf "sample model run (job id: %s)" job-id)
+    ;;(log/debugf "default row: %s" default-row)
     (sample-runner/run-model (:conn db)
                              (:eventd eventd)
                              job-id

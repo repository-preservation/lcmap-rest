@@ -46,7 +46,7 @@
 (defsfn run-job
   [{job-id :job-id db-conn :db-conn service :service
     [job-func job-args] :result :as args}]
-  (log/debug (format "Running the job with args %s ..." job-args))
+  (log/debugf "Running the job with args %s ..." job-args)
   (let [job-data (job-func job-args)]
     @(db/update-status db-conn job-id status/pending-link)
     (log/debug "Finished job.")
@@ -57,10 +57,10 @@
 (defsfn save-job-data
   [{job-id :job-id db-conn :db-conn result-table :result-table service :service
     job-output :result :as args}]
-  (log/debug (format "Saving job data \n%s with id %s to %s ..."
+  (log/debugf "Saving job data \n%s with id %s to %s ..."
                      job-output
                      job-id
-                     result-table))
+                     result-table)
   @(cql/insert-async db-conn result-table {:result_id job-id :result job-output})
   (log/debug "Saved.")
   (actors/notify! service
@@ -75,10 +75,7 @@
 
 (defsfn done
   [{job-id :job-id :as args service :service}]
-  (log/debug (format "Finished tracking for job %s." job-id))
-  ;;(actors/remove-handler! service #'dispatch-handler)
-  ;;(log/debug "Removed job event-handler.")
-  )
+  (log/debugf "Finished tracking for job %s." job-id))
 
 (defsfn dispatch-handler
   [{type :type :as args}]

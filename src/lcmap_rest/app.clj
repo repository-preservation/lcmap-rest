@@ -7,7 +7,7 @@
             [compojure.core :refer [defroutes]]
             [compojure.response :as response]
             [lcmap-rest.api.routes :as routes]
-            [lcmap-rest.components.system :as system]
+            [lcmap-rest.components :as components]
             [lcmap-rest.util :as util])
   (:gen-class))
 
@@ -57,6 +57,6 @@
 
   'lein run' will use this as well as 'java -jar'."
   [& args]
-  (let [sys (system/init #'app)]
-    (component/start sys)
-    (util/add-shutdown-handler #(component/stop sys))))
+  (let [system (components/init #'app)]
+    (component/start system)
+    (util/add-shutdown-handler #(component/stop system))))

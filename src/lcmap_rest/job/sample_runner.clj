@@ -4,9 +4,9 @@
             [lcmap-rest.job.tracker :as jt]))
 
 (defn long-running-func [[job-id sleep-time year]]
-  (log/debug (format "\n\nRunning job %s (waiting for %s seconds) ...\n"
+  (log/debugf "\n\nRunning job %s (waiting for %s seconds) ...\n"
                      job-id
-                     sleep-time))
+                     sleep-time)
   @(exec/sh ["sleep" (str sleep-time)])
   (:out @(exec/sh ["cal" year])))
 

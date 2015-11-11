@@ -49,8 +49,15 @@
   :jvm-opts ["-Dco.paralleluniverse.fibers.detectRunawayFibers=false"]
   :main lcmap-rest.app
   :target-path "target/%s"
+  ;; List the namespaces whose log levels we want to control; note that if we
+  ;; add more dependencies that are chatty in the logs, we'll want to add them
+  ;; here.
+  :logging-namespaces [lcmap-rest
+                       lcmap-client
+                       com.datastax.driver
+                       co.paralleluniverse]
   :profiles {
-    ;; overrride local properties in ./profiles.clj: {:local {...}}
+    ;; configuration for local environment
     :local
       {:active-profile "local"
        :db {:hosts ["127.0.0.1"]
@@ -58,7 +65,8 @@
             :protocol-version 3
             :keyspace "lcmap"}
         :http {:port 8080
-               :ip "127.0.0.1"}}
+               :ip "127.0.0.1"}
+        :log-level :info}
     ;; configuration for dev environment
     :dev
       {:active-profile "dev"
@@ -67,16 +75,23 @@
             :protocol-version 3
             :keyspace "lcmap"}
         :http {:port 8080
-               :ip "127.0.0.1"}}
+               :ip "127.0.0.1"}
+        :log-level :info}
     ;; configuration for testing environment
     :testing
       {:active-profile "testing"
-       :db {}}
+       :db {}
+       :http {}
+       :log-level :debug}
     ;; configuration for staging environment
     :staging
       {:active-profile "staging"
-       :db {}}
-    ;; configuration for prod environment
+       :db {}
+       :http {}
+       :log-level :warn}
+    ;; configuration for production environment
     :prod
       {:active-profile "prod"
-       :db {}}})
+       :db {}
+       :http {}
+       :log-level :error}})

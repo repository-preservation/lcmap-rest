@@ -16,8 +16,8 @@
     (query/limit 1)))
 
 (defn result? [conn result-table result-id]
-  (log/debug (format "Checking for result of id %s in table '%s' ..."
-                     result-id result-table))
+  (log/debugf "Checking for result of id %s in table '%s' ..."
+              result-id result-table)
   (cql/select-async
     conn
     result-table
