@@ -4,6 +4,7 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/core.match "0.3.0-alpha4"]
                  [org.clojure/data.xml "0.0.8"]
+                 [org.clojure/core.memoize "0.5.8"]
                  ;; Componentization
                  [com.stuartsierra/component "0.3.0"]
                  ;; Logging
@@ -41,12 +42,13 @@
                  ;; client library).
                  [org.apache.httpcomponents/httpclient "4.5"]
                  [clj-http "2.0.0"]
-                 ;; Project metadata
+                 ;; Dev and project metadata
                  [leiningen-core "2.5.3"]]
   :plugins [[lein-ring "0.9.7"]
             [lein-pprint "1.1.1"]]
   :java-agents [[co.paralleluniverse/quasar-core "0.7.3"]]
   :jvm-opts ["-Dco.paralleluniverse.fibers.detectRunawayFibers=false"]
+  :repl-options {:init-ns lcmap-rest.dev}
   :main lcmap-rest.app
   :target-path "target/%s"
   ;; List the namespaces whose log levels we want to control; note that if we
@@ -66,7 +68,8 @@
             :keyspace "lcmap"}
         :http {:port 8080
                :ip "127.0.0.1"}
-        :log-level :info}
+        :log-level :info
+        :dependencies [[org.clojure/tools.namespace "0.2.11"]]}
     ;; configuration for dev environment
     :dev
       {:active-profile "dev"
@@ -76,7 +79,8 @@
             :keyspace "lcmap"}
         :http {:port 8080
                :ip "127.0.0.1"}
-        :log-level :info}
+        :log-level :info
+        :dependencies [[org.clojure/tools.namespace "0.2.11"]]}
     ;; configuration for testing environment
     :testing
       {:active-profile "testing"

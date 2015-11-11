@@ -29,7 +29,7 @@
   (stop [component]
     (log/info "Tearing down LCMAP logging ...")
     (log/debug "Component keys" (keys component))
-    (assoc component :cfg nil)))
+    component))
 
 (defn new-logger []
   (->Logger))

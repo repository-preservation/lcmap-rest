@@ -1,5 +1,6 @@
 (ns lcmap-rest.util
-  (:require [clojure.string :as string]
+  (:require [clojure.core.memoize :as memo]
+            [clojure.string :as string]
             [clojure.tools.logging :as log]
             [digest]
             [leiningen.core.project :as lein-prj])
@@ -41,12 +42,26 @@
        (str model-name)
        (digest/md5)))
 
-(def get-config
-  (memoize
+(def -get-config
+  (memo/lu
     (fn []
       (log/debug "Memoizing LCMAP configuration ...")
       (lein-prj/read))))
 
+(defn get-config
+  ([]
+    (-get-config))
+  ([arg]
+    (if (not (= arg :force-reload))
+      (-get-config)
+      (do (memo/memo-clear! -get-config)
+          (-get-config)))))
+
 (defn add-shutdown-handler [func]
   (.addShutdownHook (Runtime/getRuntime)
                     (Thread. func)))
+
+(defn in?
+  "true if seq contains elm"
+  [seq elm]
+  (some #(= elm %) seq))
