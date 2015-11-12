@@ -2,7 +2,8 @@
   (:require [clojure.tools.logging :as log]
              [clojure.tools.logging.impl :as log-impl]
             [clojure.core.match :refer [match]])
-  (:import [ch.qos.logback.classic Level]))
+  (:import [ch.qos.logback.classic Level]
+           [ch.qos.logback.classic.joran JoranConfigurator]))
 
 (defn get-factory []
   (log-impl/find-factory))
@@ -15,6 +16,17 @@
 
 (defn get-logger-name [namespace]
   (.getName (get-logger namespace)))
+
+(defn get-logger-level [namespace]
+  (.getLevel (get-logger namespace)))
+
+(defn get-logger-context [namespace]
+  (.getLoggerContext (get-logger namespace)))
+
+(defn get-config [namespace]
+  (let [cfg (JoranConfigurator.)]
+    (.setContext cfg (get-logger-context namespace))
+    cfg))
 
 (defn convert-level [level]
   (match [level]
