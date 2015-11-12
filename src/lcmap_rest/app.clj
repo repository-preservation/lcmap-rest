@@ -4,6 +4,7 @@
             [org.httpkit.server :as httpkit]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
+            [ring.middleware.logger :as logger]
             [compojure.core :refer [defroutes]]
             [compojure.response :as response]
             [lcmap-rest.api.routes :as routes]
@@ -47,7 +48,10 @@
       ;; XXX once we support SSL, api-defaults needs to be changed to
       ;; secure-api-defaults
       (wrap-defaults api-defaults)
-      (wrap-json-response)))
+      (wrap-json-response)
+      ;; XXX maybe move this handler into the httpd component setup, that way
+      ;; we could enable it conditionally, based upon some configuration value
+      (logger/wrap-with-logger)))
 
 (defn -main
   "This is the entry point. Note, however, that the system components are

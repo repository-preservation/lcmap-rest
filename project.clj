@@ -10,6 +10,7 @@
                  ;; Logging
                  [org.clojure/tools.logging "0.3.1"]
                  [ch.qos.logback/logback-classic "1.1.3"]
+                 [ring.middleware.logger "0.5.0"]
                  ;; REST
                  [compojure "1.4.0"]
                  [http-kit "2.1.17"]
