@@ -50,7 +50,7 @@
       (wrap-defaults api-defaults)
       (wrap-json-response)
       ;; XXX maybe move this handler into the httpd component setup, that way
-      ;; we could enable it conditionally, based upon some configuration value
+      ;; we could enable it conditionally, based upon some configuration value.
       (logger/wrap-with-logger)))
 
 (defn -main
