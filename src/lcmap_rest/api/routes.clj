@@ -103,18 +103,25 @@
     ;; XXX add more management resources
     ))
 
+(defroutes auth-routes
+  (context (str lcmap-client.lcmap/context "/oauth") []
+    (POST "/results" [] "TBD")))
+
 (defroutes v0
   sample-routes
   ccdc-routes
   surface-reflectance-routes
   management-routes
+  auth-routes
   (route/not-found "Resource not found"))
 
 (defroutes v1
   management-routes
+  auth-routes
   (route/not-found "Resource not found"))
 
 (defroutes v2
   management-routes
+  auth-routes
   (route/not-found "Resource not found"))
 
