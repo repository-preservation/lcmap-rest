@@ -15,43 +15,22 @@
             [lcmap-rest.api.sample :as sample]
             [lcmap-rest.api.l8.surface-reflectance :as l8-sr]
             [lcmap-rest.api.management :as management]
+            [lcmap-rest.auth :as auth]
             [lcmap-rest.util :as util]))
 
 (def jobdb-key :lcmap-rest.components.httpd/jobdb)
 (def eventd-key :lcmap-rest.components.httpd/eventd)
 
-(defroutes ccdc-science-model
-  (context lcmap-client.ccdc.model/context []
-    (GET "/" request
-      (ccdc/get-model-resources (:uri request)))
-    (POST "/" [arg1 arg2 :as request]
-      (ccdc/run-model arg1 arg2))
-    (GET "/:job-id" [job-id]
-      (ccdc/get-job-result [job-id]))
-    (POST "/run/:job-id" [job-id]
-      (ccdc/run-model job-id :arg1 :arg2))))
+;;; Authentication Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defroutes ccdc-job-management
-  (context lcmap-client.ccdc.job/context []
-    (GET "/" request
-      (ccdc/get-job-resources (:uri request)))
-    (POST "/" [arg1 arg2 :as request]
-      (ccdc/create-job arg1 arg2))
-    (GET "/:job-id" [job-id]
-      (ccdc/get-job-result job-id))
-    (PUT "/:job-id" [job-id]
-      (ccdc/update-job job-id))
-    (HEAD "/:job-id" [job-id]
-      (ccdc/get-info job-id))
-    (POST "/run/:job-id" [job-id]
-      (ccdc/run-model job-id :arg1 :arg2))))
+(defroutes auth-routes
+  (context (str lcmap-client.lcmap/context "/oauth") []
+    (GET "/results" [code :as request]
+      (auth/save-oauth-code code))
+    (POST "/results" [code :as request]
+      (auth/save-oauth-code code))))
 
-(defroutes ccdc-routes
-  (context lcmap-client.ccdc/context []
-    (GET "/" request
-      (ccdc/get-resources (:uri request))))
-  ccdc-science-model
-  ccdc-job-management)
+;;; Sample Science Model ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes sample-science-model
   (context lcmap-client.sample.model/context []
@@ -66,7 +45,7 @@
     (GET "/:job-id" [job-id :as request]
       (sample/get-job-result (jobdb-key request) job-id))))
 
-(defroutes sample-job-management
+(defroutes sample-science-model-job-management
   (context lcmap-client.sample.job/context []
     (GET "/" request
       (sample/get-job-resources (:uri request)))
@@ -79,12 +58,49 @@
     (GET "/status/:job-id" [job-id :as request]
       (sample/get-job-status (jobdb-key request) job-id))))
 
-(defroutes sample-routes
+(defroutes sample-science-model-routes
   (context lcmap-client.sample/context []
     (GET "/" request
       (sample/get-resources (:uri request))))
   sample-science-model
-  sample-job-management)
+  sample-science-model-job-management)
+
+;;; CCDC Science Model ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defroutes ccdc-science-model
+  (context lcmap-client.ccdc.model/context []
+    (GET "/" request
+      (ccdc/get-model-resources (:uri request)))
+    (POST "/" [arg1 arg2 :as request]
+      (ccdc/run-model arg1 arg2))
+    (GET "/:job-id" [job-id]
+      (ccdc/get-job-result [job-id]))
+    (POST "/run/:job-id" [job-id]
+      (ccdc/run-model job-id :arg1 :arg2))))
+
+(defroutes ccdc-science-model-job-management
+  (context lcmap-client.ccdc.job/context []
+    (GET "/" request
+      (ccdc/get-job-resources (:uri request)))
+    (POST "/" [arg1 arg2 :as request]
+      (ccdc/create-job arg1 arg2))
+    (GET "/:job-id" [job-id]
+      (ccdc/get-job-result job-id))
+    (PUT "/:job-id" [job-id]
+      (ccdc/update-job job-id))
+    (HEAD "/:job-id" [job-id]
+      (ccdc/get-info job-id))
+    (POST "/run/:job-id" [job-id]
+      (ccdc/run-model job-id :arg1 :arg2))))
+
+(defroutes ccdc-science-model-routes
+  (context lcmap-client.ccdc/context []
+    (GET "/" request
+      (ccdc/get-resources (:uri request))))
+  ccdc-science-model
+  ccdc-science-model-job-management)
+
+;;; Surface Reflectace Data ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes surface-reflectance-routes
   (context lcmap-client.l8.surface-reflectance/context []
@@ -95,6 +111,8 @@
     (GET "/rod" [point time band :as request]
       (l8-sr/get-rod point time band request))))
 
+;;; Management Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;; XXX this needs to go into a protected area; see this ticket:
 ;;  https://my.usgs.gov/jira/browse/LCMAP-71
 (defroutes management-routes
@@ -103,25 +121,23 @@
     ;; XXX add more management resources
     ))
 
-(defroutes auth-routes
-  (context (str lcmap-client.lcmap/context "/oauth") []
-    (POST "/results" [] "TBD")))
+;;; Routes Assembled for Versioned APIs ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes v0
-  sample-routes
-  ccdc-routes
+  auth-routes
+  sample-science-model-routes
+  ccdc-science-model-routes
   surface-reflectance-routes
   management-routes
-  auth-routes
   (route/not-found "Resource not found"))
 
 (defroutes v1
-  management-routes
   auth-routes
+  management-routes
   (route/not-found "Resource not found"))
 
 (defroutes v2
-  management-routes
   auth-routes
+  management-routes
   (route/not-found "Resource not found"))
 
