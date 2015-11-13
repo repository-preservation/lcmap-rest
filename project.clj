@@ -19,6 +19,8 @@
                  [ring/ring-devel "1.4.0"]
                  [ring/ring-json "0.4.0"]
                  [ring/ring-defaults "0.1.5"]
+                 ;; Authentication and authorization
+                 [com.uswitch/clj-soap "0.2.3"] ; USGS ERS is a SOAP service
                  [com.cemerick/friend "0.2.1"]
                  ;; Job Tracker
                  [org.clojure/core.memoize "0.5.6"] ; These two are not used directly, but
@@ -80,7 +82,7 @@
             :keyspace "lcmap"}
         :http {:port 8080
                :ip "127.0.0.1"}
-        :log-level :info
+        :log-level :debug
         :dependencies [[org.clojure/tools.namespace "0.2.11"]]}
     ;; configuration for testing environment
     :testing
