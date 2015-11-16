@@ -55,6 +55,14 @@ lcmap-rest.dev=> (reset)
 A quick test for this is to change the ``log-level`` in ``project.clj`` and
 then run ``(reset)``, since the difference in log output will be obvious.
 
+We use kibit to double-check idiomatic use of Clojure (we've got Rubyists,
+Pythonistas, Erlangers, and old Lispers using this software, so the probability
+for non-idiomatic contributions is high!). To check the code base, simply run
+the lein plugin:
+
+```bash
+$ lein kibit
+```
 
 ### Production
 
