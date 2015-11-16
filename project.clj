@@ -1,4 +1,4 @@
-(defproject gov.usgs/lcmap-rest "0.1.0-dev"
+(defproject gov.usgs.eros/lcmap-rest "0.1.0-dev"
   :description "LCMAP REST Service API"
   :url "https://github.com/USGS-EROS/lcmap-rest"
   :dependencies [[org.clojure/clojure "1.7.0"]
