@@ -80,8 +80,9 @@
             :keyspace "lcmap"}
         :http {:port 8080
                :ip "127.0.0.1"}
-        :log-level :info
-        :dependencies [[org.clojure/tools.namespace "0.2.11"]]}
+        :log-level :debug
+        :dependencies [[org.clojure/tools.namespace "0.2.11"]]
+        :plugins [[lein-kibit "0.1.2"]]}
     ;; configuration for testing environment
     :testing
       {:active-profile "testing"
