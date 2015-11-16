@@ -53,6 +53,8 @@
     (-get-config))
   ([arg]
     (if-not (= arg :force-reload)
+      ;; The only arg we've defined so far is :force-reload -- anything other
+      ;; than that, simply ignore.
       (-get-config)
       (do (memo/memo-clear! -get-config)
           (-get-config)))))
@@ -62,6 +64,7 @@
                     (Thread. func)))
 
 (defn in?
-  "true if seq contains elm"
+  "This function returns true if the provided seqenuce contains the given
+  elment."
   [seq elm]
   (some #(= elm %) seq))
