@@ -37,7 +37,7 @@
   state)
 
 (defn start []
-  (if (= system nil)
+  (if (nil? system)
     (init))
   (if (util/in? [:started :running] state)
     (log/error "System has already been started.")
@@ -61,7 +61,7 @@
     (do
       (if (not (util/in? [:initialized :started :running] state))
         (init))
-      (if (not (= state :started))
+      (if (not= state :started)
         (start))
       (alter-var-root #'state (fn [_] :running))))
   state)
@@ -73,6 +73,7 @@
     (apply #'repl/refresh args)))
 
 (defn refresh [& args]
+  "This is essentially an alias for clojure.tools.namespace.repl/refresh."
   (if (util/in? [:started :running] state)
     (stop))
   (apply -refresh args))
@@ -82,3 +83,5 @@
   (deinit)
   (util/get-config :force-reload)
   (refresh :after 'lcmap-rest.dev/run))
+
+(def reload #'reset)

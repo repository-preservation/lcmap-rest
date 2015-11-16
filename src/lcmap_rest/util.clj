@@ -52,7 +52,7 @@
   ([]
     (-get-config))
   ([arg]
-    (if (not (= arg :force-reload))
+    (if-not (= arg :force-reload)
       (-get-config)
       (do (memo/memo-clear! -get-config)
           (-get-config)))))
