@@ -1,5 +1,7 @@
 # LCMAP REST Service
 
+##### Contents
+
 
 ## About
 
@@ -10,8 +12,31 @@ scientific computing community, an API service will be provided. The
 LCMAP REST service API is codified in this project and prototypes the
 functionality necessary to support the public service.
 
+## Usage
 
-### Development
+### Versioned Service API
+
+The LCMAP service version is selected via an ``Accept`` header, as demonstrated
+with the following:
+
+```bash
+$ curl -H "Accept: application/vnd.usgs.lcmap.v0.0+json" \
+    http://localhost:8080/api/L1/T/Landsat/8/SurfaceReflectance
+```
+
+### Sample Model
+
+The LCMAP REST service provides a sample execution API for testing purposes.
+To kick off a new job, you can run something like the following:
+
+```bash
+curl -v -X POST \
+  -H "Accept: application/vnd.usgs.lcmap.v0.0+json" \
+  'http://localhost:8080/api/L3/sample/model?seconds=15&year=2016'
+```
+
+
+## Development
 
 To start the REST server and dependent components, do the following:
 
@@ -66,29 +91,15 @@ the lein plugin:
 $ lein kibit
 ```
 
+## Deployment
+
+TBD
+
+### Testing & Staging
+
+TBD
+
 ### Production
 
 TBD
 
-## Usage
-
-### Versioned Service API
-
-The LCMAP service version is selected via an ``Accept`` header, as demonstrated
-with the following:
-
-```bash
-$ curl -H "Accept: application/vnd.usgs.lcmap.v0.0+json" \
-    http://localhost:8080/api/L1/T/Landsat/8/SurfaceReflectance
-```
-
-### Sample Model
-
-The LCMAP REST service provides a sample execution API for testing purposes.
-To kick off a new job, you can run something like the following:
-
-```bash
-curl -v -X POST \
-  -H "Accept: application/vnd.usgs.lcmap.v0.0+json" \
-  'http://localhost:8080/api/L3/sample/model?seconds=15&year=2016'
-```
