@@ -7,10 +7,11 @@
                  [org.clojure/core.memoize "0.5.8"]
                  ;; Componentization
                  [com.stuartsierra/component "0.3.0"]
-                 ;; Logging
+                 ;; Logging and Error Handling
                  [org.clojure/tools.logging "0.3.1"]
                  [ch.qos.logback/logback-classic "1.1.3"]
                  [ring.middleware.logger "0.5.0"]
+                 [dire "0.5.3"]
                  ;; REST
                  [compojure "1.4.0"]
                  [http-kit "2.1.17"]
