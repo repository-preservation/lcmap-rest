@@ -2,8 +2,17 @@
 
 ##### Contents
 
+* [About](#about-)
+* [Usage](#usage-)
+  * [Versioned Service API](#versioned-service-api-)
+  * [Sample Model](#sample-model-)
+* [Development](#development-)
+* [Deployment](#deployment-)
+  * [Testing & Staging](#testing-staging-)
+  * [Production](#production-)
 
-## About
+
+## About [&#x219F;](#table-of-contents)
 
 The Land Change Monitoring Assessment and Projection (LCMAP) system will
 provide the science community with real-time access to decades of Landsat
@@ -12,9 +21,11 @@ scientific computing community, an API service will be provided. The
 LCMAP REST service API is codified in this project and prototypes the
 functionality necessary to support the public service.
 
-## Usage
 
-### Versioned Service API
+## Usage [&#x219F;](#table-of-contents)
+
+
+### Versioned Service API [&#x219F;](#table-of-contents)
 
 The LCMAP service version is selected via an ``Accept`` header, as demonstrated
 with the following:
@@ -24,7 +35,8 @@ $ curl -H "Accept: application/vnd.usgs.lcmap.v0.0+json" \
     http://localhost:8080/api/L1/T/Landsat/8/SurfaceReflectance
 ```
 
-### Sample Model
+
+### Sample Model [&#x219F;](#table-of-contents)
 
 The LCMAP REST service provides a sample execution API for testing purposes.
 To kick off a new job, you can run something like the following:
@@ -36,7 +48,7 @@ curl -v -X POST \
 ```
 
 
-## Development
+## Development [&#x219F;](#table-of-contents)
 
 To start the REST server and dependent components, do the following:
 
@@ -91,15 +103,18 @@ the lein plugin:
 $ lein kibit
 ```
 
-## Deployment
+
+## Deployment [&#x219F;](#table-of-contents)
 
 TBD
 
-### Testing & Staging
+
+### Testing & Staging [&#x219F;](#table-of-contents)
 
 TBD
 
-### Production
+
+### Production [&#x219F;](#table-of-contents)
 
 TBD
 
