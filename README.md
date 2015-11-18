@@ -1,6 +1,6 @@
 # LCMAP REST Service
 
-##### Contents
+#### Contents
 
 * [About](#about-)
 * [Usage](#usage-)
@@ -12,7 +12,7 @@
   * [Production](#production-)
 
 
-## About [&#x219F;](#table-of-contents)
+## About [&#x219F;](#contents)
 
 The Land Change Monitoring Assessment and Projection (LCMAP) system will
 provide the science community with real-time access to decades of Landsat
@@ -22,10 +22,10 @@ LCMAP REST service API is codified in this project and prototypes the
 functionality necessary to support the public service.
 
 
-## Usage [&#x219F;](#table-of-contents)
+## Usage [&#x219F;](#contents)
 
 
-### Versioned Service API [&#x219F;](#table-of-contents)
+### Versioned Service API [&#x219F;](#contents)
 
 The LCMAP service version is selected via an ``Accept`` header, as demonstrated
 with the following:
@@ -36,7 +36,7 @@ $ curl -H "Accept: application/vnd.usgs.lcmap.v0.0+json" \
 ```
 
 
-### Sample Model [&#x219F;](#table-of-contents)
+### Sample Model [&#x219F;](#contents)
 
 The LCMAP REST service provides a sample execution API for testing purposes.
 To kick off a new job, you can run something like the following:
@@ -48,7 +48,7 @@ curl -v -X POST \
 ```
 
 
-## Development [&#x219F;](#table-of-contents)
+## Development [&#x219F;](#contents)
 
 To start the REST server and dependent components, do the following:
 
@@ -104,17 +104,17 @@ $ lein kibit
 ```
 
 
-## Deployment [&#x219F;](#table-of-contents)
+## Deployment [&#x219F;](#contents)
 
 TBD
 
 
-### Testing & Staging [&#x219F;](#table-of-contents)
+### Testing & Staging [&#x219F;](#contents)
 
 TBD
 
 
-### Production [&#x219F;](#table-of-contents)
+### Production [&#x219F;](#contents)
 
 TBD
 
