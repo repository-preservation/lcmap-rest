@@ -1,8 +1,7 @@
-(ns lcmap-rest.exceptions
-  (:require [slingshot.slingshot :refer [throw+]]))
+(ns lcmap-rest.exceptions)
 
 (defn error [type msg]
-  (throw+ type "%s: %s" % msg))
+  (ex-info (str type) {:msg msg :type type}))
 
 (defn lcmap-error [msg]
   (error 'LCMAP-Error msg))
