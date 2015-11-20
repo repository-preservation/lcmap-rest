@@ -14,6 +14,7 @@
             [com.stuartsierra.component :as component]
             [lcmap-rest.app :as app]
             [lcmap-rest.components :as components]
+            [lcmap-rest.exceptions :as exceptions]
             [lcmap-rest.util :as util]))
 
 (def state :stopped)
