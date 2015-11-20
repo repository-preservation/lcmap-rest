@@ -22,7 +22,8 @@
     :else default))
 
 (defn version-handler
-  "This is a custom handler "
+  "This is a custom Ring handler for extracting the API version from the Accept
+  header."
   [default-api]
   (fn [request]
     (let [headers (:headers request)
@@ -57,7 +58,7 @@
   "This is the entry point. Note, however, that the system components are
   defined in lcmap-rest.components. In particular, lcmap-rest.components.system
   brings together all the defined (and active) components; that is the module
-  which is used to bring the system up when component/start is called.
+  which is used to bring the system up when (component/start ...) is called.
 
   'lein run' will use this as well as 'java -jar'."
   [& args]
