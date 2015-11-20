@@ -1,5 +1,8 @@
 # LCMAP REST Service
 
+**IMPORTANT**: This project is under active development and should be
+considered a work-in-progress.
+
 #### Contents
 
 * [About](#about-)
@@ -8,7 +11,7 @@
   * [Sample Model](#sample-model-)
 * [Development](#development-)
 * [Deployment](#deployment-)
-  * [Testing & Staging](#testing-staging-)
+  * [Testing & Staging](#testing--staging-)
   * [Production](#production-)
 
 
