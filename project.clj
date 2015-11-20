@@ -12,6 +12,7 @@
                  [ch.qos.logback/logback-classic "1.1.3"]
                  [ring.middleware.logger "0.5.0"]
                  [dire "0.5.3"]
+                 [slingshot "0.12.2"]
                  ;; REST
                  [compojure "1.4.0"]
                  [http-kit "2.1.17"]
