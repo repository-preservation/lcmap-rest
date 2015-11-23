@@ -5,7 +5,7 @@
             [lcmap-rest.status-codes :as status]))
 
 (defn login [username password]
-  (log/debugf "Got username '%s' and password '%s' ...")
+  (log/debugf "Got username '%s' and password '%s' ..." username password)
   ;; XXX set up cookies
   ;; XXX generate UUID to associate this request with response from NASA's URS
   ;; XXX make request to NASA, following redirects

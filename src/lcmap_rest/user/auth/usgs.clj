@@ -12,7 +12,7 @@
 ;; XXX uncomment the next line when the service is ready
 ;;(def api-url "https://ers.cr.usgs.gov/api")
 ;; XXX remove the next line when the ERS api is redy
-(def api-url "http://localhost:8888")
+(def api-url "http://localhost:8888/api")
 (def auth-url (str api-url "/auth"))
 (def user-url (str api-url "/me"))
 
@@ -30,18 +30,17 @@
 
 (defn- get-user [token]
   (http/get user-url
-            {:headers {:x-auth-token token}
+            {:headers {:x-authtoken token}
              :as :json}))
 
 (defn get-user-data [token]
   (let [results (get-user token)]
-    (log/debugf "Got user data for token %s" token)
+    (log/debugf "Got user data %s for token %s" results token)
     (get-in results [:body :data])))
 
 (defn check-status [ers-status errors]
-  (condp #'util/in? ers-status
-    [auth-error input-error generic-error]
-      (throw (exception/Auth-Error (string/join "; " errors)))))
+  (if (util/in? [auth-error input-error generic-error] ers-status)
+      (throw (exceptions/auth-error (string/join "; " errors)))))
 
 (defn login [username password]
   (let [results (post-auth username password)
@@ -49,16 +48,17 @@
         errors (get-in results [:body :errors])
         token (get-in results [:body :data :authToken])]
     (check-status ers-status errors)
+    (log/infof "User %s successfully authenticated with token %s"
+               username
+               token)
     (let [user-data (get-user-data token)]
-      (log/infof "User %s successfully authenticated with token %s"
-                 username
-                 token)
       ;; XXX save user data in db
-      {:user-id (:contact_id user-data)
-       :username (:username user-data)
-       :roles (:roles user-data)
-       :email (:email user-data)
-       :token token}))
+      (ring/response
+        {:user-id (:contact_id user-data)
+         :username (:username user-data)
+         :roles (:roles user-data)
+         :email (:email user-data)
+         :token token}))))
 
 ;;; Login exception handling
 
@@ -72,7 +72,10 @@
 (with-handler! #'login
   [:type 'Auth-Error]
   (fn [e & args]
-    (log/error e)))
+    (log/error e)
+    ;; XXX we need to figure out the best place to put the code that
+    ;; sends ring responses ... probably in lcmap-rest.api someplace
+    (ring/response {:result nil :errors e})))
 
 ;; HTTP error status codes returned as exceptions from clj-http
 (with-handler! #'login

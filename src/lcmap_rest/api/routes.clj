@@ -28,7 +28,7 @@
             [lcmap-rest.api.sample :as sample]
             [lcmap-rest.api.l8.surface-reflectance :as l8-sr]
             [lcmap-rest.api.management :as management]
-            [lcmap-rest.user.auth.nasa :as auth]
+            [lcmap-rest.user.auth.usgs :as auth]
             [lcmap-rest.util :as util]))
 
 (def jobdb-key :lcmap-rest.components.httpd/jobdb)
@@ -39,11 +39,7 @@
 (defroutes auth-routes
   (context (str lcmap-client.lcmap/context "/auth") []
     (POST "/login" [username password :as request]
-      (auth/login username password))
-    (GET "/results" [state code :as request]
-      (auth/check-results state code))
-    (POST "/results" [state code :as request]
-      (auth/check-results state code))))
+      (auth/login username password))))
 
 ;;; Sample Science Model ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
