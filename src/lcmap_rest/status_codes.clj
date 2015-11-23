@@ -5,9 +5,11 @@
 ;; 2xx
 (def ok 200)
 (def pending 202)
+
 ;; 3xx
 (def pending-link 307)
 (def permanant-link 308)
+
 ;; 4xx
 (def unauthorized 401)
 (def forbidden 403)
