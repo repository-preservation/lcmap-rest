@@ -8,6 +8,8 @@
            [java.math.BigInteger]))
 
 (def accept-regex (re-pattern #"([^;]+)\s*(?:;q=([0-9+\.]+))?\s*(;.+)*"))
+(def accept-version-regex
+  (re-pattern #"application/vnd\.(usgs\.lcmap.)(v(\d(\.\d)?))\+([^;]+)"))
 
 (defn parse-accept [string]
   "Parse a single accept string into a map"
@@ -16,8 +18,6 @@
     {:media-range mr
      :quality  (java.lang.Double. (or q "1"))
      :accept-extension ae}))
-
-(def accept-version-regex (re-pattern #"application/vnd\.(usgs\.lcmap.)(v(\d(\.\d)?))\+([^;]+)"))
 
 (defn parse-accept-version [string]
   ;;(log/info (str "Parsing: " string))
