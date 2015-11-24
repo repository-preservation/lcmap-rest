@@ -60,7 +60,11 @@
          :email (:email user-data)
          :token token}))))
 
-;;; Login exception handling
+(defn logout [token db-conn]
+  ;; XXX delete the records for the user session/token
+  )
+
+;;; Login exception handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (with-handler! #'login
   java.net.ConnectException
