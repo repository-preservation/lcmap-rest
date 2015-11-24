@@ -32,7 +32,7 @@
 
 (defn do-bad-token []
   ;; XXX find out what the HTTP response is for a bad/expired token
-  (ring/response {}))
+  (ring/status (ring/response nil) 403))
 
 (defn do-good-token []
   (ring/response {:data {:affiliation "U.S. Federal Government"
@@ -71,4 +71,3 @@
   [& args]
   (log/info "Starting Compojure server ...")
   (httpkit/run-server #'app {:port 8888}))
-

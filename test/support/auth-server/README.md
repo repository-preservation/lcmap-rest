@@ -74,8 +74,8 @@ curl -X GET -H "X-AuthToken: 3efc6475b5034309af00549a77b7a6e3" \
 Test user data with bad token:
 
 ```bash
-curl -X GET -H "X-AuthToken: abcdef123456" http://localhost:8888/api/me
+curl -v -X GET -H "X-AuthToken: abcdef123456" http://localhost:8888/api/me
 ```
-```json
-TBD
-```
+
+There will be no body response from that call, just a ``403 Forbidden`` HTTP
+status in the response.
