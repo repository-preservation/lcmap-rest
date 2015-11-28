@@ -2,6 +2,7 @@
   (:require [clojure.tools.logging :as log]
             [clojure.core.match :refer [match]]
             [ring.util.response :as ring]
+            [lcmap-client.sample.job]
             [lcmap-client.sample.model]
             [lcmap-rest.job.db :as db]
             [lcmap-rest.job.sample-runner :as sample-runner]
@@ -15,7 +16,7 @@
 (defn get-result-path
   [result-id]
   (format "%s/%s"
-          lcmap-client.sample.model/context
+          lcmap-client.sample.job/context
           result-id))
 
 (defn get-resources [request]
@@ -93,6 +94,6 @@
     (ring/status
       (ring/response
         {:result
-          {:link (get-result-path job-id)}})
+          {:link {:href (get-result-path job-id)}}})
       status/pending-link)))
 
