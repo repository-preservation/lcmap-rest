@@ -15,6 +15,7 @@
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [compojure.route :as route]
+            [lcmap-client.auth]
             [lcmap-client.core]
             [lcmap-client.ccdc]
             [lcmap-client.ccdc.job]
@@ -37,9 +38,13 @@
 ;;; Authentication Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes auth-routes
-  (context (str lcmap-client.lcmap/context "/auth") []
+  (context lcmap-client.auth/context []
     (POST "/login" [username password :as request]
-      (auth/login username password))))
+      (auth/login username password))
+    ;; XXX once we've got user data being saved in the db, we need to come
+    ;; back to this and add a logout function which destroys the ephemeral
+    ;; user data (such as token association)
+    ))
 
 ;;; Sample Science Model ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
