@@ -1,4 +1,4 @@
-(ns lcmap-rest.user.auth.nasa
+(ns lcmap-rest.auth.nasa
   (:require [clojure.tools.logging :as log]
             [ring.util.response :as ring]
             [clj-http.client :as http]

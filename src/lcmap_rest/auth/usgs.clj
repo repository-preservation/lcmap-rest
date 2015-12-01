@@ -1,9 +1,7 @@
-(ns lcmap-rest.user.auth.usgs
+(ns lcmap-rest.auth.usgs
   (:require [clojure.string :as string]
             [clojure.tools.logging :as log]
             [slingshot.slingshot :refer [throw+]]
-            [dire.core :refer [with-handler!]]
-            [ring.util.response :as ring]
             [clj-http.client :as http]
             [lcmap-rest.exceptions :as exceptions]
             [lcmap-rest.status-codes :as status]
@@ -40,7 +38,7 @@
 
 (defn check-status [ers-status errors]
   (if (util/in? [auth-error input-error generic-error] ers-status)
-      (throw (exceptions/auth-error (string/join "; " errors)))))
+      (throw+ (exceptions/auth-error (string/join "; " errors)))))
 
 (defn login [username password]
   (let [results (post-auth username password)
@@ -53,46 +51,13 @@
                token)
     (let [user-data (get-user-data token)]
       ;; XXX save user data in db
-      (ring/response
-        {:user-id (:contact_id user-data)
-         :username (:username user-data)
-         :roles (:roles user-data)
-         :email (:email user-data)
-         :token token}))))
+      {:user-id (:contact_id user-data)
+       :username (:username user-data)
+       :roles (:roles user-data)
+       :email (:email user-data)
+       :token token}))))
 
-(defn logout [token db-conn]
+(defn logout [db-conn token]
   ;; XXX delete the records for the user session/token
   )
 
-;;; Login exception handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(with-handler! #'login
-  java.net.ConnectException
-  (fn [e & args]
-    (log/error "Cannot connect to remote server")))
-
-;; If we want to use our own exceptions, we can catch those in the following
-;; manner:
-(with-handler! #'login
-  [:type 'Auth-Error]
-  (fn [e & args]
-    (log/error e)
-    ;; XXX we need to figure out the best place to put the code that
-    ;; sends ring responses ... probably in lcmap-rest.api someplace
-    (ring/response {:result nil :errors e})))
-
-;; HTTP error status codes returned as exceptions from clj-http
-(with-handler! #'login
-  [:status status/server-error]
-  (fn [e & args]
-    (log/error "Authentication server error")))
-
-(with-handler! #'login
-  [:status status/forbidden]
-  (fn [e & args]
-    (log/error "Bad username or password")))
-
-(with-handler! #'login
-  [:status status/no-resource]
-  (fn [e & args]
-    (log/error "Authentication resource not found")))
