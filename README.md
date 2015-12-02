@@ -9,6 +9,7 @@ considered a work-in-progress.
 * [Usage](#usage-)
   * [Versioned Service API](#versioned-service-api-)
   * [Sample Model](#sample-model-)
+* [Structure](#structure-)
 * [Development](#development-)
 * [Deployment](#deployment-)
   * [Testing & Staging](#testing--staging-)
@@ -34,8 +35,11 @@ The LCMAP service version is selected via an ``Accept`` header, as demonstrated
 with the following:
 
 ```bash
-$ curl -H "Accept: application/vnd.usgs.lcmap.v0.0+json" \
-    http://localhost:8080/api/L1/T/Landsat/8/SurfaceReflectance
+$ curl -v -X POST \
+    -H "Accept: application/vnd.usgs.lcmap.v0.0+json" \
+    -d "username=alice" \
+    -d "password=secret" \
+    http://localhost:8080/api/auth/login
 ```
 
 
@@ -47,8 +51,44 @@ To kick off a new job, you can run something like the following:
 ```bash
 curl -v -X POST \
   -H "Accept: application/vnd.usgs.lcmap.v0.0+json" \
-  'http://localhost:8080/api/L3/sample/model?seconds=15&year=2016'
+  -H "X-AuthToken: 3efc6475b5034309af00549a77b7a6e3" \
+  -d "seconds=15" \
+  -d "year=2016" \
+  http://localhost:8080/api/models/sample/os-process
 ```
+
+
+## Structure [&#x219F;](#structure)
+
+The codebase for lcmap-rest is structured along the following lines:
+
+* ``lcmap-rest.api`` - This contains all the code that actually returns HTTP
+  response data. This is also where all the service routes are defined. Actual
+  "business logic" is in the rest of the codebase. If you find yourself adding
+  new features with more than just Ring repoonse and status calls, then you
+  need to reorganize that logic someplace other than ``lcmap-rest.api``. Under
+  the ``lcmap-rest.api`` namespace we have the following:
+    * ``compatibility`` - supports alternate APIs, e.g., WMTS
+    * ``data`` - resources for querying stored data
+    * ``jobs`` - resources for submitting, checking, and updating jobs
+    * ``models`` - model execution resources
+    * ``notifications`` - subscribtion and notification resources
+    * ``operations`` - resources for chaining REST calls in a manner analgous
+      to that used in functional programming languages (composition, map,
+      reduce, etc.)
+    * ``users`` - resources for user data
+* ``lcmap-rest.auth`` - Logic for logging in and out of the LCMAP system
+* ``lcmap-rest.components`` - This is where all major parts of the system are
+  defined so that they may be easily started and stopped in the correct order.
+  Example components are application configuration, logging, database
+  connections, event services, and the REST services HTTP daemon.
+* ``lcmap-rest.dev`` - The default module for development mode; loaded
+  automatically when one executes ``lein repl``
+* ``lcmap-rest.exceptions`` - Custom LCMAP exceptions
+* ``lcmap-rest.logger`` - Logging support setup
+* ``lcmap-rest.status-codes`` - Definiiosn of variosu status codes used in
+  LCMAP
+* ``lcmap-rest.util`` - Utility functions
 
 
 ## Development [&#x219F;](#contents)
