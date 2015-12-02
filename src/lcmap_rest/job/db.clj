@@ -1,5 +1,6 @@
 (ns lcmap-rest.job.db
   (:require [clojure.tools.logging :as log]
+            [clojure.core.match :refer [match]]
             [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :as query]
@@ -36,3 +37,12 @@
                     {:status new-status}
                     (query/where [[= :job_id job-id]])))
 
+
+(defn get-job-result [db job-id result-table status-func]
+  (match [(first @(result? (:conn db) result-table job-id))]
+    [[]]
+      (status-func db job-id)
+    [nil]
+      (status-func db job-id)
+    [result]
+      result))

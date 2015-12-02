@@ -6,11 +6,16 @@
             [com.stuartsierra.component :as component]
             [org.httpkit.server :as httpkit]))
 
+;; We should keep these definitions here so that component interdependencies
+;; are kept to a minimum.
+(def jobdb-key ::jobdb)
+(def eventd-key ::eventd)
+
 (defn inject-app-jobdb [handler jobdb-component eventd-component]
   (fn [request]
     (handler (-> request
-                 (assoc ::jobdb jobdb-component)
-                 (assoc ::eventd eventd-component)))))
+                 (assoc jobdb-key jobdb-component)
+                 (assoc eventd-key eventd-component)))))
 
 (defrecord HTTPServer [ring-handler]
   component/Lifecycle

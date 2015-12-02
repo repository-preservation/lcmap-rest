@@ -3,6 +3,7 @@
   :url "https://github.com/USGS-EROS/lcmap-rest"
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/core.match "0.3.0-alpha4"]
+                 [org.clojure/data.json "0.2.6"]
                  [org.clojure/data.xml "0.0.8"]
                  [org.clojure/core.memoize "0.5.8"]
                  ;; Componentization
@@ -36,16 +37,18 @@
                  [org.xerial.snappy/snappy-java "1.1.2"]
                  ;; XXX once lcmap-client-clj is released and is no longer
                  ;; being used from the local checkouts directory, we will
-                 ;; uncomment the dependancy below and remove the its
+                 ;; uncomment the dependancy below and remove the temporary
                  ;; dependancies below.
-                 ;;[gov.usgs/lcmap-client-clj "0.1.0-dev"]
+                 ;;[gov.usgs.eros/lcmap-client-clj "0.1.0-dev"]
                  ;; XXX note that we may still need to explicitly include the
                  ;; Apache Java HTTP client, since the version used by the LCMAP
                  ;; client is more recent than that used by Chas Emerick's
                  ;; 'friend' library (the conflict causes a compile error which
                  ;; is worked around by explicitly including Apache Java HTTP
                  ;; client library).
+                 ;; XXX temp dependencies:
                  [org.apache.httpcomponents/httpclient "4.5"]
+                 [clojure-ini "0.0.2"]
                  [clj-http "2.0.0"]
                  ;; Dev and project metadata
                  [leiningen-core "2.5.3"]]
@@ -74,7 +77,9 @@
         :http {:port 8080
                :ip "127.0.0.1"}
         :log-level :info
-        :dependencies [[org.clojure/tools.namespace "0.2.11"]]}
+        :dependencies [[org.clojure/tools.namespace "0.2.11"]
+                       [slamhound "1.5.5"]]
+        :aliases {"slamhound" ["run" "-m" "slam.hound"]}}
     ;; configuration for dev environment
     :dev
       {:active-profile "dev"
@@ -85,7 +90,9 @@
         :http {:port 8080
                :ip "127.0.0.1"}
         :log-level :debug
-        :dependencies [[org.clojure/tools.namespace "0.2.11"]]
+        :dependencies [[org.clojure/tools.namespace "0.2.11"]
+                       [slamhound "1.5.5"]]
+        :aliases {"slamhound" ["run" "-m" "slam.hound"]}
         :plugins [[lein-kibit "0.1.2"]]}
     ;; configuration for testing environment
     :testing

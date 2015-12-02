@@ -1,9 +1,14 @@
 (ns lcmap-rest.api.auth
   (:import [java.lang Runtime])
   (:require [clojure.tools.logging :as log]
+            [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
-            [lcmap-rest.auth.usgs :as usgs]))
+            [lcmap-client.auth]
+            [lcmap-rest.auth.usgs :as usgs]
+            [lcmap-rest.status-codes :as status]))
+
+;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; XXX add db-connection as parameter
 (defn login [username password]
@@ -14,7 +19,18 @@
   (ring/response
     (usgs/logout token)))
 
-;;; Login exception handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defroutes routes
+  (context lcmap-client.auth/context []
+    (POST "/login" [username password :as request]
+      (login username password))
+    ;; XXX once we've got user data being saved in the db, we need to come
+    ;; back to this and add a logout function which destroys the ephemeral
+    ;; user data (such as token association)
+    ))
+
+;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (with-handler! #'login
   java.net.ConnectException

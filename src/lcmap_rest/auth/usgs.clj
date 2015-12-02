@@ -55,7 +55,7 @@
        :username (:username user-data)
        :roles (:roles user-data)
        :email (:email user-data)
-       :token token}))))
+       :token token})))
 
 (defn logout [db-conn token]
   ;; XXX delete the records for the user session/token

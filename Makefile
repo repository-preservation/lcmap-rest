@@ -20,3 +20,6 @@ standalone: build
 
 standalone-heavy: build
 	java -Xms3072m -Xmx3072m -jar $(STANDALONE)
+
+test-auth-server:
+	@cd test/support/auth-server && lein run
