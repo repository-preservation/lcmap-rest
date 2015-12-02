@@ -85,9 +85,11 @@ The codebase for lcmap-rest is structured along the following lines:
 * ``lcmap-rest.dev`` - The default module for development mode; loaded
   automatically when one executes ``lein repl``
 * ``lcmap-rest.exceptions`` - Custom LCMAP exceptions
+* ``lcmap-rest.job`` - Job tracking business logic
 * ``lcmap-rest.logger`` - Logging support setup
 * ``lcmap-rest.status-codes`` - Definiiosn of variosu status codes used in
   LCMAP
+* ``lcmap-rest.user`` - User management logic and storage functions
 * ``lcmap-rest.util`` - Utility functions
 
 
