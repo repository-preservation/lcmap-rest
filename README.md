@@ -58,7 +58,7 @@ curl -v -X POST \
 ```
 
 
-## Structure [&#x219F;](#structure)
+## Structure [&#x219F;](#contents)
 
 The codebase for lcmap-rest is structured along the following lines:
 
