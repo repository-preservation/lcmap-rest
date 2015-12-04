@@ -13,11 +13,11 @@
 ;;;; for this project that lives in lcmap-rest.*, and not under lcmap-rest.api.
 (ns lcmap-rest.api.routes
   (:require [clojure.tools.logging :as log]
-            [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [compojure.route :as route]
+            [compojure.core :refer [defroutes]]
             [lcmap-rest.api.auth]
             [lcmap-rest.api.compatibility]
             [lcmap-rest.api.data]
+            [lcmap-rest.api.four-oh-four]
             [lcmap-rest.api.jobs]
             [lcmap-rest.api.models]
             [lcmap-rest.api.system]
@@ -36,19 +36,19 @@
   ;;lcmap-rest.api.operations/routes
   ;;lcmap-rest.api.users/routes
   lcmap-rest.api.system/routes
-  (route/not-found "Resource not found"))
+  lcmap-rest.api.four-oh-four/routes)
 
 (defroutes v1
   ;; LCMAP Core Functionality
   ;; Support functionality
   lcmap-rest.api.auth/routes
   lcmap-rest.api.system/routes
-  (route/not-found "Resource not found"))
+  lcmap-rest.api.four-oh-four/routes)
 
 (defroutes v2
   ;; LCMAP Core Functionality
   ;; Support functionality
   lcmap-rest.api.auth/routes
   lcmap-rest.api.system/routes
-  (route/not-found "Resource not found"))
+  lcmap-rest.api.four-oh-four/routes)
 
