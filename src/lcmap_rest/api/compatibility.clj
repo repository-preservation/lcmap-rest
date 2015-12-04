@@ -4,8 +4,8 @@
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
             [lcmap-client.compatibility]
-            [lcmap-rest.api.compatibility.wmts]
-            [lcmap-rest.status-codes :as status]))
+            [lcmap-client.status-codes :as status]
+            [lcmap-rest.api.compatibility.wmts]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

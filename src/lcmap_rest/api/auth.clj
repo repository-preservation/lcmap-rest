@@ -5,8 +5,8 @@
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
             [lcmap-client.auth]
-            [lcmap-rest.auth.usgs :as usgs]
-            [lcmap-rest.status-codes :as status]))
+            [lcmap-client.status-codes :as status]
+            [lcmap-rest.auth.usgs :as usgs]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

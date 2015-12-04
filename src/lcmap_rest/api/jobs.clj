@@ -4,9 +4,9 @@
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
             [lcmap-client.jobs]
+            [lcmap-client.status-codes :as status]
             [lcmap-rest.api.jobs.ccdc]
-            [lcmap-rest.api.jobs.sample-os-process]
-            [lcmap-rest.status-codes :as status]))
+            [lcmap-rest.api.jobs.sample-os-process]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

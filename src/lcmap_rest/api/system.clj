@@ -5,8 +5,8 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
-            [lcmap-client.system]
-            [lcmap-rest.status-codes :as status]))
+            [lcmap-client.status-codes :as status]
+            [lcmap-client.system]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

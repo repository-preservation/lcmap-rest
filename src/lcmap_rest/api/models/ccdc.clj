@@ -3,13 +3,13 @@
             [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap-client.models.ccdc]
+            [lcmap-client.status-codes :as status]
             [lcmap-rest.api.jobs.ccdc :refer [get-result-path
                                               get-job-result
                                               result-table]]
             [lcmap-rest.components.httpd :as httpd]
             [lcmap-rest.job.db :as db]
             [lcmap-rest.job.sample-runner :as sample-runner]
-            [lcmap-rest.status-codes :as status]
             [lcmap-rest.util :as util]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

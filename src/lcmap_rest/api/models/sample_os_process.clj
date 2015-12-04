@@ -7,10 +7,10 @@
                                                            get-job-result
                                                            result-table]]
             [lcmap-client.models.sample-os-process]
+            [lcmap-client.status-codes :as status]
             [lcmap-rest.components.httpd :as httpd]
             [lcmap-rest.job.db :as db]
             [lcmap-rest.job.sample-runner :as sample-runner]
-            [lcmap-rest.status-codes :as status]
             [lcmap-rest.util :as util]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -51,11 +51,11 @@
 
 (defroutes routes
   (context lcmap-client.models.sample-os-process/context []
-    (POST "/" [seconds year :as request]
+    (POST "/" [token delay year :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
       (run-model (httpd/jobdb-key request)
                  (httpd/eventd-key request)
-                 seconds
+                 delay
                  year))
     (GET "/:job-id" [job-id :as request]
       (get-job-result (httpd/jobdb-key request) job-id))))

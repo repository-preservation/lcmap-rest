@@ -7,8 +7,8 @@
             [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :as query]
-            [lcmap-rest.job.db :as db]
-            [lcmap-rest.status-codes :as status])
+            [lcmap-client.status-codes :as status]
+            [lcmap-rest.job.db :as db])
   (:refer-clojure :exclude [promise await bean])
   (:import [co.paralleluniverse.common.util Debug]
            [co.paralleluniverse.actors LocalActor]

@@ -4,8 +4,8 @@
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
             [lcmap-client.data]
-            [lcmap-rest.api.data.surface-reflectance]
-            [lcmap-rest.status-codes :as status]))
+            [lcmap-client.status-codes :as status]
+            [lcmap-rest.api.data.surface-reflectance]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

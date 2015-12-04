@@ -4,9 +4,9 @@
             [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap-client.jobs.ccdc]
+            [lcmap-client.status-codes :as status]
             [lcmap-rest.components.httpd :as httpd]
             [lcmap-rest.job.db :as db]
-            [lcmap-rest.status-codes :as status]
             [lcmap-rest.util :as util]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
