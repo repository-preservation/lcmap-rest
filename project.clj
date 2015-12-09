@@ -75,7 +75,7 @@
             :protocol-version 3
             :keyspace "lcmap"}
         :http {:port 8080
-               :ip "127.0.0.1"}
+               :ip "0.0.0.0"}
         :log-level :info
         :dependencies [[org.clojure/tools.namespace "0.2.11"]
                        [slamhound "1.5.5"]]
@@ -88,7 +88,7 @@
             :protocol-version 3
             :keyspace "lcmap"}
         :http {:port 8080
-               :ip "127.0.0.1"}
+               :ip "0.0.0.0"}
         :log-level :debug
         :dependencies [[org.clojure/tools.namespace "0.2.11"]
                        [slamhound "1.5.5"]]
