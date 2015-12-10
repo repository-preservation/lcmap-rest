@@ -27,8 +27,6 @@
   [{job-id :job-id db-conn :db-conn default-row :default-row service :service
    result-table :result-table func-args :result :as args}]
   (log/debug "Starting job tracking ...")
-  ;; XXX check to see if result already exists
-  ;; (result-exists? ...)
   (if (job-result-exists? db-conn result-table job-id)
     (actors/notify! service
                     (into args {:type :job-result-exists}))
