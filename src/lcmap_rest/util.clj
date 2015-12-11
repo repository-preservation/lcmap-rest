@@ -2,8 +2,10 @@
   (:require [clojure.core.memoize :as memo]
             [clojure.string :as string]
             [clojure.tools.logging :as log]
+            [ring.util.response :as ring]
             [digest]
-            [leiningen.core.project :as lein-prj])
+            [leiningen.core.project :as lein-prj]
+            [lcmap-client.http :as http])
   (:import [java.security.MessageDigest]
            [java.math.BigInteger]))
 
@@ -68,3 +70,10 @@
   elment."
   [seq elm]
   (some #(= elm %) seq))
+
+(defn response [& {:keys [result errors status]
+                   :or {result nil errors [] status 200}
+                   :as args}]
+  (-> (http/response :result result :errors errors :status status)
+      (ring/response)
+      (ring/status status)))

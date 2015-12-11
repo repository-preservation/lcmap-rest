@@ -3,6 +3,7 @@
             [clojure.core.match :refer [match]]
             [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
+            [lcmap-client.http :as http]
             [lcmap-client.jobs.sample-os-process]
             [lcmap-client.status-codes :as status]
             [lcmap-rest.components.httpd :as httpd]
@@ -22,44 +23,54 @@
           result-id))
 
 (defn get-job-resources [request]
-  (ring/status
-    (ring/response "sample job resources tbd")
-    status/ok))
+  (util/response :result "sample job resources tbd"))
+
+(defn -job-status
+  ([result]
+    (apply #'util/response (mapcat identity result)))
+  ([db job-id]
+    (match [(first @(db/job? (:conn db) job-id))]
+      [[]]
+        (util/response :errors ["Job not found."]
+                       :status status/no-resource)
+      [nil]
+        (util/response :errors ["Job not found."]
+                       :status status/no-resource)
+      [({:status (st :guard #'status/pending?)} :as result)]
+        (util/response :result :pending
+                       :status status/pending)
+      [({:status st} :as result)]
+        (util/response :result  (get-result-path job-id)
+                       :status st))))
 
 (defn get-job-status [db job-id]
-  (match [(first @(db/job? (:conn db) job-id))]
-    [[]]
-      (ring/status
-        (ring/response {:error "Job not found." :result nil})
-        status/no-resource)
-    [nil]
-      (ring/status
-        (ring/response {:error "Job not found." :result nil})
-        status/no-resource)
-    [({:status (st :guard #'status/pending?)} :as result)]
-      (ring/status
-        (ring/response {:result :pending :errors []})
-        status/pending)
-    [({:status st} :as result)]
-      (ring/status
-        (ring/response {:result (get-result-path (:conn db) job-id) :errors []})
-        st)))
+  (let [result (-job-status db job-id)]
+    (-> result
+      (ring/response)
+      (ring/status (:status result)))))
+
+;; XXX
+(defn parse-job [arg]
+  (log/debug "Parsing job ...")
+  (log/debug "Got args:" arg)
+  arg)
 
 (defn get-job-result
   ([db-conn job-id]
-    (get-job-result db-conn job-id result-table #'get-job-status))
+    (get-job-result db-conn job-id result-table #'-job-status))
   ([db-conn job-id table func]
     (-> (db/get-job-result db-conn job-id table func)
+        ;; XXX
+        (parse-job)
         (ring/response)
         (ring/status status/ok))))
 
 (defn update-job [db job-id]
-  (ring/status
-    (ring/response "sample job update tbd")
-    status/pending))
+  (util/response :result "sample job update tbd"
+                 :status status/pending))
 
 (defn get-info [db job-id]
-  (ring/response "sample job info tbd"))
+  (util/response :result "sample job info tbd"))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
