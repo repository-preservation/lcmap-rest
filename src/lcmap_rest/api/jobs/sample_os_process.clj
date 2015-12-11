@@ -30,19 +30,19 @@
   (match [(first @(db/job? (:conn db) job-id))]
     [[]]
       (ring/status
-        (ring/response {:error "Job not found."})
+        (ring/response {:error "Job not found." :result nil})
         status/no-resource)
     [nil]
       (ring/status
-        (ring/response {:error "Job not found."})
+        (ring/response {:error "Job not found." :result nil})
         status/no-resource)
     [({:status (st :guard #'status/pending?)} :as result)]
       (ring/status
-        (ring/response {:result :pending})
+        (ring/response {:result :pending :errors []})
         status/pending)
     [({:status st} :as result)]
       (ring/status
-        (ring/response {:result (get-result-path (:conn db) job-id)})
+        (ring/response {:result (get-result-path (:conn db) job-id) :errors []})
         st)))
 
 (defn get-job-result

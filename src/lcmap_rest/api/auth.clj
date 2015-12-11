@@ -13,7 +13,8 @@
 ;; XXX add db-connection as parameter
 (defn login [username password]
   (ring/response
-    (usgs/login username password)))
+    {:result (usgs/login username password)
+      :errors []}))
 
 (defn logout [db-conn token]
   (ring/response
