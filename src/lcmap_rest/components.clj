@@ -69,3 +69,16 @@
             :jobdb
             :eventd
             :httpd])))
+
+(defn stop [system component-key]
+  (let [updated-component (component/stop (component-key system))]
+    (assoc system component-key updated-component)))
+
+(defn start [system component-key]
+  (let [updated-component (component/start (component-key system))]
+    (assoc system component-key updated-component)))
+
+(defn restart [system component-key]
+  (-> system
+      (stop)
+      (start)))
