@@ -4,9 +4,9 @@
             [lcmap-rest.job.tracker :as jt]))
 
 (defn exec-docker-run [[job-id docker-tag docker-args]]
-  (log/debugf "\n\nRunning job %s (waiting for %s seconds) ...\n"
+  (log/debugf "\n\nRunning job %s (executing docker tag %s) ...\n"
                      job-id
-                     sleep-time)
+                     docker-tag)
   (:out @(exec/sh ["docker run -e LCMAP_MODEL_ARGS=" docker-args " -t " docker-tag])))
 
 (defn run-model [conn eventd job-id default-row result-table docker-tag docker-args]
