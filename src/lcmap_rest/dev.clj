@@ -37,24 +37,36 @@
       (alter-var-root #'state (fn [_] :uninitialized))))
   state)
 
-(defn start []
-  (if (nil? system)
-    (init))
-  (if (util/in? [:started :running] state)
-    (log/error "System has already been started.")
-    (do
-      (alter-var-root #'system component/start)
-      (alter-var-root #'state (fn [_] :started))))
-  state)
+(defn start
+  ([]
+    (if (nil? system)
+      (init))
+    (if (util/in? [:started :running] state)
+      (log/error "System has already been started.")
+      (do
+        (alter-var-root #'system component/start)
+        (alter-var-root #'state (fn [_] :started))))
+    state)
+  ([component-key]
+    (alter-var-root #'system
+                    (constantly (components/start system component-key)))))
 
-(defn stop []
-  (if (= state :stopped)
-    (log/error "System already stopped.")
-    (do
-      (alter-var-root #'system
-        (fn [s] (when s (component/stop s))))
-      (alter-var-root #'state (fn [_] :stopped))))
-  state)
+(defn stop
+  ([]
+    (if (= state :stopped)
+      (log/error "System already stopped.")
+      (do
+        (alter-var-root #'system
+          (fn [s] (when s (component/stop s))))
+        (alter-var-root #'state (fn [_] :stopped))))
+    state)
+  ([component-key]
+    (alter-var-root #'system
+                    (constantly (components/stop system component-key)))))
+
+(defn restart [component-key]
+  (alter-var-root #'system
+                  (constantly (components/restart system component-key))))
 
 (defn run []
   (if (= state :running)

@@ -45,4 +45,4 @@
     [nil]
       (status-func db job-id)
     [result]
-      result))
+      (status-func result)))
