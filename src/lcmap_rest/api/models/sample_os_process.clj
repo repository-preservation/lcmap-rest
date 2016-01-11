@@ -25,7 +25,7 @@
   ;; return status code 200 with body that has link to where sample result will
   ;; be
   (log/debugf "run-model got args: [%s %s]" seconds year)
-  (let [job-id (util/get-args-hash "sample model" seconds year)
+  (let [job-id (util/get-args-hash science-model-name seconds year)
         default-row {:science_model_name science-model-name
                      :result_keyspace result-keyspace
                      :result_table result-table

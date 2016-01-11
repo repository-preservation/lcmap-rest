@@ -12,6 +12,11 @@
             [lcmap-rest.job.sample-runner :as sample-runner]
             [lcmap-rest.util :as util]))
 
+;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def science-model-name "ccdc model")
+(def result-keyspace "lcmap")
+
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn run-model [db eventd arg1 arg2]
