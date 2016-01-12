@@ -21,7 +21,7 @@
 
 (defn run-model [db eventd arg1 arg2]
   (log/debugf "run-model got args: [%s %s]" arg1 arg2)
-  (let [job-id (util/get-args-hash "ccdc" arg1 arg2)]
+  (let [job-id (util/get-args-hash "ccdc" :arg1 arg1 :arg2 arg2)]
     (str "model run (job id: " job-id ") tbd")))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
