@@ -26,7 +26,7 @@
   (let [string (or string "")
         [_ vend str-vers vers _ ct] (re-find accept-version-regex string)]
     {:vendor (or vend "NoVendor")
-     :string-version (or str-vers "v0.0")
+     :string-version (or str-vers "v0.0") ; XXX put the default version somewhere more visible -- project.clj?
      :version  (java.lang.Double. (or vers "1"))
      :content-type (or ct "")}))
 
