@@ -75,7 +75,7 @@
             :protocol-version 3
             :keyspace "lcmap"}
         :http {:port 1077     ; port number obtained via this bit of geekery:
-               :ip "0.0.0.0"} ; (reduce + (map int (into [] "USGS-EROS LCMAP")))
+               :ip "0.0.0.0"} ;   (reduce + (map int "USGS-EROS LCMAP"))
         :log-level :info
         :dependencies [[org.clojure/tools.namespace "0.2.11"]
                        [slamhound "1.5.5"]]
