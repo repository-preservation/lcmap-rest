@@ -54,6 +54,7 @@
                  [leiningen-core "2.5.3"]]
   :plugins [[lein-ring "0.9.7"]
             [lein-pprint "1.1.1"]]
+  :source-paths ["src" "test/support/auth-server/src"]
   :java-agents [[co.paralleluniverse/quasar-core "0.7.3"]]
   :jvm-opts ["-Dco.paralleluniverse.fibers.detectRunawayFibers=false"]
   :repl-options {:init-ns lcmap-rest.dev}
