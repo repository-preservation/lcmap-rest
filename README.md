@@ -39,7 +39,7 @@ $ curl -v -X POST \
     -H "Accept: application/vnd.usgs.lcmap.v0.0+json" \
     -d "username=alice" \
     -d "password=secret" \
-    http://localhost:8080/api/auth/login
+    http://localhost:1077/api/auth/login
 ```
 
 
@@ -54,7 +54,7 @@ curl -v -X POST \
   -H "X-AuthToken: 3efc6475b5034309af00549a77b7a6e3" \
   -d "seconds=15" \
   -d "year=2016" \
-  http://localhost:8080/api/models/sample/os-process
+  http://localhost:1077/api/models/sample/os-process
 ```
 
 

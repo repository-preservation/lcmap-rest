@@ -74,8 +74,8 @@
             :port 9042
             :protocol-version 3
             :keyspace "lcmap"}
-        :http {:port 8080
-               :ip "0.0.0.0"}
+        :http {:port 1077     ; port number obtained via this bit of geekery:
+               :ip "0.0.0.0"} ; (reduce + (map int (into [] "USGS-EROS LCMAP")))
         :log-level :info
         :dependencies [[org.clojure/tools.namespace "0.2.11"]
                        [slamhound "1.5.5"]]
@@ -87,7 +87,7 @@
             :port 9042
             :protocol-version 3
             :keyspace "lcmap"}
-        :http {:port 8080
+        :http {:port 1077
                :ip "0.0.0.0"}
         :log-level :debug
         :dependencies [[org.clojure/tools.namespace "0.2.11"]
