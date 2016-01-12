@@ -15,8 +15,11 @@
                  [ring/ring-json "0.4.0"]
                  [ring/ring-defaults "0.1.5"]
                  [ring.middleware.logger "0.5.0"]
-                 [com.cemerick/friend "0.2.1"]]
+                 [org.apache.httpcomponents/httpclient "4.5"]
+                 [com.cemerick/friend "0.2.1"]
+                 [leiningen-core "2.5.3"]]
   :plugins [[lein-ring "0.9.7"]]
   :main ^:skip-aot auth-server.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}
+             :dev {:port 8888}})

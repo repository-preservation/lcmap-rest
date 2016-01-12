@@ -6,7 +6,8 @@
             [ring.util.response :as ring]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
-            [ring.middleware.logger :as logger])
+            [ring.middleware.logger :as logger]
+            [leiningen.core.project :as lein-prj])
   (:gen-class))
 
 (def good-token "3efc6475b5034309af00549a77b7a6e3")
@@ -69,5 +70,7 @@
 
 (defn -main
   [& args]
-  (log/info "Starting Compojure server ...")
-  (httpkit/run-server #'app {:port 8888}))
+  (let [cfg (lein-prj/read)
+        port (:port cfg)]
+    (log/infof "Starting test auth server on port %s ..." port)
+    (httpkit/run-server #'app {:port port})))
