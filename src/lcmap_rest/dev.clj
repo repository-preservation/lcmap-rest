@@ -15,6 +15,7 @@
             [lcmap-rest.app :as app]
             [lcmap-rest.components :as components]
             [lcmap-rest.exceptions :as exceptions]
+            [lcmap-rest.tile.db :as tile-db]
             [lcmap-rest.util :as util]))
 
 (def state :stopped)

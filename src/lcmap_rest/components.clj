@@ -52,6 +52,10 @@
              (db/new-job-client)
              [:cfg
               :logger])
+    :tiledb (component/using
+             (db/new-tile-client)
+              [:cfg
+               :logger])
     :eventd (component/using
               (eventd/new-event-server)
               [:cfg
