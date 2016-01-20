@@ -13,3 +13,21 @@
 (defn find-tiles [spec x y acquired system]
   (let [results []]
     results))
+
+(defn pixel-xform [spec x y]
+  "Transform the (x,y) coordinate in the projection coordinate system (defined
+  in the tile spec) to a raster grid coorindate."
+  ;; XXX data type
+  ;; XXX data_shape
+  ;;
+  )
+
+(defn extract-pixel [spec x y tile]
+  ;; XXX byte-order check
+  ;; XXX GDAL data type
+  ;; XXX data units
+  )
+
+(defn find-rod [spec x y acquired system]
+  (map #(extract-pixel spec x y %)
+       (find-tiles spec x y acquired system)))
