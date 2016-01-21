@@ -14,6 +14,7 @@
             [clojure.walk :refer [macroexpand-all]]
             [com.stuartsierra.component :as component]
             ;; data
+            [clojure.data.json :as json]
             [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :as query]
@@ -21,6 +22,7 @@
             [lcmap-rest.app :as app]
             [lcmap-rest.components :as components]
             [lcmap-rest.exceptions :as exceptions]
+            [lcmap-rest.serializer :as serial]
             [lcmap-rest.tile.db :as tile-db]
             [lcmap-rest.util :as util]))
 
@@ -103,5 +105,7 @@
   (deinit)
   (util/get-config :force-reload)
   (refresh :after 'lcmap-rest.dev/run))
+
+;;; Aliases
 
 (def reload #'reset)
