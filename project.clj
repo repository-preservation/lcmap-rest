@@ -23,11 +23,10 @@
                  [ring/ring-json "0.4.0"]
                  [ring/ring-defaults "0.1.5"]
                  ;; Authentication and authorization
-                 [com.uswitch/clj-soap "0.2.3"] ; USGS ERS is a SOAP service
                  [com.cemerick/friend "0.2.1"]
                  ;; Job Tracker
                  [org.clojure/core.memoize "0.5.6"] ; These two are not used directly, but
-                 [org.clojure/core.cache "0.6.4"]   ; wihtout them an exception is raised
+                 [org.clojure/core.cache "0.6.4"]   ; without them an exception is raised
                  [co.paralleluniverse/pulsar "0.7.3"]
                  [org.clojars.hozumi/clj-commons-exec "1.2.0"]
                  [digest "1.4.4"]
