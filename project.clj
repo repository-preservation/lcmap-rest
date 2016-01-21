@@ -3,6 +3,7 @@
   :url "https://github.com/USGS-EROS/lcmap-rest"
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/core.match "0.3.0-alpha4"]
+                 [org.clojure/data.codec "0.1.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/data.xml "0.0.8"]
                  [org.clojure/core.memoize "0.5.8"]
@@ -49,7 +50,7 @@
                  [org.apache.httpcomponents/httpclient "4.5"]
                  [clojure-ini "0.0.2"]
                  [clj-http "2.0.0"]
-                 ;; Dates/time
+                 ;; Data types, encoding, etc.
                  [clj-time "0.11.0"]
                  ;; Dev and project metadata
                  [leiningen-core "2.5.3"]]
