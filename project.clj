@@ -49,6 +49,8 @@
                  [org.apache.httpcomponents/httpclient "4.5"]
                  [clojure-ini "0.0.2"]
                  [clj-http "2.0.0"]
+                 ;; Dates/time
+                 [clj-time "0.11.0"]
                  ;; Dev and project metadata
                  [leiningen-core "2.5.3"]]
   :plugins [[lein-ring "0.9.7"]
