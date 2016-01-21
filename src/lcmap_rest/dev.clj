@@ -11,7 +11,13 @@
 (ns lcmap-rest.dev
   (:require [clojure.tools.logging :as log]
             [clojure.tools.namespace.repl :as repl]
+            [clojure.walk :refer [macroexpand-all]]
             [com.stuartsierra.component :as component]
+            ;; data
+            [clojurewerkz.cassaforte.client :as cc]
+            [clojurewerkz.cassaforte.cql :as cql]
+            [clojurewerkz.cassaforte.query :as query]
+            ;; api
             [lcmap-rest.app :as app]
             [lcmap-rest.components :as components]
             [lcmap-rest.exceptions :as exceptions]
