@@ -18,6 +18,8 @@
             [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :as query]
+            ;; data types
+            [clj-time.core :as time]
             ;; api
             [lcmap-rest.app :as app]
             [lcmap-rest.components :as components]
