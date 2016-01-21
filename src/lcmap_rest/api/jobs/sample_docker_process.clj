@@ -75,7 +75,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.jobs.sample-os-process/context []
+  (context lcmap-client.jobs.sample-docker-process/context []
     (GET "/" request
       (get-job-resources (:uri request)))
     (GET "/:job-id" [job-id :as request]
