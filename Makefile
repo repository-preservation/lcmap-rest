@@ -35,7 +35,7 @@ pre-docs:
 clojure-docs:
 	@lein codox
 
-clean-docs:
+clean-docs: clean
 	@rm -rf $(CURRENT)
 
 setup-temp-repo: $(DOCS_GIT_HACK)
@@ -55,9 +55,8 @@ publish-docs: prod-docs setup-temp-repo
 	@cd $(DOCS_PROD_DIR) && git push -f $(REPO) master:gh-pages
 	@make teardown-temp-repo
 
-
 clean:
-	rm -rf target
+	@rm -rf target
 
 build: clean
 	@lein compile

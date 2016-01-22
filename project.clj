@@ -65,7 +65,8 @@
   :repl-options {:init-ns lcmap-rest.dev}
   :main lcmap-rest.app
   :target-path "target/%s"
-  :codox {:output-path "docs/master/current"
+  :codox {:namespaces [#"^lcmap-rest\."]
+          :output-path "docs/master/current"
           :doc-paths ["docs/source"]
           :metadata {:doc/format :markdown}}
   ;; List the namespaces whose log levels we want to control; note that if we

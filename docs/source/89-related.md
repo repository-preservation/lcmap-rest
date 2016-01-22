@@ -20,7 +20,7 @@
 ## USGS
 
 * [Earthexplorer](http://earthexplorer.usgs.gov/)
-* [ESPA](http://landsat.usgs.gov/CDR_ECV.php) ([ordering][https://espa.cr.usgs.gov/])
+* [ESPA](http://landsat.usgs.gov/CDR_ECV.php) ([ordering](https://espa.cr.usgs.gov/))
 
 
 ## NASA
