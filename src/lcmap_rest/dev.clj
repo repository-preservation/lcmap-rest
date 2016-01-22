@@ -19,7 +19,9 @@
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :as query]
             ;; data types
-            [clj-time.core :as time]
+            [byte-streams]
+            [clj-time.coerce :as time]
+            [clojure.data.codec.base64 :as b64]
             ;; api
             [lcmap-rest.app :as app]
             [lcmap-rest.components :as components]
