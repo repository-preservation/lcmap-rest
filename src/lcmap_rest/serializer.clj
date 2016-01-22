@@ -39,5 +39,5 @@
     :key-fn keyword
     :value-fn decode-type))
 
-(def edn->json [edn]
+(defn edn->json [edn]
   (json/write-str edn))
