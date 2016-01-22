@@ -51,6 +51,7 @@
                  [clojure-ini "0.0.2"]
                  [clj-http "2.0.0"]
                  ;; Data types, encoding, etc.
+                 [byte-streams "0.2.0"]
                  [clj-time "0.11.0"]
                  ;; Dev and project metadata
                  [leiningen-core "2.5.3"]]
