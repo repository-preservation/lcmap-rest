@@ -56,13 +56,18 @@
                  ;; Dev and project metadata
                  [leiningen-core "2.5.3"]]
   :plugins [[lein-ring "0.9.7"]
-            [lein-pprint "1.1.1"]]
+            [lein-pprint "1.1.1"]
+            [lein-codox "0.9.1"]
+            [lein-simpleton "1.3.0"]]
   :source-paths ["src" "test/support/auth-server/src"]
   :java-agents [[co.paralleluniverse/quasar-core "0.7.3"]]
   :jvm-opts ["-Dco.paralleluniverse.fibers.detectRunawayFibers=false"]
   :repl-options {:init-ns lcmap-rest.dev}
   :main lcmap-rest.app
   :target-path "target/%s"
+  :codox {:output-path "docs/master/current"
+          :doc-paths ["docs/source"]
+          :metadata {:doc/format :markdown}}
   ;; List the namespaces whose log levels we want to control; note that if we
   ;; add more dependencies that are chatty in the logs, we'll want to add them
   ;; here.

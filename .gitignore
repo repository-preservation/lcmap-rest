@@ -3,3 +3,4 @@ checkouts
 .lein*
 .nrepl*
 *.*~
+docs/master/current
