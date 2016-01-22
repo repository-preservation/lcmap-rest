@@ -1,17 +1,19 @@
-;;;; These are the routes defined for the LCMAP REST service.
-;;;;
-;;;; Note that all routes live under the /api path. This is to provide a clean
-;;;; delineation for deployment: the website may be hosted at
-;;;; http://lcmap.eros.usgs.gov and the only thing the usgs.gov site admins
-;;;; would need to do is ensure that http://lcmap.eros.usgs.gov/api is
-;;;; forwarded to wherever the LCMAP /api endpoint is running.
-;;;;
-;;;; This placement of all REST resources under the /api path should not be
-;;;; confused with the organization of the codebase. In particular, the
-;;;; lcmap-rest.api namespace holds code that is specific to the REST resources
-;;;; available at the /api endpoint, however there is a lot of supporting code
-;;;; for this project that lives in lcmap-rest.*, and not under lcmap-rest.api.
-(ns lcmap-rest.api.routes
+(ns ^{:doc
+  "These are the routes defined for the LCMAP REST service.
+
+  Note that all routes live under the ``/api`` path. This is to provide a clean
+  delineation for deployment: the website may be hosted at
+  http://anyhost.usgs.gov and the only thing the usgs.gov site admins
+  would need to do is ensure that http://anyhost.usgs.gov/api is
+  forwarded to wherever the LCMAP ``/api`` endpoint is running.
+
+  This placement of all REST resources under the ``/api`` path should *not*
+  be confused with the organization of the codebase. In particular, the
+  ``lcmap-rest.api`` namespace only holds the code that is specific to the REST
+  resources available at the ``/api`` service endpoint. There is a lot
+  of supporting code for this project that lives in ``lcmap-rest.*``, not
+  under ``lcmap-rest.api``."}
+  lcmap-rest.api.routes
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [defroutes]]
             [lcmap-rest.api.auth]
