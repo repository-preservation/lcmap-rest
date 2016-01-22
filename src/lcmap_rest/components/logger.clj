@@ -1,12 +1,12 @@
 (ns ^{:doc
   "Logger LCMAP REST Service system component
 
-  Note that there is additional configuration in resources/logback.xml. If
-  we can figure out how to do this in code, it would be nice to have that
-  done below with the rest of the logging setup.
+  Note that there are additional configuration settings in
+  ``resources/logback.xml``. If we can figure out how to do this in code,
+  it would be nice to have that done below with the rest of the logging setup.
 
   For more information, see the module-level code comments in
-  lcmap-rest.components."}
+  ``lcmap-rest.components``."}
   lcmap-rest.components.logger
   (:require [clojure.tools.logging :as log]
             [clojure.tools.logging.impl :as log-impl]

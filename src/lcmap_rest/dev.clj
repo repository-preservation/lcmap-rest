@@ -4,9 +4,9 @@
   This namespace is particularly useful when doing active development on the
   lcmap-rest system, as it allows you to easily:
 
-   * start and stop all the system components
-   * make filesystem changes
-   * make code or configuration changes
+   * **start** and **stop** all the system components
+   * make **filesystem changes**
+   * make **code** or **configuration changes**
 
   and then reload with all the latest changes -- without having to restart
   the JVM. This namespace can be leveraged to significantly improve

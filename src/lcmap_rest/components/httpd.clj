@@ -2,7 +2,7 @@
   "HTTP LCMAP REST Service system component
 
   For more information, see the module-level code comments in
-  lcmap-rest.components."}
+  ``lcmap-rest.components``."}
   lcmap-rest.components.httpd
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
