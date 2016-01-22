@@ -1,7 +1,9 @@
-;;;; Event LCMAP REST Service system component
-;;;; For more information, see the module-level code comments in
-;;;; lcmap-rest.components.
-(ns lcmap-rest.components.db
+(ns ^{:doc
+  "Database LCMAP REST Service system component
+
+  For more information, see the module-level code comments in
+  lcmap-rest.components."}
+  lcmap-rest.components.db
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
             [clojurewerkz.cassaforte.client :as cc]))

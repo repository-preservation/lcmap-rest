@@ -1,7 +1,9 @@
-;;;; Event LCMAP REST Service system component
-;;;; For more information, see the module-level code comments in
-;;;; lcmap-rest.components.
-(ns lcmap-rest.components.httpd
+(ns ^{:doc
+  "HTTP LCMAP REST Service system component
+
+  For more information, see the module-level code comments in
+  lcmap-rest.components."}
+  lcmap-rest.components.httpd
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
             [org.httpkit.server :as httpkit]))
