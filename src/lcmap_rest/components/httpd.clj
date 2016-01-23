@@ -12,12 +12,14 @@
 ;; are kept to a minimum.
 (def jobdb-key ::jobdb)
 (def eventd-key ::eventd)
+(def tiledb-key ::tiledb)
 
-(defn inject-app-jobdb [handler jobdb-component eventd-component]
+(defn inject-app-jobdb [handler jobdb-component eventd-component tiledb-component]
   (fn [request]
     (handler (-> request
                  (assoc jobdb-key jobdb-component)
-                 (assoc eventd-key eventd-component)))))
+                 (assoc eventd-key eventd-component)
+                 (assoc tiledb-key tiledb-component)))))
 
 (defrecord HTTPServer [ring-handler]
   component/Lifecycle
@@ -27,7 +29,8 @@
     (let [httpd-cfg (get-in component [:cfg :http])
           db (:jobdb component)
           eventd (:eventd component)
-          handler (inject-app-jobdb ring-handler db eventd)
+          tiledb (:tiledb component)
+          handler (inject-app-jobdb ring-handler db eventd tiledb)
           server (httpkit/run-server handler httpd-cfg)]
       (log/debug "Using config:" httpd-cfg)
       (log/debug "Component keys:" (keys component))

@@ -68,6 +68,7 @@
              [:cfg
               :logger
               :jobdb
+              :tiledb
               :eventd])
     :sys (component/using
            (system/new-lcmap-toplevel)

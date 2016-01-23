@@ -6,7 +6,8 @@
   lcmap-rest.components.db
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
-            [clojurewerkz.cassaforte.client :as cc]))
+            [clojurewerkz.cassaforte.client :as cc]
+            [clojurewerkz.cassaforte.policies :as cp]))
 
 (defrecord JobTrackerDBClient [ ]
   component/Lifecycle
@@ -38,7 +39,9 @@
     (log/info "Starting Tile DB client ...")
     (let [db-cfg (get-in component [:cfg :db])]
       (log/debug "Using config:" db-cfg)
-      (let [conn (cc/connect (:hosts db-cfg) (dissoc db-cfg :hosts))]
+      (let [conn (cc/connect (:hosts db-cfg))]
+        (cp/constant-reconnection-policy 250 #_ms)
+        (cp/retry-policy :default)
         (log/debug "Component keys:" (keys component))
         (log/debug "Successfully created tile db connection:" conn)
         (assoc component :conn conn :spec-table "tile_specs"))))
