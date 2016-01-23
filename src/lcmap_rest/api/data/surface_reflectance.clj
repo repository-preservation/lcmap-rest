@@ -21,7 +21,7 @@
   [band point time system]
   (let [[x y] (map #(Integer/parseInt %) (re-seq #"\-?\d+" point))
         results (tile-db/find-tiles band x y time system)]
-    results))
+    (map #(select-keys % [:ubid :x :y :acquired :data]) results)))
 
 (defn get-rod
   ""

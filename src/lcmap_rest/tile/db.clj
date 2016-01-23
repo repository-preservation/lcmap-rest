@@ -39,8 +39,13 @@
         table   (:table_name spec)
         [tx ty] (snap x y spec)
         where   (query/where {:ubid ubid :x tx :y ty})
+        columns (query/columns :ubid
+                               :x
+                               :y
+                               :acquired
+                               (query/as (query/blob->varchar :data) :data))
         _       (cql/use-keyspace conn ks)
-        results (cql/select conn table where)]
+        results (cql/select conn table columns where)]
     results))
 
 (defn pixel-xform [spec x y]
