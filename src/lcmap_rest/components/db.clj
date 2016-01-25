@@ -14,7 +14,7 @@
 
   (start [component]
     (log/info "Starting DB client ...")
-    (let [db-cfg (get-in component [:cfg :db])]
+    (let [db-cfg (get-in component [:cfg :env :db])]
       (log/debug "Using config:" db-cfg)
       (let [conn (cc/connect (:hosts db-cfg) (dissoc db-cfg :hosts))]
         (log/debug "Component keys:" (keys component))
@@ -37,7 +37,7 @@
 
   (start [component]
     (log/info "Starting Tile DB client ...")
-    (let [db-cfg (get-in component [:cfg :db])]
+    (let [db-cfg (get-in component [:cfg :env :db])]
       (log/debug "Using config:" db-cfg)
       (let [conn (cc/connect (:hosts db-cfg))]
         (cp/constant-reconnection-policy 250 #_ms)

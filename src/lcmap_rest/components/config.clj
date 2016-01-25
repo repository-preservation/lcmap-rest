@@ -14,7 +14,7 @@
   (start [component]
     (log/info "Setting up LCMAP configuration ...")
     (let [cfg (util/get-config)]
-      (log/info "Using lein profile:" (:active-profile cfg))
+      (log/info "Using lein profile:" (get-in cfg [:env :active-profile]))
       (log/debug "Successfully generated LCMAP configuration.")
       cfg))
 

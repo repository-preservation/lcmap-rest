@@ -18,7 +18,7 @@
 
   (start [component]
     (log/info "Setting up LCMAP logging ...")
-    (let [log-level (get-in component [:cfg :log-level])
+    (let [log-level (get-in component [:cfg :env :log-level])
           namespaces (get-in component [:cfg :logging-namespaces])]
       (log/info "Using log-level" log-level)
       (logger/set-level! namespaces log-level)

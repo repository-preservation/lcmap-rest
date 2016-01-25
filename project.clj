@@ -77,48 +77,41 @@
                        com.datastax.driver
                        co.paralleluniverse]
   :profiles {
-    ;; configuration for local environment
-    :local
-      {:active-profile "local"
-       :db {:hosts ["127.0.0.1"]
-            :port 9042
-            :protocol-version 3
-            :keyspace "lcmap"}
-        :http {:port 1077     ; port number obtained via this bit of geekery:
-               :ip "0.0.0.0"} ;   (reduce + (map int "USGS-EROS LCMAP"))
-        :log-level :info
-        :dependencies [[org.clojure/tools.namespace "0.2.11"]
-                       [slamhound "1.5.5"]]
-        :aliases {"slamhound" ["run" "-m" "slam.hound"]}}
-    ;; configuration for dev environment
-    :dev
-      {:active-profile "dev"
-       :db {:hosts ["127.0.0.1"]
-            :port 9042
-            :protocol-version 3
-            :keyspace "lcmap"}
-        :http {:port 1077
-               :ip "0.0.0.0"}
-        :log-level :debug
-        :dependencies [[org.clojure/tools.namespace "0.2.11"]
-                       [slamhound "1.5.5"]]
-        :aliases {"slamhound" ["run" "-m" "slam.hound"]}
-        :plugins [[lein-kibit "0.1.2"]]}
+    ;; configuration for dev environment -- if you need to make local changes,
+    ;; copy `:env { ... }` into `{:user ...}` in your ~/.lein/profiles.clj and
+    ;; then override values there
+    :dev {
+      :env
+        {:active-profile "dev"
+         :db {:hosts ["127.0.0.1"]
+              :port 9042
+              :protocol-version 3
+              :keyspace "lcmap"}
+          :http {:port 1077     ; port number obtained via this bit of geekery:
+                 :ip "0.0.0.0"} ;   (reduce + (map int "USGS-EROS LCMAP"))
+          :log-level :debug
+          :dependencies [[org.clojure/tools.namespace "0.2.11"]
+                         [slamhound "1.5.5"]]
+          :aliases {"slamhound" ["run" "-m" "slam.hound"]}
+          :plugins [[lein-kibit "0.1.2"]]}}
     ;; configuration for testing environment
-    :testing
-      {:active-profile "testing"
-       :db {}
-       :http {}
-       :log-level :debug}
+    :testing {
+      :env
+        {:active-profile "testing"
+         :db {}
+         :http {}
+         :log-level :debug}}
     ;; configuration for staging environment
-    :staging
-      {:active-profile "staging"
-       :db {}
-       :http {}
-       :log-level :warn}
+    :staging {
+      :env
+        {:active-profile "staging"
+         :db {}
+         :http {}
+         :log-level :warn}}
     ;; configuration for production environment
-    :prod
-      {:active-profile "prod"
-       :db {}
-       :http {}
-       :log-level :error}})
+    :prod {
+      :env
+        {:active-profile "prod"
+         :db {}
+         :http {}
+         :log-level :error}}})

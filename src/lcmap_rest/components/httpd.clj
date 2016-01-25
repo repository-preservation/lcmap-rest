@@ -26,7 +26,7 @@
 
   (start [component]
     (log/info "Starting HTTP server ...")
-    (let [httpd-cfg (get-in component [:cfg :http])
+    (let [httpd-cfg (get-in component [:cfg :env :http])
           db (:jobdb component)
           eventd (:eventd component)
           tiledb (:tiledb component)
