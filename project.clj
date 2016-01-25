@@ -53,6 +53,8 @@
                  ;; Data types, encoding, etc.
                  [byte-streams "0.2.0"]
                  [clj-time "0.11.0"]
+                 ;; Geospatial libraries
+                 [element84/clj-gdal "0.3.2"]
                  ;; Dev and project metadata
                  [leiningen-core "2.5.3"]]
   :plugins [[lein-ring "0.9.7"]

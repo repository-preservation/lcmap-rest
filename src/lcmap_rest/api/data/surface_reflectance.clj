@@ -26,7 +26,9 @@
 (defn get-rod
   ""
   [band point time system]
-  (str "point: " point ", time: " time ", band: " band))
+  (let [[x y] (map #(Integer/parseInt %) (re-seq #"\-?\d+" point))
+        results (tile-db/find-rod band x y time system)]
+    (map #(select-keys % [:ubid :x :y :acquired :data]) results)))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
