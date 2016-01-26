@@ -41,7 +41,12 @@
         ks      (:keyspace_name spec)
         table   (:table_name spec)
         [tx ty] (snap x y spec)
-        where   (query/where {:ubid ubid :x tx :y ty})
+        [t1 t2] acquired
+        where   (query/where [[= :ubid ubid]
+                              [= :x tx]
+                              [= :y ty]
+                              [>= :acquired (str t1)]
+                              [< :acquired (str t2)]])
         columns (query/columns :ubid
                                :x
                                :y

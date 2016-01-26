@@ -4,7 +4,8 @@
             [ring.util.response :refer [response]]
             [lcmap-rest.components.httpd :as httpd]
             [lcmap-rest.tile.db :as tile-db]
-            [lcmap-client.data.surface-reflectance]))
+            [lcmap-client.data.surface-reflectance]
+            [clj-time.format :as time-fmt]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -16,10 +17,23 @@
            (str context x))
          ["/tiles" "/rod"])}))
 
+(defn point->pair
+  "Convert a point x,y into a pair (a seq of ints)"
+  [point]
+  (map #(Integer/parseInt %) (re-seq #"\-?\d+" point)))
+
+(defn iso8601->datetimes
+  "Convert an ISO8610 string into a pair of DateTime"
+  [iso8601]
+  (let [parse (time-fmt/parse (time-fmt/formatters :date))
+        dates (clojure.string/split iso8601 #"/")]
+    (map parse dates)))
+
 (defn get-tiles
   ""
   [band point time system]
-  (let [[x y] (map #(Integer/parseInt %) (re-seq #"\-?\d+" point))
+  (let [[x y]   (point->pair point)
+        times   (iso8601->datetimes time)
         results (tile-db/find-tiles band x y time system)]
     (map #(select-keys % [:ubid :x :y :acquired :data]) results)))
 
