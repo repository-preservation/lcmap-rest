@@ -82,7 +82,7 @@
     ;; then override values there
     :dev {
       :env
-        {:active-profile "dev"
+        {:active-profile "development"
          :db {:hosts ["127.0.0.1"]
               :port 9042
               :protocol-version 3
@@ -111,7 +111,7 @@
     ;; configuration for production environment
     :prod {
       :env
-        {:active-profile "prod"
+        {:active-profile "production"
          :db {}
          :http {}
          :log-level :error}}})
