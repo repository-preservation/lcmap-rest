@@ -14,7 +14,7 @@
 (def eventd-key ::eventd)
 (def tiledb-key ::tiledb)
 
-(defn inject-app-jobdb [handler jobdb-component eventd-component tiledb-component]
+(defn inject-app-db [handler jobdb-component eventd-component tiledb-component]
   (fn [request]
     (handler (-> request
                  (assoc jobdb-key jobdb-component)
@@ -30,7 +30,7 @@
           db (:jobdb component)
           eventd (:eventd component)
           tiledb (:tiledb component)
-          handler (inject-app-jobdb ring-handler db eventd tiledb)
+          handler (inject-app-db ring-handler db eventd tiledb)
           server (httpkit/run-server handler httpd-cfg)]
       (log/debug "Using config:" httpd-cfg)
       (log/debug "Component keys:" (keys component))
