@@ -9,7 +9,8 @@
   (:import [java.security.MessageDigest]
            [java.math.BigInteger]))
 
-(def accept-regex (re-pattern #"([^;]+)\s*(?:;q=([0-9+\.]+))?\s*(;.+)*"))
+(def accept-regex
+  (re-pattern #"([^;]+)\s*(?:;q=([0-9+\.]+))?\s*(;.+)*"))
 (def accept-version-regex
   (re-pattern #"application/vnd\.(usgs\.lcmap.)(v(\d(\.\d)?))\+([^;]+)"))
 
