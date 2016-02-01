@@ -51,7 +51,8 @@
 (defroutes routes
   (context lcmap-client.models.ccdc-docker-process/context []
     (POST "/" [token arg1 arg2 :as request]
-      ;;(log/debug "Request data keys in routes:" (keys request))
+      ;;(log/debugf "POST request got: %s" request)
+      ;;(log/debug "Request data keys in routes:" (keys request))-
       (run-model (httpd/jobdb-key request)
                  (httpd/eventd-key request)
                  arg1

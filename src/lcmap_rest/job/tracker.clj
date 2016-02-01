@@ -44,8 +44,11 @@
 (defsfn run-job
   [{job-id :job-id db-conn :db-conn service :service
     [job-func job-args] :result :as args}]
-  (log/debugf "Running the job with args %s ..." job-args)
+  (log/debugf "Running the job with function %s and args %s ..."
+              job-func
+              job-args)
   (let [job-data (job-func job-args)]
+    (log/debugf "Got result of type %s with value %s" (type job-data) job-data)
     @(db/update-status db-conn job-id status/pending-link)
     (log/debug "Finished job.")
     (actors/notify! service
