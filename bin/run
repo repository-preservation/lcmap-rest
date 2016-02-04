@@ -1,0 +1,5 @@
+#!/bin/bash
+
+APP_HOME=$(readlink -f $(dirname $(dirname $0)))
+
+(cd $APP_HOME && lein run $@)
