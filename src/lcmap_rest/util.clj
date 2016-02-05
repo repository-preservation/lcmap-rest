@@ -45,23 +45,6 @@
        (str model-name)
        (digest/md5)))
 
-(def -get-config
-  (memo/lu
-    (fn []
-      (log/debug "Memoizing LCMAP configuration ...")
-      (lein-prj/read))))
-
-(defn get-config
-  ([]
-    (-get-config))
-  ([arg]
-    (if-not (= arg :force-reload)
-      ;; The only arg we've defined so far is :force-reload -- anything other
-      ;; than that, simply ignore.
-      (-get-config)
-      (do (memo/memo-clear! -get-config)
-          (-get-config)))))
-
 (defn add-shutdown-handler [func]
   (.addShutdownHook (Runtime/getRuntime)
                     (Thread. func)))
