@@ -10,7 +10,7 @@
                  ;; Componentization
                  [com.stuartsierra/component "0.3.0"]
                  ;; Logging and Error Handling
-                 [twig "0.1.0-dev"]
+                 [twig "0.1.0"]
                  ;[org.clojure/tools.logging "0.3.1"]
                  ;[ch.qos.logback/logback-classic "1.1.3"]
                  [ring.middleware.logger "0.5.0"]
