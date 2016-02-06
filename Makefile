@@ -116,6 +116,7 @@ docker-auth-build:
 
 docker-server:
 	@docker run \
+	-e "LCMAP_SERVER_ENV_DB_HOSTS=$(CASSANDRA_HOST):" \
 	-e "LCMAP_USERNAME=alice" \
 	-e "LCMAP_PASSWORD=secret" \
 	-e "LCMAP_ENDPOINT=http://localhost:1077" \
@@ -126,6 +127,7 @@ docker-server:
 
 docker-server-bash:
 	@docker run \
+	-e "LCMAP_SERVER_ENV_DB_HOSTS=$(CASSANDRA_HOST)" \
 	-e "LCMAP_USERNAME=alice" \
 	-e "LCMAP_PASSWORD=secret" \
 	-e "LCMAP_ENDPOINT=http://localhost:1077" \
