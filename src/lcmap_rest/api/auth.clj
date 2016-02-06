@@ -6,26 +6,27 @@
             [ring.util.response :as ring]
             [lcmap-client.auth]
             [lcmap-client.status-codes :as status]
-            [lcmap-rest.auth.usgs :as usgs]))
+            [lcmap-rest.auth.usgs :as usgs]
+            [lcmap-rest.components.httpd :as httpd]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; XXX add db-connection as parameter
-(defn login [username password]
+(defn login [auth-cfg username password]
   (ring/response
-    {:result (usgs/login username password)
+    {:result (usgs/login auth-cfg username password)
       :errors []}))
 
-(defn logout [db-conn token]
+(defn logout [auth-cfg db-conn token]
   (ring/response
-    (usgs/logout token)))
+    (usgs/logout auth-cfg db-conn token)))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
   (context lcmap-client.auth/context []
     (POST "/login" [username password :as request]
-      (login username password))
+      (login (httpd/authcfg-key request) username password))
     ;; XXX once we've got user data being saved in the db, we need to come
     ;; back to this and add a logout function which destroys the ephemeral
     ;; user data (such as token association)

@@ -7,9 +7,6 @@
             [lcmap-rest.exceptions :as exceptions]
             [lcmap-rest.util :as util]))
 
-;; XXX uncomment the next line when the service is ready
-;;(def api-url "https://ers.cr.usgs.gov/api")
-;; XXX remove the next line when the ERS api is redy
 (def api-url "http://localhost:8888/api")
 (def auth-url (str api-url "/auth"))
 (def user-url (str api-url "/me"))
@@ -20,19 +17,19 @@
 (def generic-error 30)
 (def input-error 31)
 
-(defn- post-auth  [username password]
+(defn- post-auth [auth-cfg username password]
   "Post to the USGS auth service and return the auth code."
-  (http/post auth-url
+  (http/post (str (:endpoint auth-cfg) (:login-resource auth-cfg))
              {:form-params {:username username :password password}
               :as :json}))
 
-(defn- get-user [token]
-  (http/get user-url
+(defn- get-user [auth-cfg token]
+  (http/get (str (:endpoint auth-cfg) (:user-resource auth-cfg))
             {:headers {:x-authtoken token}
              :as :json}))
 
-(defn get-user-data [token]
-  (let [results (get-user token)]
+(defn get-user-data [auth-cfg token]
+  (let [results (get-user auth-cfg token)]
     (log/debugf "Got user data %s for token %s" results token)
     (get-in results [:body :data])))
 
@@ -40,8 +37,8 @@
   (if (util/in? [auth-error input-error generic-error] ers-status)
       (throw+ (exceptions/auth-error (string/join "; " errors)))))
 
-(defn login [username password]
-  (let [results (post-auth username password)
+(defn login [auth-cfg username password]
+  (let [results (post-auth auth-cfg username password)
         ers-status (get-in results [:body :status])
         errors (get-in results [:body :errors])
         token (get-in results [:body :data :authToken])]
@@ -49,7 +46,7 @@
     (log/infof "User %s successfully authenticated with token %s"
                username
                token)
-    (let [user-data (get-user-data token)]
+    (let [user-data (get-user-data auth-cfg token)]
       ;; XXX save user data in db
       {:user-id (:contact_id user-data)
        :username (:username user-data)
@@ -57,7 +54,7 @@
        :email (:email user-data)
        :token token})))
 
-(defn logout [db-conn token]
+(defn logout [auth-cfg db-conn token]
   ;; XXX delete the records for the user session/token
   )
 

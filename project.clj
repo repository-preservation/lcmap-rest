@@ -93,9 +93,9 @@
           :http {:port 1077     ; port number obtained via this bit of geekery:
                  :ip "0.0.0.0"} ;   (reduce + (map int "USGS-EROS LCMAP"))
           :auth {
-            :usgs {:host "127.0.0.1"
-                   :port 8888
-                   :auth-resource "/api/login"
+            :usgs {:endpoint "http://127.0.0.1:8888"
+                   ;:endpoint "https://ers.cr.usgs.gov/api"
+                   :login-resource "/api/login"
                    :user-resource "/api/me"}}
           :log-level :debug
           :dependencies [[org.clojure/tools.namespace "0.2.11"]
