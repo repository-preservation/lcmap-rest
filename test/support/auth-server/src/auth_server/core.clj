@@ -88,7 +88,9 @@
   [& args]
   (let [cfg (lein-prj/read)
         ip (get-ip cfg)
-        port (get-port cfg)]
+        port (get-port cfg)
+        local-ip  (.getHostAddress (java.net.InetAddress/getLocalHost))]
+    (log/info "Test auth server's local IP address:" local-ip)
     (log/infof "Starting test auth server on port %s:%s ..." ip port)
     (httpkit/run-server #'app {:ip ip
                                :port port})))

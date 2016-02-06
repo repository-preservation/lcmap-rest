@@ -62,6 +62,8 @@
 
   'lein run' will use this as well as 'java -jar'."
   [& args]
-  (let [system (components/init #'app)]
+  (let [system (components/init #'app)
+        local-ip  (.getHostAddress (java.net.InetAddress/getLocalHost))]
+    (log/info "LCMAP REST server's local IP address:" local-ip)
     (component/start system)
     (util/add-shutdown-handler #(component/stop system))))
