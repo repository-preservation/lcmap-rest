@@ -136,6 +136,18 @@ docker-server-bash:
 	-e "LCMAP_CONTENT_TYPE=json" \
 	-it --entrypoint=/bin/bash $(DOCKERHUB_LCMAP_REST) -s
 
+docker-server-repl:
+	@docker run \
+	-e "LCMAP_SERVER_ENV_DB_HOSTS=$(CASSANDRA_HOST)" \
+	-e "LCMAP_USERNAME=alice" \
+	-e "LCMAP_PASSWORD=secret" \
+	-e "LCMAP_ENDPOINT=http://localhost:1077" \
+	-e "LCMAP_VERSION=0.0" \
+	-e "LCMAP_LOG_LEVEL=debug" \
+	-e "LCMAP_CONTENT_TYPE=json" \
+	-it --entrypoint=/lcmap-rest/bin/repl \
+	$(DOCKERHUB_LCMAP_REST)
+
 docker-auth:
 	@docker run -t $(DOCKERHUB_LCMAP_TEST_AUTH)
 
