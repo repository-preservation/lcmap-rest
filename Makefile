@@ -105,18 +105,15 @@ docker-auth-build: BUILD_DIR=$(CONTEXT)/build
 docker-auth-build:
 	@mkdir -p $(BUILD_DIR)
 	@rm -rf $(BUILD_DIR)
-	-@cp -r . $(BUILD_DIR)
-	-@rm -rf \
-	$(BUILD_DIR)/.* \
-	$(BUILD_DIR)/downloads \
-	$(BUILD_DIR)/target \
-	$(BUILD_DIR)/docker \
+	-@cp -r test/support/auth-server $(BUILD_DIR)
+	-@rm -rf $(BUILD_DIR)/target
 	@docker build -t $(DOCKERHUB_LCMAP_TEST_AUTH) $(CONTEXT)
 	@rm -rf $(BUILD_DIR)
 
 docker-server:
 	@docker run \
 	-e "LCMAP_SERVER_ENV_DB_HOSTS=$(CASSANDRA_HOST):" \
+	-e "LCMAP_SERVER_ENV_AUTH_USGS_ENDPOINT=$(AUTH_ENDPOINT)" \
 	-e "LCMAP_USERNAME=alice" \
 	-e "LCMAP_PASSWORD=secret" \
 	-e "LCMAP_ENDPOINT=http://localhost:1077" \
