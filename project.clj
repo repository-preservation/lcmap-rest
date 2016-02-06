@@ -92,6 +92,11 @@
               :keyspace "lcmap"}
           :http {:port 1077     ; port number obtained via this bit of geekery:
                  :ip "0.0.0.0"} ;   (reduce + (map int "USGS-EROS LCMAP"))
+          :auth {
+            :usgs {:host "127.0.0.1"
+                   :port 8888
+                   :auth-resource "/api/login"
+                   :user-resource "/api/me"}}
           :log-level :debug
           :dependencies [[org.clojure/tools.namespace "0.2.11"]
                          [slamhound "1.5.5"]]
