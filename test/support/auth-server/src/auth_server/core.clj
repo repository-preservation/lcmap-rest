@@ -75,8 +75,10 @@
       env-val)))
 
 (defn get-port [cfg]
-  (or (new Integer (get-env "LCMAP_TEST_AUTH_SERVER_PORT"))
-      (get-in cfg [:env :port])))
+  (let [env-port (get-env "LCMAP_TEST_AUTH_SERVER_PORT")]
+    (if (nil? env-port)
+      (get-in cfg [:env :port])
+      (new Integer env-port))))
 
 (defn get-ip [cfg]
   (or (get-env "LCMAP_TEST_AUTH_SERVER_IP")
