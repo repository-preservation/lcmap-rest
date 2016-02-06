@@ -7,10 +7,6 @@
             [lcmap-rest.exceptions :as exceptions]
             [lcmap-rest.util :as util]))
 
-(def api-url "http://localhost:8888/api")
-(def auth-url (str api-url "/auth"))
-(def user-url (str api-url "/me"))
-
 ;; USGS EROS status codes for the ERS authentication API
 (def success 10)
 (def auth-error 20)

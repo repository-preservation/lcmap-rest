@@ -76,19 +76,28 @@
 (defn get-log-level []
   (keyword (get-value :env :log-level)))
 
-(defn- -update [cfg keys new-val]
-  (update-in cfg keys (fn [old new] new) new-val))
+(defn get-auth-endpoint []
+  (get-value :env :auth :usgs :port))
+
+(defn get-auth-login-resource []
+  (get-value :env :auth :usgs :login-resource))
+
+(defn get-auth-user-resource []
+  (get-value :env :auth :usgs :user-resource))
 
 (defn update-overrides
   ([]
     (update-overrides (get-config)))
   ([cfg]
     (-> cfg
-        (-update [:env :db :hosts] (get-db-hosts))
-        (-update [:env :db :port] (get-db-port))
-        (-update [:env :http :ip] (get-http-ip))
-        (-update [:env :http :port] (get-http-port))
-        (-update [:env :log-level] (get-log-level)))))
+        (assoc-in [:env :db :hosts] (get-db-hosts))
+        (assoc-in [:env :db :port] (get-db-port))
+        (assoc-in [:env :http :ip] (get-http-ip))
+        (assoc-in [:env :http :port] (get-http-port))
+        (assoc-in [:env :auth :usgs :port] (get-auth-endpoint))
+        (assoc-in [:env :auth :usgs :login-resource] (get-auth-login-resource))
+        (assoc-in [:env :auth :usgs :user-resource] (get-auth-user-resource))
+        (assoc-in [:env :log-level] (get-log-level)))))
 
 ;;; Aliases
 

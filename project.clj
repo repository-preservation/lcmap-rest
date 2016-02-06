@@ -11,8 +11,6 @@
                  [com.stuartsierra/component "0.3.0"]
                  ;; Logging and Error Handling
                  [twig "0.1.0"]
-                 ;[org.clojure/tools.logging "0.3.1"]
-                 ;[ch.qos.logback/logback-classic "1.1.3"]
                  [ring.middleware.logger "0.5.0"]
                  [dire "0.5.3"]
                  [slingshot "0.12.2"]
@@ -93,10 +91,12 @@
           :http {:port 1077     ; port number obtained via this bit of geekery:
                  :ip "0.0.0.0"} ;   (reduce + (map int "USGS-EROS LCMAP"))
           :auth {
-            :usgs {:endpoint "http://127.0.0.1:8888"
+            :backend :usgs
+            ;:backend :nasa
+            :usgs {:endpoint "http://127.0.0.1:8888/api"
                    ;:endpoint "https://ers.cr.usgs.gov/api"
-                   :login-resource "/api/login"
-                   :user-resource "/api/me"}}
+                   :login-resource "/auth"
+                   :user-resource "/me"}}
           :log-level :debug
           :dependencies [[org.clojure/tools.namespace "0.2.11"]
                          [slamhound "1.5.5"]]

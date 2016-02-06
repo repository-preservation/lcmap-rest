@@ -30,7 +30,8 @@
   (start [component]
     (log/info "Starting HTTP server ...")
     (let [httpd-cfg (get-in component [:cfg :env :http])
-          auth-cfg (get-in component [:cfg :env :auth])
+          auth-backend (get-in component [:cfg :env :auth :backend])
+          auth-cfg (get-in component [:cfg :env :auth auth-backend])
           eventd (:eventd component)
           jobdb (:jobdb component)
           tiledb (:tiledb component)
