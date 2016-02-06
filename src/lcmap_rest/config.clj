@@ -33,9 +33,20 @@
          (#(string/replace % "-" "_"))
          (str env-prefix "_"))))
 
+(defn parse-env-var [value keys]
+  (cond
+    (nil? value)
+      value
+    (= value "")
+      nil
+    (= keys [:env :db :hosts])
+      (string/split value #":")
+    :else
+      value))
+
 (defn get-env [keys]
   (let [value (System/getenv (make-env-name (or keys [])))]
-    (when-not (= value "") value)))
+    (parse-env-var value keys)))
 
 (defn- -get-value [config keys]
   (let [env-value (get-env keys)]
