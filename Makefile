@@ -125,6 +125,9 @@ docker-server:
 	-e "LCMAP_CONTENT_TYPE=json" \
 	-t $(DOCKERHUB_LCMAP_REST)
 
+docker-server-publish:
+	@docker push $(DOCKERHUB_LCMAP_REST)
+
 docker-server-bash:
 	@docker run \
 	-e "LCMAP_SERVER_ENV_DB_HOSTS=$(CASSANDRA_HOST)" \
@@ -154,9 +157,10 @@ docker-auth:
 docker-auth-bash:
 	@docker run -it --entrypoint=/bin/bash $(DOCKERHUB_LCMAP_TEST_AUTH) -s
 
-dockerhub: docker
-	@docker push $(DOCKERHUB_LCMAP_REST)
+docker-auth-publish:
 	@docker push $(DOCKERHUB_LCMAP_TEST_AUTH)
+
+dockerhub: docker docker-server-publish docker-auth-publish
 
 docker-clean:
 	-@docker rm $(shell docker ps -a -q)
