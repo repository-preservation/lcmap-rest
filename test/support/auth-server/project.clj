@@ -22,4 +22,6 @@
   :main ^:skip-aot auth-server.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}
-             :dev {:port 8888}})
+             :dev {
+              :env {:ip "0.0.0.0"
+                    :port 8888}}})

@@ -68,9 +68,25 @@
       (wrap-json-response)
       (logger/wrap-with-logger)))
 
+(defn get-env [env-key]
+  (let [env-val (System/getenv env-key)]
+    (case env-val
+      "" nil
+      env-val)))
+
+(defn get-port [cfg]
+  (or (new Integer (get-env "LCMAP_TEST_AUTH_SERVER_PORT"))
+      (get-in cfg [:env :port])))
+
+(defn get-ip [cfg]
+  (or (get-env "LCMAP_TEST_AUTH_SERVER_IP")
+      (get-in cfg [:env :ip])))
+
 (defn -main
   [& args]
   (let [cfg (lein-prj/read)
-        port (:port cfg)]
-    (log/infof "Starting test auth server on port %s ..." port)
-    (httpkit/run-server #'app {:port port})))
+        ip (get-ip cfg)
+        port (get-port cfg)]
+    (log/infof "Starting test auth server on port %s:%s ..." ip port)
+    (httpkit/run-server #'app {:ip ip
+                               :port port})))

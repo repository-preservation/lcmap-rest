@@ -12,10 +12,20 @@ $ (cd test/support/auth-server && lein run)
 ```
 
 At that point, the test server's endpoint will be available at
-``localhost:8888`` with the following resources:
+``0.0.0.0:8888`` with the following resources:
 
 * ``/api/auth``
 * ``/api/me``
+
+If you would like to run on a specific IP and/or port, you can do the
+following:
+
+```bash
+$ (cd test/support/auth-server &&
+    LCMAP_TEST_AUTH_SERVER_IP=172.17.0.1 \
+    LCMAP_TEST_AUTH_SERVER_PORT=8887 \
+    lein run)
+```
 
 Test bad credentials:
 
