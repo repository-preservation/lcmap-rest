@@ -75,3 +75,21 @@
 
 (defn get-log-level []
   (keyword (get-value :env :log-level)))
+
+(defn- -update [cfg keys new-val]
+  (update-in cfg keys (fn [old new] new) new-val))
+
+(defn update-overrides
+  ([]
+    (update-overrides (get-config)))
+  ([cfg]
+    (-> cfg
+        (-update [:env :db :hosts] (get-db-hosts))
+        (-update [:env :db :port] (get-db-port))
+        (-update [:env :http :ip] (get-http-ip))
+        (-update [:env :http :port] (get-http-port))
+        (-update [:env :log-level] (get-log-level)))))
+
+;;; Aliases
+
+(def get-updated-config #'update-overrides)
