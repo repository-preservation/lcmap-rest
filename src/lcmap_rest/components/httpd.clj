@@ -10,13 +10,16 @@
 
 ;; We should keep these definitions here so that component interdependencies
 ;; are kept to a minimum.
+(def authcfg-key ::authcfg)
 (def jobdb-key ::jobdb)
 (def eventd-key ::eventd)
 (def tiledb-key ::tiledb)
 
-(defn inject-app-db [handler jobdb-component eventd-component tiledb-component]
+(defn inject-app [handler auth-cfg eventd-component
+                  jobdb-component tiledb-component]
   (fn [request]
     (handler (-> request
+                 (assoc authcfg-key auth-cfg)
                  (assoc jobdb-key jobdb-component)
                  (assoc eventd-key eventd-component)
                  (assoc tiledb-key tiledb-component)))))
@@ -27,10 +30,11 @@
   (start [component]
     (log/info "Starting HTTP server ...")
     (let [httpd-cfg (get-in component [:cfg :env :http])
-          db (:jobdb component)
+          auth-cfg (get-in component [:cfg :env :auth])
           eventd (:eventd component)
+          jobdb (:jobdb component)
           tiledb (:tiledb component)
-          handler (inject-app-db ring-handler db eventd tiledb)
+          handler (inject-app ring-handler auth-cfg eventd jobdb tiledb)
           server (httpkit/run-server handler httpd-cfg)]
       (log/debug "Using config:" httpd-cfg)
       (log/debug "Component keys:" (keys component))
