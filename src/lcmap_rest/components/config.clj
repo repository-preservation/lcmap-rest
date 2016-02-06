@@ -6,14 +6,14 @@
   lcmap-rest.components.config
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
-            [lcmap-rest.util :as util]))
+            [lcmap-rest.config :as config]))
 
 (defrecord Configuration []
   component/Lifecycle
 
   (start [component]
     (log/info "Setting up LCMAP configuration ...")
-    (let [cfg (util/get-config)]
+    (let [cfg (config/get-config)]
       (log/info "Using lein profile:" (get-in cfg [:env :active-profile]))
       (log/debug "Successfully generated LCMAP configuration.")
       cfg))

@@ -28,6 +28,7 @@
             ;; api
             [lcmap-rest.app :as app]
             [lcmap-rest.components :as components]
+            [lcmap-rest.config :as config]
             [lcmap-rest.exceptions :as exceptions]
             [lcmap-rest.serializer :as serial]
             [lcmap-rest.tile.db :as tile-db]
@@ -110,7 +111,7 @@
 (defn reset []
   (stop)
   (deinit)
-  (util/get-config :force-reload)
+  (config/get-config :force-reload)
   (refresh :after 'lcmap-rest.dev/run))
 
 ;;; Aliases
