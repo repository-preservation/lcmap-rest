@@ -10,7 +10,7 @@
                  ;; Componentization
                  [com.stuartsierra/component "0.3.0"]
                  ;; Logging and Error Handling
-                 [twig "0.1.0"]
+                 [twig "0.1.2"]
                  [ring.middleware.logger "0.5.0"]
                  [dire "0.5.3"]
                  [slingshot "0.12.2"]
@@ -69,7 +69,8 @@
   :codox {:namespaces [#"^lcmap-rest\."]
           :output-path "docs/master/current"
           :doc-paths ["docs/source"]
-          :metadata {:doc/format :markdown}}
+          :metadata {:doc/format :markdown
+                     :doc "Documentation forthcoming"}}
   ;; List the namespaces whose log levels we want to control; note that if we
   ;; add more dependencies that are chatty in the logs, we'll want to add them
   ;; here.
