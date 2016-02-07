@@ -77,7 +77,7 @@
   (keyword (get-value :env :log-level)))
 
 (defn get-auth-endpoint []
-  (get-value :env :auth :usgs :port))
+  (get-value :env :auth :usgs :endpoint))
 
 (defn get-auth-login-resource []
   (get-value :env :auth :usgs :login-resource))
@@ -94,7 +94,7 @@
         (assoc-in [:env :db :port] (get-db-port))
         (assoc-in [:env :http :ip] (get-http-ip))
         (assoc-in [:env :http :port] (get-http-port))
-        (assoc-in [:env :auth :usgs :port] (get-auth-endpoint))
+        (assoc-in [:env :auth :usgs :endpoint] (get-auth-endpoint))
         (assoc-in [:env :auth :usgs :login-resource] (get-auth-login-resource))
         (assoc-in [:env :auth :usgs :user-resource] (get-auth-user-resource))
         (assoc-in [:env :log-level] (get-log-level)))))
