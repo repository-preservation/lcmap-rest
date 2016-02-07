@@ -157,7 +157,9 @@ docker-auth-bash:
 docker-auth-publish:
 	@docker push $(DOCKERHUB_LCMAP_TEST_AUTH)
 
-dockerhub: docker docker-server-publish docker-auth-publish
+docker-publish: docker-server-publish docker-auth-publish
+
+dockerhub: docker docker-publish
 
 docker-clean:
 	-@docker rm $(shell docker ps -a -q)
