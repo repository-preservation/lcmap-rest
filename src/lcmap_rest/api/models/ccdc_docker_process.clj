@@ -20,11 +20,15 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn run-model [db eventd arg1 arg2]
-  (log/debugf "run-model got args: [%s %s]" arg1 arg2)
+(defn run-model [db eventd row col in-dir out-dir scene-list verbose]
+  (log/debugf "run-model got args: %s" [row col in-dir out-dir scene-list verbose])
   (let [job-id (util/get-args-hash science-model-name
-                                   :arg1 arg1
-                                   :arg2 arg2)
+                                   :row row
+                                   :col col
+                                   :in-dir in-dir
+                                   :out-dir :out-dir
+                                   :scene-list scene-list
+                                   :verbose verbose)
         default-row {:science_model_name science-model-name
                      :result_keyspace result-keyspace
                      :result_table result-table
@@ -32,13 +36,13 @@
                      :status status/pending}]
     ;;(log/debugf "ccdc model run (job id: %s)" job-id)
     ;;(log/debugf "default row: %s" default-row)
-    (ccdc-docker-runner/run-model (:conn db)
-                             (:eventd eventd)
-                             job-id
-                             default-row
-                             result-table
-                             arg1
-                             arg2)
+    (ccdc-docker-runner/run-model
+      (:conn db)
+      (:eventd eventd)
+      job-id
+      default-row
+      result-table
+      row col in-dir out-dir scene-list verbose)
     (log/debug "Called ccdc-runner ...")
     (ring/status
       (ring/response
@@ -50,13 +54,12 @@
 
 (defroutes routes
   (context lcmap-client.models.ccdc-docker-process/context []
-    (POST "/" [token arg1 arg2 :as request]
+    (POST "/" [token row col in-dir out-dir scene-list verbose :as request]
       ;;(log/debugf "POST request got: %s" request)
       ;;(log/debug "Request data keys in routes:" (keys request))-
       (run-model (httpd/jobdb-key request)
                  (httpd/eventd-key request)
-                 arg1
-                 arg2))
+                 row col in-dir out-dir scene-list verbose))
     (GET "/:job-id" [job-id :as request]
       (get-job-result (httpd/jobdb-key request) job-id))))
 
