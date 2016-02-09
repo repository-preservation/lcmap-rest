@@ -25,7 +25,7 @@
 (defn iso8601->datetimes
   "Convert an ISO8610 string into a pair of DateTime"
   [iso8601]
-  (let [parse (time-fmt/parse (time-fmt/formatters :date))
+  (let [parse #(time-fmt/parse (time-fmt/formatters :date) %)
         dates (clojure.string/split iso8601 #"/")]
     (map parse dates)))
 
@@ -34,7 +34,8 @@
   [band point time system]
   (let [[x y]   (point->pair point)
         times   (iso8601->datetimes time)
-        results (tile-db/find-tiles band x y time system)]
+        results (tile-db/find-tiles band x y times system)]
+    (log/info band x y times (count results))
     (map #(select-keys % [:ubid :x :y :acquired :data]) results)))
 
 (defn get-rod
