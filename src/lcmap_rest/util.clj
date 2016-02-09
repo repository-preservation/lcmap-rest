@@ -61,3 +61,14 @@
   (-> (http/response :result result :errors errors :status status)
       (ring/response)
       (ring/status status)))
+
+(defn make-flag
+  "There are three cases we want to handle for command line options:
+  * a flag that takes a value
+  * a flag which should be passed, since a value was given
+  * a flag which should not be passed, since no value was given"
+  [flag value & {:keys [unary?] :or {unary? false}}]
+  (cond
+    unary? flag
+    (nil? value) ""
+    :else (format "%s %s" flag value)))
