@@ -1,5 +1,6 @@
 (ns lcmap-rest.tile.db
-  (:require [clojurewerkz.cassaforte.client :as cc]
+  (:require [clojure.tools.logging :as log]
+            [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :as query]
             [gdal.core :as gdal-core]
@@ -51,10 +52,10 @@
                                :x
                                :y
                                :acquired
-                               (query/as (query/blob->varchar :data) :data))
+                               :data)
         _       (cql/use-keyspace conn ks)
         results (cql/select conn table columns where)]
-    results))
+    (map #(merge spec %) results)))
 
 (defn inverse-matrix
   "Transform the (x,y) coordinate in the projection coordinate system (defined

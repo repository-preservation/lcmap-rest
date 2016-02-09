@@ -5,7 +5,15 @@
             [lcmap-rest.components.httpd :as httpd]
             [lcmap-rest.tile.db :as tile-db]
             [lcmap-client.data.surface-reflectance]
-            [clj-time.format :as time-fmt]))
+            [clj-time.format :as time-fmt])
+  (:import [org.apache.commons.codec.binary Base64]))
+
+;; this mutates the buffer by reading it...
+(defn base64-encode [src-data]
+  (let [size (- (.limit src-data) (.position src-data))
+        copy (byte-array size)]
+    (.get src-data copy)
+    (Base64/encodeBase64String copy)))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -34,9 +42,10 @@
   [band point time system]
   (let [[x y]   (point->pair point)
         times   (iso8601->datetimes time)
-        results (tile-db/find-tiles band x y times system)]
+        results (tile-db/find-tiles band x y times system)
+        encoded (map #(assoc % :data (base64-encode (% :data))) results)]
     (log/info band x y times (count results))
-    (map #(select-keys % [:ubid :x :y :acquired :data]) results)))
+    (response {:result encoded})))
 
 (defn get-rod
   ""
