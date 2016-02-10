@@ -2,4 +2,4 @@
 
 APP_HOME=$(readlink -f $(dirname $(dirname $0)))
 
-(cd $APP_HOME && lein repl $@)
+(cd $APP_HOME && lein with-profile +dev repl $@)
