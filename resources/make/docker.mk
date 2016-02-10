@@ -1,5 +1,8 @@
-DOCKERHUB_LCMAP_REST = usgseros/ubuntu-lcmap-rest:$(VERSION)
-DOCKERHUB_LCMAP_TEST_AUTH = usgseros/ubuntu-lcmap-test-auth-server:$(VERSION)
+DOCKER_ORG=usgseros
+LCMAP_REST_REPO=ubuntu-lcmap-rest
+LCMAP_AUTH_REPO=ubuntu-lcmap-test-auth-server
+DOCKERHUB_LCMAP_REST = $(DOCKER_ORG)/$(LCMAP_REST_REPO):$(VERSION)
+DOCKERHUB_LCMAP_TEST_AUTH = $(DOCKER_ORG)/$(LCMAP_AUTH_REPO):$(VERSION)
 
 .PHONY: docker
 
