@@ -17,7 +17,7 @@
         out-dir-flag (util/make-flag "--outDir" out-dir)
         row-flag (util/make-flag "--row" row)
         col-flag (util/make-flag "--col" col)
-        scene-list-flag (util/make-flag "--sceneList" flag)
+        scene-list-flag (util/make-flag "--sceneList" scene-list)
         cmd ["/usr/bin/sudo" "/usr/bin/docker"
              "run" "-t" docker-tag
              row-flag col-flag in-dir-flag out-dir-flag scene-list-flag
