@@ -1,4 +1,4 @@
-VERSION=0.1.0
+VERSION=0.0.1
 PROJECT=lcmap-rest
 STANDALONE=target/$(PROJECT)-$(VERSION)-SNAPSHOT-standalone.jar
 ROOT_DIR = $(shell pwd)
@@ -14,8 +14,8 @@ DOCS_GIT_HACK = $(DOCS_DIR)/.git
 LOCAL_DOCS_HOST = localhost
 LOCAL_DOCS_PORT = 5099
 
-DOCKERHUB_LCMAP_REST = usgseros/ubuntu-lcmap-rest
-DOCKERHUB_LCMAP_TEST_AUTH = usgseros/ubuntu-lcmap-test-auth-server
+DOCKERHUB_LCMAP_REST = usgseros/ubuntu-lcmap-rest:$(VERSION)
+DOCKERHUB_LCMAP_TEST_AUTH = usgseros/ubuntu-lcmap-test-auth-server$(VERSION)
 
 .PHONY: docs docker
 
