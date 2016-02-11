@@ -67,6 +67,12 @@
 (defn get-db-port []
   (get-value :env :db :port))
 
+(defn get-db-username []
+  (get-value :env :db :credentials :username))
+
+(defn get-db-password []
+  (get-value :env :db :credentials :password))
+
 (defn get-http-ip []
   (get-value :env :http :ip))
 
@@ -92,6 +98,8 @@
     (-> cfg
         (assoc-in [:env :db :hosts] (get-db-hosts))
         (assoc-in [:env :db :port] (get-db-port))
+        (assoc-in [:env :db :credentials :username] (get-db-username))
+        (assoc-in [:env :db :credentials :password] (get-db-password))
         (assoc-in [:env :http :ip] (get-http-ip))
         (assoc-in [:env :http :port] (get-http-port))
         (assoc-in [:env :auth :usgs :endpoint] (get-auth-endpoint))

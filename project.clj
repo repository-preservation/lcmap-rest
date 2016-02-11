@@ -88,7 +88,10 @@
          :db {:hosts ["127.0.0.1"]
               :port 9042
               :protocol-version 3
-              :keyspace "lcmap"}
+              :keyspace "lcmap"
+              :credentials {
+                :username nil
+                :password nil}}
           :http {:port 1077     ; port number obtained via this bit of geekery:
                  :ip "0.0.0.0"} ;   (reduce + (map int "USGS-EROS LCMAP"))
           :auth {
