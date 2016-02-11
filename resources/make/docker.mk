@@ -85,6 +85,6 @@ docker-publish: docker-server-publish docker-auth-publish
 
 dockerhub: docker docker-publish
 
-docker-clean:
+clean-docker:
 	-@docker rm $(shell docker ps -a -q)
 	-@docker rmi $(shell docker images -q --filter 'dangling=true')

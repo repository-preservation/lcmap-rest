@@ -25,10 +25,13 @@ shell:
 repl:
 	@lein repl
 
-clean-all: clean docker-clean
+clean-all: clean clean-docs clean-docker
 
 clean:
 	@rm -rf target
 
 include resources/make/docs.mk
 include resources/make/docker.mk
+
+
+

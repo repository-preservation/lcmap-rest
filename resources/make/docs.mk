@@ -12,15 +12,8 @@ LOCAL_DOCS_PORT = 5099
 $(DOCS_GIT_HACK):
 	-@ln -s $(ROOT_DIR)/.git $(DOCS_DIR)
 
-devdocs: docs
-	@echo "\nRunning docs server on http://$(LOCAL_DOCS_HOST):$(LOCAL_DOCS_PORT)..."
-	@lein simpleton $(LOCAL_DOCS_PORT) file :from $(CURRENT)
-
-docs: clean-docs local-docs
-
-local-docs: pre-docs clojure-docs
-
-prod-docs: clean-docs $(DOCS_GIT_HACK) local-docs
+clean-docs:
+	@rm -rf $(CURRENT)
 
 pre-docs:
 	@echo "\nBuilding docs ...\n"
@@ -28,8 +21,15 @@ pre-docs:
 clojure-docs:
 	@lein codox
 
-clean-docs: clean
-	@rm -rf $(CURRENT)
+local-docs: pre-docs clojure-docs
+
+docs: clean-docs local-docs
+
+devdocs: docs
+	@echo "\nRunning docs server on http://$(LOCAL_DOCS_HOST):$(LOCAL_DOCS_PORT)..."
+	@lein simpleton $(LOCAL_DOCS_PORT) file :from $(CURRENT)
+
+prod-docs: clean-docs $(DOCS_GIT_HACK) local-docs
 
 setup-temp-repo: $(DOCS_GIT_HACK)
 	@echo "\nSetting up temporary git repos for gh-pages ...\n"
