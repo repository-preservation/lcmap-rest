@@ -1,0 +1,15 @@
+#!/bin/bash
+
+/sbin/iptables -A INPUT -p tcp -i eth0 --dport 1077 -j REJECT --reject-with tcp-reset
+
+IP=$(ip -o -f inet addr|grep eth0|awk '{print $4}'|awk -F / '{print $1}')
+
+echo
+echo
+echo "**********************************************"
+echo
+echo "Starting LCMAP NGINX server on $IP ..."
+echo
+echo
+
+/usr/sbin/nginx -g "daemon off;"

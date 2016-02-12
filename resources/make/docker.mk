@@ -1,8 +1,10 @@
 DOCKER_ORG=usgseros
 LCMAP_REST_REPO=ubuntu-lcmap-rest
 LCMAP_AUTH_REPO=ubuntu-lcmap-test-auth-server
+LCMAP_NGINX_REPO=debian-lcmap-nginx
 DOCKERHUB_LCMAP_REST = $(DOCKER_ORG)/$(LCMAP_REST_REPO):$(VERSION)
 DOCKERHUB_LCMAP_TEST_AUTH = $(DOCKER_ORG)/$(LCMAP_AUTH_REPO):$(VERSION)
+DOCKERHUB_LCMAP_NGINX = $(DOCKER_ORG)/$(LCMAP_NGINX_REPO):$(VERSION)
 LCMAP_REST_DEPLOY = lcmap-rest-deploy:$(VERSION)
 
 .PHONY: docker
@@ -44,6 +46,10 @@ docker-auth-build:
 	-@rm -rf $(BUILD_DIR)/target
 	@docker build -t $(DOCKERHUB_LCMAP_TEST_AUTH) $(CONTEXT)
 	@rm -rf $(BUILD_DIR)
+
+docker-nginx-build: CONTEXT=./docker/nginx
+docker-nginx-build:
+	@docker build -t $(DOCKERHUB_LCMAP_NGINX) $(CONTEXT)
 
 docker-server:
 	@docker run \
@@ -101,7 +107,16 @@ docker-auth-bash:
 docker-auth-publish:
 	@docker push $(DOCKERHUB_LCMAP_TEST_AUTH)
 
-docker-publish: docker-server-publish docker-auth-publish
+docker-nginx:
+	@docker run --privileged -t -p 80:80 $(DOCKERHUB_LCMAP_NGINX)
+
+docker-nginx-bash:
+	@docker run --privileged -it --entrypoint=/bin/bash $(DOCKERHUB_LCMAP_NGINX) -s
+
+docker-nginx-publish:
+	@docker push $(DOCKERHUB_LCMAP_NGINX)
+
+docker-publish: docker-server-publish docker-auth-publish docker-nginx-publish
 
 dockerhub: docker docker-publish
 
