@@ -3,10 +3,11 @@ LCMAP_REST_REPO=ubuntu-lcmap-rest
 LCMAP_AUTH_REPO=ubuntu-lcmap-test-auth-server
 DOCKERHUB_LCMAP_REST = $(DOCKER_ORG)/$(LCMAP_REST_REPO):$(VERSION)
 DOCKERHUB_LCMAP_TEST_AUTH = $(DOCKER_ORG)/$(LCMAP_AUTH_REPO):$(VERSION)
+LCMAP_REST_DEPLOY = lcmap-rest-deploy:$(VERSION)
 
 .PHONY: docker
 
-docker: docker-auth-build docker-server-build
+docker: docker-auth-build docker-server-build docker-nginx-build
 
 docker-server-build: CONTEXT=./docker/lcmap-rest-server
 docker-server-build: BUILD_DIR=$(CONTEXT)/build
@@ -23,6 +24,16 @@ docker-server-build:
 	@cp -r ../lcmap-client-clj $(BUILD_DIR)/checkouts/
 	@docker build -t $(DOCKERHUB_LCMAP_REST) $(CONTEXT)
 	@rm -rf $(BUILD_DIR)
+
+docker-deploy-build: CONTEXT=./docker/lcmap-rest-deploy
+docker-deploy-build: BUILD_DIR=$(CONTEXT)/build
+docker-deploy-build:
+	-@mkdir -p $(BUILD_DIR)
+	@rm -rf $(BUILD_DIR)/*
+	@cp ~/.usgs/lcmap.ini $(BUILD_DIR)
+	@docker build -t $(LCMAP_REST_DEPLOY) $(CONTEXT)
+	@rm -rf $(BUILD_DIR)
+
 
 docker-auth-build: CONTEXT=./docker/test-auth-server
 docker-auth-build: BUILD_DIR=$(CONTEXT)/build
@@ -71,6 +82,15 @@ docker-server-repl:
 	-e "LCMAP_CONTENT_TYPE=json" \
 	-it --entrypoint=/lcmap-rest/bin/repl \
 	$(DOCKERHUB_LCMAP_REST)
+
+docker-deploy:
+	@docker run -t $(LCMAP_REST_DEPLOY)
+
+docker-deploy-bash:
+	@docker run -it --entrypoint=/bin/bash $(LCMAP_REST_DEPLOY) -s
+
+docker-deploy-repl:
+	@docker run -it --entrypoint=/lcmap-rest/bin/repl $(LCMAP_REST_DEPLOY)
 
 docker-auth:
 	@docker run -t $(DOCKERHUB_LCMAP_TEST_AUTH)
