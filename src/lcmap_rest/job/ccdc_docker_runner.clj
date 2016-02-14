@@ -12,7 +12,7 @@
 (defn exec-docker-run
   ""
   [[job-id row col in-dir out-dir scene-list verbose]]
-  (let [verbose-flag (util/make-flag "--verbose" nil :unary true)
+  (let [verbose-flag (util/make-flag "--verbose" verbose :unary true)
         in-dir-flag (util/make-flag "--inDir" in-dir)
         out-dir-flag (util/make-flag "--outDir" out-dir)
         row-flag (util/make-flag "--row" row)
