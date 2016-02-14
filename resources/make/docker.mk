@@ -6,6 +6,7 @@ DOCKERHUB_LCMAP_REST = $(DOCKER_ORG)/$(LCMAP_REST_REPO):$(VERSION)
 DOCKERHUB_LCMAP_TEST_AUTH = $(DOCKER_ORG)/$(LCMAP_AUTH_REPO):$(VERSION)
 DOCKERHUB_LCMAP_NGINX = $(DOCKER_ORG)/$(LCMAP_NGINX_REPO):$(VERSION)
 LCMAP_REST_DEPLOY = lcmap-rest-deploy:$(VERSION)
+LCMAP_REST_CCDC_DEPLOY = lcmap-rest-ccdc-deploy:$(VERSION)
 
 .PHONY: docker
 
@@ -36,6 +37,14 @@ docker-deploy-build:
 	@docker build -t $(LCMAP_REST_DEPLOY) $(CONTEXT)
 	@rm -rf $(BUILD_DIR)
 
+docker-ccdc-deploy-build: CONTEXT=./docker/lcmap-rest-ccdc-deploy
+docker-ccdc-deploy-build: BUILD_DIR=$(CONTEXT)/build
+docker-ccdc-deploy-build:
+	-@mkdir -p $(BUILD_DIR)
+	@rm -rf $(BUILD_DIR)/*
+	@cp ~/.usgs/lcmap.ini $(BUILD_DIR)
+	@docker build -t $(LCMAP_REST_CCDC_DEPLOY) $(CONTEXT)
+	@rm -rf $(BUILD_DIR)
 
 docker-auth-build: CONTEXT=./docker/test-auth-server
 docker-auth-build: BUILD_DIR=$(CONTEXT)/build
@@ -97,6 +106,15 @@ docker-deploy-bash:
 
 docker-deploy-repl:
 	@docker run -it --entrypoint=/lcmap-rest/bin/repl $(LCMAP_REST_DEPLOY)
+
+docker-ccdc-deploy:
+	@docker run -t $(LCMAP_REST_CCDC_DEPLOY)
+
+docker-ccdc-deploy-bash:
+	@docker run -it --entrypoint=/bin/bash $(LCMAP_REST_CCDC_DEPLOY) -s
+
+docker-ccdc-deploy-repl:
+	@docker run -it --entrypoint=/lcmap-rest/bin/repl $(LCMAP_REST_CCDC_DEPLOY)
 
 docker-auth:
 	@docker run -t $(DOCKERHUB_LCMAP_TEST_AUTH)
