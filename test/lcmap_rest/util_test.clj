@@ -23,5 +23,5 @@
 (deftest make-flag-test
   (are [a b] (= a b)
     (util/make-flag "--help" nil :unary? true) "--help"
-    (util/make-flag "--result" nil) ""
+    (util/make-flag "--result" nil) nil
     (util/make-flag "--result" 3.0) "--result 3.0"))

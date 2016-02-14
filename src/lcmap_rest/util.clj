@@ -70,5 +70,5 @@
   [flag value & {:keys [unary?] :or {unary? false}}]
   (cond
     unary? flag
-    (nil? value) ""
+    (nil? value) nil
     :else (format "%s %s" flag value)))

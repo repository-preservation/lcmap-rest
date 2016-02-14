@@ -23,10 +23,11 @@
         row-flag (util/make-flag "--row" row)
         col-flag (util/make-flag "--col" col)
         scene-list-flag (util/make-flag "--sceneList" scene-list)
-        cmd ["/usr/bin/sudo" "/usr/bin/docker"
-             "run" "-t" docker-tag
-             row-flag col-flag in-dir-flag out-dir-flag scene-list-flag
-             verbose-flag]
+        cmd (remove nil? ["/usr/bin/sudo"
+                          "/usr/bin/docker"
+                          "run" "-t" docker-tag
+                          row-flag col-flag in-dir-flag out-dir-flag
+                          scene-list-flag verbose-flag])
         result @(exec/sh cmd)]
     (case (:exit result)
       0 (:out result)
