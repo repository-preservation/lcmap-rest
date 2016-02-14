@@ -8,7 +8,8 @@
             [lcmap-rest.api.jobs.ccdc]
             [lcmap-rest.api.jobs.ccdc-docker-process]
             [lcmap-rest.api.jobs.sample-docker-process]
-            [lcmap-rest.api.jobs.sample-os-process]))
+            [lcmap-rest.api.jobs.sample-os-process]
+            [lcmap-rest.api.jobs.sample-piped-processes]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -26,7 +27,8 @@
   lcmap-rest.api.jobs.ccdc/routes
   lcmap-rest.api.jobs.ccdc-docker-process/routes
   lcmap-rest.api.jobs.sample-docker-process/routes
-  lcmap-rest.api.jobs.sample-os-process/routes)
+  lcmap-rest.api.jobs.sample-os-process/routes
+  lcmap-rest.api.jobs.sample-piped-processes/routes)
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
