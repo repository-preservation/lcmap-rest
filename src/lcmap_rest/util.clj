@@ -62,6 +62,20 @@
       (ring/response)
       (ring/status status)))
 
+(defn make-bool
+  ""
+  [input]
+  (case input
+    0 false
+    "0" false
+    false false
+    "false" false
+    :false false
+    nil false
+    "nil" false
+    :nil false
+    true))
+
 (defn make-flag
   "There are three cases we want to handle for command line options:
   * a flag that takes a value
@@ -69,6 +83,8 @@
   * a flag which should not be passed, since no value was given"
   [flag value & {:keys [unary?] :or {unary? false}}]
   (cond
-    unary? flag
+    unary? (if (make-bool value)
+             flag
+             nil)
     (nil? value) nil
     :else (format "%s %s" flag value)))

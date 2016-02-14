@@ -20,8 +20,30 @@
     (util/get-args-hash "model-name" :arg-1 "a" "b" "c" :arg-2 [1 2 3])
     "643eea8614e1118b4bd24bbdffef0d51"))
 
+(deftest make-bool-test
+  (are [a b] (= a b)
+    (util/make-bool 0) false
+    (util/make-bool "0") false
+    (util/make-bool false) false
+    (util/make-bool "false") false
+    (util/make-bool :false) false
+    (util/make-bool nil) false
+    (util/make-bool "nil") false
+    (util/make-bool :nil) false
+    (util/make-bool 1) true
+    (util/make-bool "1") true
+    (util/make-bool true) true
+    (util/make-bool "true") true
+    (util/make-bool :true) true
+    (util/make-bool :something) true
+    (util/make-bool "data") true
+    (util/make-bool :nil) false))
+
 (deftest make-flag-test
   (are [a b] (= a b)
-    (util/make-flag "--help" nil :unary? true) "--help"
+    (util/make-flag "--help" nil :unary? true) nil
+    (util/make-flag "--help" false :unary? true) nil
+    (util/make-flag "--help" true :unary? true) "--help"
+    (util/make-flag "--help" "something" :unary? true) "--help"
     (util/make-flag "--result" nil) nil
-    (util/make-flag "--result" 3.0) "--result 3.0"))
+    (util/make-flag "--result" 3.14) "--result 3.14"))
