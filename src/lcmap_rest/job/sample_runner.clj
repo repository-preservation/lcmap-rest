@@ -1,4 +1,8 @@
-(ns lcmap-rest.job.sample-runner
+(ns ^{:doc
+  "This sample runner demonstrates kicking off a job that is executed on the
+  system local to the LCMAP REST server, capturing standard out, with a
+  synthetic (and variable) delay introduced to show asynchronous results."}
+  lcmap-rest.job.sample-runner
   (:require [clojure.tools.logging :as log]
             [clj-commons-exec :as exec]
             [lcmap-rest.job.tracker :as jt]))
