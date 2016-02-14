@@ -25,6 +25,8 @@
             [byte-streams]
             [clj-time.coerce :as time]
             [clojure.data.codec.base64 :as b64]
+            ;; shell execution
+            [clj-commons-exec :as exec]
             ;; api
             [lcmap-rest.app :as app]
             [lcmap-rest.components :as components]
