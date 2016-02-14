@@ -13,11 +13,11 @@
 (defn exec-pipe-run
   ""
   [[job-id line-number unique-count bytes words lines]]
-  (let [number-flag (util/make-flag "--number" line-number :unary true)
-        count-flag (util/make-flag "--count" unique-count :unary true)
-        bytes-flag (util/make-flag "--bytes" bytes)
-        words-flag (util/make-flag "--words" words)
-        lines-flag (util/make-flag "--lines" lines)
+  (let [number-flag (util/make-flag "--number" line-number :unary? true)
+        count-flag (util/make-flag "--count" unique-count :unary? true)
+        bytes-flag (util/make-flag "--bytes" bytes :unary? true)
+        words-flag (util/make-flag "--words" words :unary? true)
+        lines-flag (util/make-flag "--lines" lines :unary? true)
         cmd1 (remove nil? ["/bin/cat" number-flag "/etc/hosts"])
         cmd2 (remove nil? ["/usr/bin/uniq" count-flag])
         cmd3 (remove nil? ["/usr/bin/wc" bytes-flag words-flag lines-flag])
