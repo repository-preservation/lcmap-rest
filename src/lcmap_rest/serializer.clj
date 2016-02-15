@@ -13,14 +13,26 @@
 (extend java.util.Date json/JSONWriter
     {:-write encode-java-util-date})
 
-;;; Serialize byte buffer
+;;; Serialize heap byte buffer
 ;;; We don't actually need this if we do blob->varchar on the blob fields
 (defn- serialize-java-nio-heapbytebuffer [x #^StringWriter out]
-  (let [str-val (new String (.array x))]
+  (let [str-val (String. (.array x))]
     (json/json-str {:heap-byte-buffer str-val})))
 
+(defn- heap-byte-buffer->unicode
+  ""
+  [x #^StringWriter out]
+  (let [str-val (String. (.array x))]
+    (json/json-str {:heap-byte-buffer str-val})))
+
+(defn- heap-byte-buffer->base64
+  ""
+  [x #^StringWriter out]
+  (let [str-val (b64/encoding-transfer x out)]))
+
 (extend java.nio.HeapByteBuffer json/JSONWriter
-    {:-write serialize-java-nio-heapbytebuffer})
+        {:-write serialize-java-nio-heapbytebuffer}
+        #_{:-write heap-byte-buffer->base64})
 
 ;;; JSON Reader
 
