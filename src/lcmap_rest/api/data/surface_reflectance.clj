@@ -8,7 +8,8 @@
             [clj-time.format :as time-fmt])
   (:import [org.apache.commons.codec.binary Base64]))
 
-;; this mutates the buffer by reading it...
+;; XXX Determine where to place this function. It is probably best
+;; to place this in lcmap-rest.util...
 (defn base64-encode [src-data]
   (let [size (- (.limit src-data) (.position src-data))
         copy (byte-array size)]
