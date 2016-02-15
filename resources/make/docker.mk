@@ -2,11 +2,14 @@ DOCKER_ORG=usgseros
 LCMAP_REST_REPO=ubuntu-lcmap-rest
 LCMAP_AUTH_REPO=ubuntu-lcmap-test-auth-server
 LCMAP_NGINX_REPO=debian-lcmap-nginx
+LCMAP_JUPYTER_REPO=ubuntu-gis-notebooks
 DOCKERHUB_LCMAP_REST = $(DOCKER_ORG)/$(LCMAP_REST_REPO):$(VERSION)
 DOCKERHUB_LCMAP_TEST_AUTH = $(DOCKER_ORG)/$(LCMAP_AUTH_REPO):$(VERSION)
 DOCKERHUB_LCMAP_NGINX = $(DOCKER_ORG)/$(LCMAP_NGINX_REPO):$(VERSION)
+DOCKERHUB_LCMAP_JUPYTER = $(DOCKER_ORG)/$(LCMAP_JUPYTER_REPO):$(VERSION)
 LCMAP_REST_DEPLOY = lcmap-rest-deploy:$(VERSION)
 LCMAP_REST_CCDC_DEPLOY = lcmap-rest-ccdc-deploy:$(VERSION)
+LCMAP_JUPYTER_DEPLOY = lcmap-jupyter-deploy:$(VERSION)
 
 .PHONY: docker
 
@@ -59,6 +62,10 @@ docker-auth-build:
 docker-nginx-build: CONTEXT=./docker/nginx
 docker-nginx-build:
 	@docker build -t $(DOCKERHUB_LCMAP_NGINX) $(CONTEXT)
+
+docker-jupyter-build: CONTEXT=./docker/lcmap-jupyter-deploy
+docker-jupyter-build:
+	@docker build -t $(DOCKERHUB_LCMAP_JUPYTER) $(CONTEXT)
 
 docker-server:
 	@docker run \
@@ -115,6 +122,15 @@ docker-ccdc-deploy-bash:
 
 docker-ccdc-deploy-repl:
 	@docker run -it --entrypoint=/lcmap-rest/bin/repl $(LCMAP_REST_CCDC_DEPLOY)
+
+docker-jupyter-deploy:
+	@docker run -t $(LCMAP_JUPYTER_DEPLOY)
+
+docker-jupyter-deploy-bash:
+	@docker run -it --entrypoint=/bin/bash $(LCMAP_JUPYTER_DEPLOY) -s
+
+docker-jupyter-deploy-shell:
+	@docker run -it --entrypoint=jupyter $(LCMAP_JUPYTER_DEPLOY)
 
 docker-auth:
 	@docker run -t $(DOCKERHUB_LCMAP_TEST_AUTH)
