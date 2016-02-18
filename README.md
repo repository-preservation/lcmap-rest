@@ -172,6 +172,9 @@ TBD
 
 TBD
 
+
 # License [&#x219F;](#contents)
+
+Copyright © 2015-2016, USGS EROS
 
 NASA Open Source Agreement, Version 1.3
