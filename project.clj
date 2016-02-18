@@ -1,6 +1,8 @@
 (defproject gov.usgs.eros/lcmap-rest "0.0.1"
   :description "LCMAP REST Service API"
   :url "https://github.com/USGS-EROS/lcmap-rest"
+  :license {:name "NASA Open Source Agreement, Version 1.3"
+            :url "http://ti.arc.nasa.gov/opensource/nosa/"}
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/core.match "0.3.0-alpha4"]
                  [org.clojure/data.codec "0.1.0"]

@@ -14,7 +14,7 @@ considered a work-in-progress.
 * [Deployment](#deployment-)
   * [Testing & Staging](#testing--staging-)
   * [Production](#production-)
-
+* [License](#license-)
 
 ## About [&#x219F;](#contents)
 
@@ -172,3 +172,6 @@ TBD
 
 TBD
 
+# License [&#x219F;](#contents)
+
+NASA Open Source Agreement, Version 1.3
