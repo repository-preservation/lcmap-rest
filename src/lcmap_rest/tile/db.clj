@@ -52,10 +52,11 @@
                                :x
                                :y
                                :acquired
+                               :source
                                :data)
         _       (cql/use-keyspace conn ks)
         results (cql/select conn table columns where)]
-    (map #(merge spec %) results)))
+    results))
 
 (defn inverse-matrix
   "Transform the (x,y) coordinate in the projection coordinate system (defined
