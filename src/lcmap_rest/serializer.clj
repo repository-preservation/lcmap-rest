@@ -25,14 +25,18 @@
   (let [str-val (String. (.array x))]
     (json/json-str {:heap-byte-buffer str-val})))
 
-(defn- heap-byte-buffer->base64
+(defn- byte-buffer->base64
   ""
   [x #^StringWriter out]
   (let [str-val (b64/encoding-transfer x out)]))
 
 (extend java.nio.HeapByteBuffer json/JSONWriter
-        {:-write serialize-java-nio-heapbytebuffer}
-        #_{:-write heap-byte-buffer->base64})
+        #_{:-write serialize-java-nio-heapbytebuffer}
+        {:-write byte-buffer->base64})
+
+(extend java.nio.ByteBuffer json/JSONWriter
+        #_{:-write serialize-java-nio-heapbytebuffer}
+        {:-write byte-buffer->base64})
 
 ;;; JSON Reader
 

@@ -8,7 +8,8 @@
             [clj-time.format :as time-fmt])
   (:import [org.apache.commons.codec.binary Base64]))
 
-;; this mutates the buffer by reading it...
+;; XXX Determine where to place this function. It is probably best
+;; to place this in lcmap-rest.util...
 (defn base64-encode [src-data]
   (let [size (- (.limit src-data) (.position src-data))
         copy (byte-array size)]
@@ -23,7 +24,7 @@
    {:links
     (map (fn [x]
            (str context x))
-         ["/tiles" "/rod"])}))
+         ["/tiles"])}))
 
 (defn point->pair
   "Convert a point x,y into a pair (a seq of ints)"
@@ -42,17 +43,23 @@
   [band point time system]
   (let [[x y]   (point->pair point)
         times   (iso8601->datetimes time)
+        spec    (tile-db/find-spec band system)
         results (tile-db/find-tiles band x y times system)
         encoded (map #(assoc % :data (base64-encode (% :data))) results)]
-    (log/info band x y times (count results))
-    (response {:result encoded})))
+    (log/info "GET tiles" band x y times (count results))
+    (response {:result {:spec spec :tiles encoded}})))
 
-(defn get-rod
-  ""
+(comment "Not ready for use."
+  (defn get-rod
+  "NOT IMPLEMENTED"
   [band point time system]
-  (let [[x y] (map #(Integer/parseInt %) (re-seq #"\-?\d+" point))
-        results (tile-db/find-rod band x y time system)]
-    (map #(select-keys % [:ubid :x :y :acquired :data]) results)))
+  (let [[x y]   (point->pair point)
+        times   (iso8601->datetimes time)
+        spec    (tile-db/find-spec band system)
+        results (tile-db/find-rod band x y times system)
+        encoded (map #(assoc % :data (base64-encode (% :data))) results)]
+    (log/info "GET rod" band x y times (count results))
+    (response {:result {:spec spec :rod []}}))))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -61,9 +68,10 @@
     (GET "/" request
       (get-resources (:uri request)))
     (GET "/tiles" [band point time :as request]
-      (get-tiles band point time (httpd/tiledb-key request)))
-    (GET "/rod" [band point time :as request]
-      (get-rod point time band request (httpd/tiledb-key request)))))
+         (get-tiles band point time (httpd/tiledb-key request)))
+    (comment "not ready for use" ;; XXX Respond with appropriate status code?
+      (GET "/rod" [band point time :as request]
+         (get-rod band point time (httpd/tiledb-key request))))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
