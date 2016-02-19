@@ -1,6 +1,6 @@
 (defproject gov.usgs.eros/lcmap-rest "0.0.1"
   :description "LCMAP REST Service API"
-  :url "https://github.com/USGS-EROS/lcmap-rest"
+  :url "https://github.com/USGS-EROS/lcmap.rest"
   :license {:name "NASA Open Source Agreement, Version 1.3"
             :url "http://ti.arc.nasa.gov/opensource/nosa/"}
   :dependencies [[org.clojure/clojure "1.7.0"]
@@ -66,10 +66,10 @@
   :source-paths ["src" "test/support/auth-server/src"]
   :java-agents [[co.paralleluniverse/quasar-core "0.7.3"]]
   :jvm-opts ["-Dco.paralleluniverse.fibers.detectRunawayFibers=false"]
-  :repl-options {:init-ns lcmap-rest.dev}
-  :main lcmap-rest.app
+  :repl-options {:init-ns lcmap.rest.dev}
+  :main lcmap.rest.app
   :target-path "target/%s"
-  :codox {:namespaces [#"^lcmap-rest\."]
+  :codox {:namespaces [#"^lcmap.rest\."]
           :output-path "docs/master/current"
           :doc-paths ["docs/source"]
           :metadata {:doc/format :markdown
@@ -77,7 +77,7 @@
   ;; List the namespaces whose log levels we want to control; note that if we
   ;; add more dependencies that are chatty in the logs, we'll want to add them
   ;; here.
-  :logging-namespaces [lcmap-rest
+  :logging-namespaces [lcmap.rest
                        lcmap-client
                        com.datastax.driver
                        co.paralleluniverse]

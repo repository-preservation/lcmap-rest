@@ -1,1 +1,1 @@
-(ns lcmap-rest.routes-test)
+(ns lcmap.rest.routes-test)

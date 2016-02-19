@@ -30,7 +30,7 @@ functionality necessary to support the public service.
 
 The server code is slowly being updated with docstrings. Generating documentation for the server is available here:
 
-* [http://usgs-eros.github.io/lcmap-rest/current](http://usgs-eros.github.io/lcmap-rest/current/)
+* [http://usgs-eros.github.io/lcmap.rest/current](http://usgs-eros.github.io/lcmap.rest/current/)
 
 However, it may be of more interest and use to view the client documentation for the LCMAP service:
 
@@ -71,14 +71,14 @@ curl -v -X POST \
 
 ## Structure [&#x219F;](#contents)
 
-The codebase for lcmap-rest is structured along the following lines:
+The codebase for lcmap.rest is structured along the following lines:
 
-* ``lcmap-rest.api`` - This contains all the code that actually returns HTTP
+* ``lcmap.rest.api`` - This contains all the code that actually returns HTTP
   response data. This is also where all the service routes are defined. Actual
   "business logic" is in the rest of the codebase. If you find yourself adding
   new features with more than just Ring repoonse and status calls, then you
-  need to reorganize that logic someplace other than ``lcmap-rest.api``. Under
-  the ``lcmap-rest.api`` namespace we have the following:
+  need to reorganize that logic someplace other than ``lcmap.rest.api``. Under
+  the ``lcmap.rest.api`` namespace we have the following:
     * ``compatibility`` - supports alternate APIs, e.g., WMTS
     * ``data`` - resources for querying stored data
     * ``jobs`` - resources for submitting, checking, and updating jobs
@@ -88,18 +88,18 @@ The codebase for lcmap-rest is structured along the following lines:
       to that used in functional programming languages (composition, map,
       reduce, etc.)
     * ``users`` - resources for user data
-* ``lcmap-rest.auth`` - Logic for logging in and out of the LCMAP system
-* ``lcmap-rest.components`` - This is where all major parts of the system are
+* ``lcmap.rest.auth`` - Logic for logging in and out of the LCMAP system
+* ``lcmap.rest.components`` - This is where all major parts of the system are
   defined so that they may be easily started and stopped in the correct order.
   Example components are application configuration, logging, database
   connections, event services, and the REST services HTTP daemon.
-* ``lcmap-rest.dev`` - The default module for development mode; loaded
+* ``lcmap.rest.dev`` - The default module for development mode; loaded
   automatically when one executes ``lein repl``
-* ``lcmap-rest.exceptions`` - Custom LCMAP exceptions
-* ``lcmap-rest.job`` - Job tracking business logic
-* ``lcmap-rest.logger`` - Logging support setup
-* ``lcmap-rest.user`` - User management logic and storage functions
-* ``lcmap-rest.util`` - Utility functions
+* ``lcmap.rest.exceptions`` - Custom LCMAP exceptions
+* ``lcmap.rest.job`` - Job tracking business logic
+* ``lcmap.rest.logger`` - Logging support setup
+* ``lcmap.rest.user`` - User management logic and storage functions
+* ``lcmap.rest.util`` - Utility functions
 
 
 ## Development [&#x219F;](#contents)
@@ -120,16 +120,16 @@ To run the system in the REPL, simply start the REPL:
 $ lein repl
 ```
 
-This will drop you into the ``lcmap-rest.dev`` namespace:
+This will drop you into the ``lcmap.rest.dev`` namespace:
 ```clojure
-lcmap-rest.dev=>
+lcmap.rest.dev=>
 ```
 
 From here you can start the system components and also reset them after changes
-to lcmap-rest files:
+to lcmap.rest files:
 
 ```clojure
-lcmap-rest.dev=> (run)
+lcmap.rest.dev=> (run)
 17:14:29.863 [nREPL-worker-6] INFO  l-r.c.config - Setting up LCMAP configuration ...
 17:14:29.864 [nREPL-worker-6] INFO  l-r.c.config - Using lein profile: dev
 17:14:29.864 [nREPL-worker-6] INFO  l-r.c.logger - Setting up LCMAP logging ...
@@ -141,8 +141,8 @@ Any subsequent changes to source files (including ``project.clj``) can be
 brought into the REPL by resetting (reloading, rereading, etc.):
 
 ```clojure
-lcmap-rest.dev=> (reset)
-:reloading (lcmap-rest.util lcmap-rest.job.db)
+lcmap.rest.dev=> (reset)
+:reloading (lcmap.rest.util lcmap.rest.job.db)
 ```
 
 A quick test for this is to change the ``log-level`` in ``project.clj`` and

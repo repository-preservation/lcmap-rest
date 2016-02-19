@@ -1,6 +1,6 @@
-(ns lcmap-rest.util-test
+(ns lcmap.rest.util-test
   (:require [clojure.test :refer :all]
-            [lcmap-rest.util :as util]))
+            [lcmap.rest.util :as util]))
 
 (deftest parse-accept-test
   (are [a b] (= a b)

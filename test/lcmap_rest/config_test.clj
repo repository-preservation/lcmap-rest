@@ -1,6 +1,6 @@
-(ns lcmap-rest.config-test
+(ns lcmap.rest.config-test
   (:require [clojure.test :refer :all]
-            [lcmap-rest.config :as config]))
+            [lcmap.rest.config :as config]))
 
 (deftest make-env-name-test
   (is (= "LCMAP_SERVER" (config/make-env-name)))
