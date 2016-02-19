@@ -11,9 +11,11 @@
                  [org.clojure/core.memoize "0.5.8"]
                  ;; Componentization
                  [com.stuartsierra/component "0.3.0"]
-                 ;; Logging and Error Handling
+                 ;; Logging and Error Handling -- note that we need to explicitly pull
+                 ;; in a version of slf4j so that we don't get conflict messages on the
+                 ;; console
                  [twig "0.1.4"]
-                 [ring.middleware.logger "0.5.0"]
+                 [ring.middleware.logger "0.5.0":exclusions [org.slf4j/slf4j-log4j12]]
                  [dire "0.5.3"]
                  [slingshot "0.12.2"]
                  ;; REST

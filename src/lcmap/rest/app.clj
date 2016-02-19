@@ -1,12 +1,13 @@
 (ns lcmap.rest.app
   (:require [clojure.tools.logging :as log]
-            [com.stuartsierra.component :as component]
             [org.httpkit.server :as httpkit]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.middleware.logger :as logger]
             [compojure.core :refer [defroutes]]
             [compojure.response :as response]
+            [com.stuartsierra.component :as component]
+            [twig.core :as twig]
             [lcmap.rest.api.routes :as routes]
             [lcmap.rest.components :as components]
             [lcmap.rest.util :as util])
@@ -62,6 +63,9 @@
 
   'lein run' will use this as well as 'java -jar'."
   [& args]
+  ;; Set the initial log-level before the components set the log-levels for
+  ;; the configured namespaces
+  (twig/set-level! ['lcmap] :info)
   (let [system (components/init #'app)
         local-ip  (.getHostAddress (java.net.InetAddress/getLocalHost))]
     (log/info "LCMAP REST server's local IP address:" local-ip)

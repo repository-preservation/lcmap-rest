@@ -29,6 +29,11 @@ clean-all: clean clean-docs clean-docker
 
 clean:
 	@rm -rf target
+	@rm -f pom.xml
+
+deps-tree:
+	@lein pom
+	@mvn dependency:tree
 
 include resources/make/docs.mk
 include resources/make/docker.mk
