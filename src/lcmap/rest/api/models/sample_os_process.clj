@@ -6,8 +6,8 @@
             [lcmap.rest.api.jobs.sample-os-process :refer [get-result-path
                                                            get-job-result
                                                            result-table]]
-            [lcmap-client.models.sample-os-process]
-            [lcmap-client.status-codes :as status]
+            [lcmap.client.models.sample-os-process]
+            [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.job.db :as db]
             [lcmap.rest.job.sample-runner :as sample-runner]
@@ -52,7 +52,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.models.sample-os-process/context []
+  (context lcmap.client.models.sample-os-process/context []
     (POST "/" [token delay year :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
       (run-model (httpd/jobdb-key request)

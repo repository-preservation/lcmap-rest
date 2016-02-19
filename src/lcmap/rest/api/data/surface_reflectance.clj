@@ -4,7 +4,7 @@
             [ring.util.response :refer [response]]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.tile.db :as tile-db]
-            [lcmap-client.data.surface-reflectance]
+            [lcmap.client.data.surface-reflectance]
             [clj-time.format :as time-fmt])
   (:import [org.apache.commons.codec.binary Base64]))
 
@@ -58,7 +58,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.data.surface-reflectance/context []
+  (context lcmap.client.data.surface-reflectance/context []
     (GET "/" request
       (get-resources (:uri request)))
     (GET "/tiles" [band point time :as request]

@@ -13,7 +13,7 @@
             [clojure.string :as string]
             [clojure.tools.logging :as log]
             [leiningen.core.project :as lein-prj]
-            [lcmap-client.config]))
+            [lcmap.client.config]))
 
 (def env-prefix "LCMAP_SERVER")
 
@@ -86,7 +86,7 @@
 (defn get-cfgini [keys]
   (log/debug "\tChecking config/INI for keys ...")
   (let [cfgini-key (make-cfgini-name (or keys []))
-        cfgini-data (lcmap-client.config/get-section "LCMAP Server")
+        cfgini-data (lcmap.client.config/get-section "LCMAP Server")
         value (cfgini-data cfgini-key)]
     (parse-cfgini-var value keys)))
 

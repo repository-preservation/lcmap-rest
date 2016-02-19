@@ -3,8 +3,8 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
-            [lcmap-client.data]
-            [lcmap-client.status-codes :as status]
+            [lcmap.client.data]
+            [lcmap.client.status-codes :as status]
             [lcmap.rest.api.data.surface-reflectance]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -17,7 +17,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.data/context []
+  (context lcmap.client.data/context []
     (GET "/" request
       (get-resources (:uri request))))
   lcmap.rest.api.data.surface-reflectance/routes)

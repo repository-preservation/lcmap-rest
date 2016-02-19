@@ -3,7 +3,7 @@
             [clojure.tools.logging :as log]
             [slingshot.slingshot :refer [throw+]]
             [clj-http.client :as http]
-            [lcmap-client.status-codes :as status]
+            [lcmap.client.status-codes :as status]
             [lcmap.rest.exceptions :as exceptions]
             [lcmap.rest.util :as util]))
 

@@ -6,8 +6,8 @@
             [lcmap.rest.api.jobs.ccdc-docker-process :refer [get-result-path
                                                              get-job-result
                                                              result-table]]
-            [lcmap-client.models.ccdc-docker-process]
-            [lcmap-client.status-codes :as status]
+            [lcmap.client.models.ccdc-docker-process]
+            [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.job.db :as db]
             [lcmap.rest.job.ccdc-docker-runner :as ccdc-docker-runner]
@@ -53,7 +53,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.models.ccdc-docker-process/context []
+  (context lcmap.client.models.ccdc-docker-process/context []
     (POST "/" [token row col in-dir out-dir scene-list verbose :as request]
       ;;(log/debugf "POST request got: %s" request)
       ;;(log/debug "Request data keys in routes:" (keys request))-

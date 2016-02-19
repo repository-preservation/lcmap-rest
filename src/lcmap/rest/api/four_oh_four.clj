@@ -6,7 +6,7 @@
             [compojure.route :as route]
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
-            [lcmap-client.status-codes :as status]))
+            [lcmap.client.status-codes :as status]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

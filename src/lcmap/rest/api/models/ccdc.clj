@@ -2,8 +2,8 @@
   (:require [clojure.tools.logging :as log]
             [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [lcmap-client.models.ccdc]
-            [lcmap-client.status-codes :as status]
+            [lcmap.client.models.ccdc]
+            [lcmap.client.status-codes :as status]
             [lcmap.rest.api.jobs.ccdc :refer [get-result-path
                                               get-job-result
                                               result-table]]
@@ -27,7 +27,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.models.ccdc/context []
+  (context lcmap.client.models.ccdc/context []
     (POST "/" [arg1 arg2 :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
       (run-model (httpd/jobdb-key request)

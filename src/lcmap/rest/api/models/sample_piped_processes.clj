@@ -6,8 +6,8 @@
             [lcmap.rest.api.jobs.sample-piped-processes :refer [get-result-path
                                                                 get-job-result
                                                                 result-table]]
-            [lcmap-client.models.sample-piped-processes]
-            [lcmap-client.status-codes :as status]
+            [lcmap.client.models.sample-piped-processes]
+            [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.job.db :as db]
             [lcmap.rest.job.sample-pipe-runner :as sample-pipe-runner]
@@ -54,7 +54,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.models.sample-piped-processes/context []
+  (context lcmap.client.models.sample-piped-processes/context []
     (POST "/" [token number count bytes words lines :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
       (run-model (httpd/jobdb-key request)

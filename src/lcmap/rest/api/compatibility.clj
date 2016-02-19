@@ -3,8 +3,8 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
-            [lcmap-client.compatibility]
-            [lcmap-client.status-codes :as status]
+            [lcmap.client.compatibility]
+            [lcmap.client.status-codes :as status]
             [lcmap.rest.api.compatibility.wmts]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -17,7 +17,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.compatibility/context []
+  (context lcmap.client.compatibility/context []
     (GET "/" request
       (get-resources (:uri request))))
   ;;lcmap.rest.api.compatibility.wmts/routes

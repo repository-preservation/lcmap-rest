@@ -3,8 +3,8 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
-            [lcmap-client.jobs]
-            [lcmap-client.status-codes :as status]
+            [lcmap.client.jobs]
+            [lcmap.client.status-codes :as status]
             [lcmap.rest.api.jobs.ccdc]
             [lcmap.rest.api.jobs.ccdc-docker-process]
             [lcmap.rest.api.jobs.sample-docker-process]
@@ -21,7 +21,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.jobs/context []
+  (context lcmap.client.jobs/context []
     (GET "/" request
       (get-resources (:uri request))))
   lcmap.rest.api.jobs.ccdc/routes

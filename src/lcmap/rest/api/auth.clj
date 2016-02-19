@@ -4,8 +4,8 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
-            [lcmap-client.auth]
-            [lcmap-client.status-codes :as status]
+            [lcmap.client.auth]
+            [lcmap.client.status-codes :as status]
             [lcmap.rest.auth.usgs :as usgs]
             [lcmap.rest.components.httpd :as httpd]))
 
@@ -24,7 +24,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.auth/context []
+  (context lcmap.client.auth/context []
     (POST "/login" [username password :as request]
       (login (httpd/authcfg-key request) username password))
     ;; XXX once we've got user data being saved in the db, we need to come

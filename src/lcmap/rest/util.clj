@@ -5,7 +5,7 @@
             [ring.util.response :as ring]
             [digest]
             [leiningen.core.project :as lein-prj]
-            [lcmap-client.http :as http])
+            [lcmap.client.http :as http])
   (:import [java.security.MessageDigest]
            [java.math.BigInteger]))
 

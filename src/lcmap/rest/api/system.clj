@@ -5,8 +5,8 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
-            [lcmap-client.status-codes :as status]
-            [lcmap-client.system]
+            [lcmap.client.status-codes :as status]
+            [lcmap.client.system]
             [lcmap.rest.serializer :as serializer]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -85,7 +85,7 @@
 ;; XXX this needs to be protected; see this ticket:
 ;;   https://my.usgs.gov/jira/browse/LCMAP-71
 (defroutes routes
-  (context lcmap-client.system/context []
+  (context lcmap.client.system/context []
     (GET "/" request
       (get-resources (:uri request)))
     ;; XXX add more management resources

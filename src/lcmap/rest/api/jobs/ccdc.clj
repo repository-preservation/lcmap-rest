@@ -3,8 +3,8 @@
             [clojure.core.match :refer [match]]
             [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [lcmap-client.jobs.ccdc]
-            [lcmap-client.status-codes :as status]
+            [lcmap.client.jobs.ccdc]
+            [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.job.db :as db]
             [lcmap.rest.util :as util]))
@@ -18,7 +18,7 @@
 (defn get-result-path
   [result-id]
   (format "%s/%s"
-          lcmap-client.jobs.ccdc/context
+          lcmap.client.jobs.ccdc/context
           result-id))
 
 (defn get-job-resources [request]
@@ -47,7 +47,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap-client.jobs.ccdc/context []
+  (context lcmap.client.jobs.ccdc/context []
     (GET "/" request
       (get-job-resources (:uri request)))
     (GET "/:job-id" [job-id :as request]
