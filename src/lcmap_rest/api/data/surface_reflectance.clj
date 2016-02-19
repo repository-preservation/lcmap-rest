@@ -42,10 +42,11 @@
   [band point time system]
   (let [[x y]   (point->pair point)
         times   (iso8601->datetimes time)
+        spec    (tile-db/find-spec band system)
         results (tile-db/find-tiles band x y times system)
         encoded (map #(assoc % :data (base64-encode (% :data))) results)]
-    (log/info band x y times (count results))
-    (response {:result encoded})))
+    (log/debug "GET tiles" band x y times (count results))
+    (response {:result {:spec spec :tiles encoded}})))
 
 (defn get-rod
   ""
