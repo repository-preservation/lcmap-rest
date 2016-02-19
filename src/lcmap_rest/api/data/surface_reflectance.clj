@@ -45,8 +45,7 @@
         spec    (tile-db/find-spec band system)
         results (tile-db/find-tiles band x y times system)
         encoded (map #(assoc % :data (base64-encode (% :data))) results)]
-    (log/info band x y times (count results))
-    (log/info "GET tiles" band x y times (count results))
+    (log/debug "GET tiles" band x y times (count results))
     (response {:result {:spec spec :tiles encoded}})))
 
 (defn get-rod
