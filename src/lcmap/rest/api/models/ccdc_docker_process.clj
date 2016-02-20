@@ -9,9 +9,9 @@
             [lcmap.client.models.ccdc-docker-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.job.db :as db]
-            [lcmap.rest.job.ccdc-docker-runner :as ccdc-docker-runner]
-            [lcmap.rest.util :as util]))
+            [lcmap.rest.util :as util]
+            [lcmap.see.job.db :as db]
+            [lcmap.see.job.ccdc-docker-runner :as ccdc-docker-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

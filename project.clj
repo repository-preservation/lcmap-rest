@@ -38,11 +38,16 @@
                  [clojurewerkz/cassaforte "2.0.0"]
                  [net.jpountz.lz4/lz4 "1.3.0"]
                  [org.xerial.snappy/snappy-java "1.1.2"]
+                 ;; XXX once lcmap-see is released and is no longer
+                 ;; being used from the local checkouts directory, we will
+                 ;; uncomment the dependancy below and remove the temporary
+                 ;; dependancies below.
+                 ;;[gov.usgs.eros/lcmap-see "0.0.1"]
                  ;; XXX once lcmap-client-clj is released and is no longer
                  ;; being used from the local checkouts directory, we will
                  ;; uncomment the dependancy below and remove the temporary
                  ;; dependancies below.
-                 ;;[gov.usgs.eros/lcmap-client-clj "0.1.0-dev"]
+                 ;;[gov.usgs.eros/lcmap-client-clj "0.0.1"]
                  ;; XXX note that we may still need to explicitly include the
                  ;; Apache Java HTTP client, since the version used by the LCMAP
                  ;; client is more recent than that used by Chas Emerick's
@@ -80,7 +85,8 @@
   ;; add more dependencies that are chatty in the logs, we'll want to add them
   ;; here.
   :logging-namespaces [lcmap.rest
-                       lcmap-client
+                       lcmap.see
+                       lcmap.client
                        com.datastax.driver
                        co.paralleluniverse]
   :profiles {

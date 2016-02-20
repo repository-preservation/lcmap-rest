@@ -9,9 +9,9 @@
             [lcmap.client.models.ccdc-piped-processes]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.job.db :as db]
-            [lcmap.rest.job.ccdc-pipe-runner :as ccdc-pipe-runner]
-            [lcmap.rest.util :as util]))
+            [lcmap.rest.util :as util]
+            [lcmap.see.job.db :as db]
+            [lcmap.see.job.ccdc-pipe-runner :as ccdc-pipe-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

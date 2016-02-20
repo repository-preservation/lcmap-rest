@@ -39,11 +39,12 @@
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
             [lcmap.rest.components.config :as config]
-            [lcmap.rest.components.db :as db]
-            [lcmap.rest.components.eventd :as eventd]
+            [lcmap.rest.components.db :as rest-db]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.components.logger :as logger]
-            [lcmap.rest.components.system :as system]))
+            [lcmap.rest.components.system :as system]
+            [lcmap.see.components.db :as see-db]
+            [lcmap.see.components.eventd :as eventd]))
 
 (defn init [app]
   (component/system-map
@@ -52,11 +53,11 @@
               (logger/new-logger)
               [:cfg])
     :jobdb (component/using
-             (db/new-job-client)
+             (see-db/new-job-client)
              [:cfg
               :logger])
     :tiledb (component/using
-             (db/new-tile-client)
+             (rest-db/new-tile-client)
               [:cfg
                :logger])
     :eventd (component/using

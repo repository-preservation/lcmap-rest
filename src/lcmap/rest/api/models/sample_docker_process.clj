@@ -9,9 +9,9 @@
             [lcmap.client.models.sample-docker-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.job.db :as db]
-            [lcmap.rest.job.sample-docker-runner :as sample-docker-runner]
-            [lcmap.rest.util :as util]))
+            [lcmap.rest.util :as util]
+            [lcmap.see.job.db :as db]
+            [lcmap.see.job.sample-docker-runner :as sample-docker-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
