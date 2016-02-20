@@ -30,7 +30,7 @@ functionality necessary to support the public service.
 
 The server code is slowly being updated with docstrings. Auto-generated documentation for the server is available here:
 
-* [http://usgs-eros.github.io/lcmap.rest/current](http://usgs-eros.github.io/lcmap.rest/current/)
+* [http://usgs-eros.github.io/lcmap-rest/current](http://usgs-eros.github.io/lcmap-rest/current/)
 
 However, it may be of more interest and use to view the client documentation for the LCMAP service:
 
