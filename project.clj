@@ -76,7 +76,9 @@
   :repl-options {:init-ns lcmap.rest.dev}
   :main lcmap.rest.app
   :target-path "target/%s"
-  :codox {:namespaces [#"^lcmap.rest\."]
+  :codox {:project {:name "LCMAP REST Server"
+                    :description "The REST Service for the USGS Land Change Monitoring Assessment and Projection Computational and Analysis Platform"}
+          :namespaces [#"^lcmap.rest\."]
           :output-path "docs/master/current"
           :doc-paths ["docs/source"]
           :metadata {:doc/format :markdown
