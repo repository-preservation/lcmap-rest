@@ -1,5 +1,5 @@
 VERSION=0.0.1
-PROJECT=lcmap.rest
+PROJECT=lcmap-rest
 STANDALONE=target/$(PROJECT)-$(VERSION)-SNAPSHOT-standalone.jar
 ROOT_DIR = $(shell pwd)
 
@@ -37,6 +37,4 @@ deps-tree:
 
 include resources/make/docs.mk
 include resources/make/docker.mk
-
-
 
