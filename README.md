@@ -28,7 +28,7 @@ functionality necessary to support the public service.
 
 ## Documentation [&#x219F;](#contents)
 
-The server code is slowly being updated with docstrings. Generating documentation for the server is available here:
+The server code is slowly being updated with docstrings. Auto-generated documentation for the server is available here:
 
 * [http://usgs-eros.github.io/lcmap.rest/current](http://usgs-eros.github.io/lcmap.rest/current/)
 
