@@ -77,7 +77,7 @@
   :main lcmap.rest.app
   :target-path "target/%s"
   :codox {:project {:name "LCMAP REST Server"
-                    :description "The REST Service for the USGS Land Change Monitoring Assessment and Projection Computational and Analysis Platform"}
+                    :description "The REST Service for the USGS Land Change Monitoring Assessment and Projection (LCMAP) Computation and Analysis Platform"}
           :namespaces [#"^lcmap.rest\."]
           :output-path "docs/master/current"
           :doc-paths ["docs/source"]
