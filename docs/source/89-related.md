@@ -10,9 +10,11 @@
 * [Jupyter notebooks](https://github.com/USGS-EROS/lcmap-test-notebooks) (Github project)
 * [Documentation](http://usgs-eros.github.io/lcmap-client-docs/current/) (all clients)
 
+
 ### LCMAP Infrastructure
 
 * [REST server](https://github.com/USGS-EROS/lcmap-rest) (Github project)
+* [Science Execution](https://github.com/USGS-EROS/lcmap-see) (Github project)
 * [Ingest tool](https://github.com/USGS-EROS/lcmap-data-clj) (Github project)
 * [Dockerfiles](https://github.com/USGS-EROS/lcmap-dockerfiles) (Github project)
 
