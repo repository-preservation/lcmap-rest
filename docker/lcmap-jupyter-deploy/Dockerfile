@@ -7,8 +7,9 @@ RUN wget https://bootstrap.pypa.io/get-pip.py && \
     python3 get-pip.py && \
     python2 get-pip.py && \
     rm get-pip.py
-RUN echo cache bust
+
 RUN git clone https://github.com/USGS-EROS/lcmap-client-py.git
 RUN cd lcmap-client-py && \
     pip3 install -U -rrequirements/base.txt . && \
     pip2 install -U -rrequirements/base.txt .
+COPY build/lcmap-test-notebooks/notebooks/prototype/* /root/notebooks/

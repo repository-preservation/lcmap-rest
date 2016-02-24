@@ -68,7 +68,12 @@ docker-jupyter-build:
 	@docker build -t $(DOCKERHUB_LCMAP_JUPYTER) $(CONTEXT)
 
 docker-jupyter-deploy-build: CONTEXT=./docker/lcmap-jupyter-deploy
+docker-jupyter-deploy-build: BUILD_DIR=$(CONTEXT)/build
 docker-jupyter-deploy-build:
+	@mkdir -p $(BUILD_DIR)
+	@rm -rf $(BUILD_DIR)/*
+	@cd $(BUILD_DIR) && \
+	git clone https://github.com/USGS-EROS/lcmap-test-notebooks.git
 	@docker build -t $(LCMAP_JUPYTER_DEPLOY) $(CONTEXT)
 
 docker-server:
@@ -128,7 +133,8 @@ docker-ccdc-deploy-repl:
 	@docker run -it --entrypoint=/lcmap-rest/bin/repl $(LCMAP_REST_CCDC_DEPLOY)
 
 docker-jupyter-deploy:
-	@docker run -t $(LCMAP_JUPYTER_DEPLOY)
+	@docker run -t -p 1078:1078 $(LCMAP_JUPYTER_DEPLOY) sh -c \
+	"jupyter notebook --no-browser -y --ip=0.0.0.0 --notebook-dir=~/notebooks --port=1078 --log-level=INFO"
 
 docker-jupyter-deploy-bash:
 	@docker run -it --entrypoint=/bin/bash $(LCMAP_JUPYTER_DEPLOY) -s
