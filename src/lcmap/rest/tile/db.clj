@@ -15,8 +15,12 @@
         table   (:spec-table tiledb)
         params  (query/where {:ubid ubid})
         _       (cql/use-keyspace conn "lcmap")
-        spec    (cql/select conn "tile_specs" params)]
-    (first spec)))
+        specs   (cql/select conn "tile_specs" params)
+        spec    (first specs)]
+    ;; XXXs
+    ;; This value is not properly transformed by Cassaforte!!!
+    ;; ...so we have to fake it for now.
+    (assoc spec :data_shape [256 256])))
 
 (defn snap
   "Transform an arbitrary projection system coordinate (x,y) into the
