@@ -13,7 +13,7 @@
                  [ring/ring-devel "1.4.0"]
                  [ring/ring-json "0.4.0"]
                  [ring/ring-defaults "0.1.5"]
-                 [ring.middleware.logger "0.5.0"]
+                 [ring.middleware.logger "0.5.0" :exclusions [org.slf4j/slf4j-log4j12]]
                  [org.apache.httpcomponents/httpclient "4.5"]
                  [com.cemerick/friend "0.2.1"]
                  [leiningen-core "2.5.3"]]
