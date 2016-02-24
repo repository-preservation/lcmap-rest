@@ -67,6 +67,10 @@ docker-jupyter-build: CONTEXT=./docker/lcmap-jupyter-deploy
 docker-jupyter-build:
 	@docker build -t $(DOCKERHUB_LCMAP_JUPYTER) $(CONTEXT)
 
+docker-jupyter-deploy-build: CONTEXT=./docker/lcmap-jupyter-deploy
+docker-jupyter-deploy-build:
+	@docker build -t $(LCMAP_JUPYTER_DEPLOY) $(CONTEXT)
+
 docker-server:
 	@docker run \
 	-e "LCMAP_SERVER_ENV_DB_HOSTS=$(CASSANDRA_HOST):" \
