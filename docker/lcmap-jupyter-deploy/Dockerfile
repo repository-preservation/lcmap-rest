@@ -13,3 +13,6 @@ RUN cd lcmap-client-py && \
     pip3 install -U -rrequirements/base.txt . && \
     pip2 install -U -rrequirements/base.txt .
 COPY build/lcmap-test-notebooks/notebooks/prototype/* /root/notebooks/
+
+RUN mkdir /root/.usgs
+COPY build/lcmap.ini /root/.usgs/

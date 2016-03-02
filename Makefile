@@ -38,3 +38,5 @@ deps-tree:
 include resources/make/docs.mk
 include resources/make/docker.mk
 
+loc:
+	@find src -name "*.clj" -exec cat {} \;|wc -l

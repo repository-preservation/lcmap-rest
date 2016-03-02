@@ -28,6 +28,7 @@ docker-server-build:
 	$(BUILD_DIR)/docker \
 	$(BUILD_DIR)/checkouts/*
 	@cp -r ../lcmap-client-clj $(BUILD_DIR)/checkouts/
+	@cp -r ../lcmap-see $(BUILD_DIR)/checkouts/
 	@docker build -t $(DOCKERHUB_LCMAP_REST) $(CONTEXT)
 	@rm -rf $(BUILD_DIR)
 
@@ -72,6 +73,7 @@ docker-jupyter-deploy-build: BUILD_DIR=$(CONTEXT)/build
 docker-jupyter-deploy-build:
 	@mkdir -p $(BUILD_DIR)
 	@rm -rf $(BUILD_DIR)/*
+	@cp ~/.usgs/lcmap.ini $(BUILD_DIR)
 	@cd $(BUILD_DIR) && \
 	git clone https://github.com/USGS-EROS/lcmap-test-notebooks.git
 	@docker build -t $(LCMAP_JUPYTER_DEPLOY) $(CONTEXT)
