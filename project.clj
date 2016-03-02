@@ -1,4 +1,4 @@
-(defproject gov.usgs.eros/lcmap-rest "0.0.1"
+(defproject gov.usgs.eros/lcmap-rest "0.0.2-SNAPSHOT"
   :description "LCMAP REST Service API"
   :url "https://github.com/USGS-EROS/lcmap-rest"
   :license {:name "NASA Open Source Agreement, Version 1.3"
