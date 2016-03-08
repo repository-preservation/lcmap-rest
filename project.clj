@@ -96,6 +96,11 @@
     ;; copy `:env { ... }` into `{:user ...}` in your ~/.lein/profiles.clj and
     ;; then override values there
     :dev {
+      :dependencies [[org.clojure/tools.namespace "0.2.11"]
+                     [slamhound "1.5.5"]]
+      :aliases {"slamhound" ["run" "-m" "slam.hound"]}
+      :source-paths ["dev-resources/src"]
+      :plugins [[lein-kibit "0.1.2"]]
       :env
         {:active-profile "development"
          :db {:hosts ["127.0.0.1"]
@@ -114,11 +119,7 @@
                    ;:endpoint "https://ers.cr.usgs.gov/api"
                    :login-resource "/auth"
                    :user-resource "/me"}}
-          :log-level :debug
-          :dependencies [[org.clojure/tools.namespace "0.2.11"]
-                         [slamhound "1.5.5"]]
-          :aliases {"slamhound" ["run" "-m" "slam.hound"]}
-          :plugins [[lein-kibit "0.1.2"]]}}
+          :log-level :debug}}
     ;; configuration for testing environment
     :testing {
       :env
