@@ -12,7 +12,8 @@
   the JVM. This namespace can be leveraged to significantly improve
   development time, especially during debugging or progotyping stages."}
   lcmap.rest.dev
-  (:require [clojure.tools.logging :as log]
+  (:require [clojure.java.io :as io]
+            [clojure.tools.logging :as log]
             [clojure.tools.namespace.repl :as repl]
             [clojure.walk :refer [macroexpand-all]]
             [com.stuartsierra.component :as component]
