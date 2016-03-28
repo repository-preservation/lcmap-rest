@@ -25,7 +25,7 @@
 
 (defn version-handler
   "This is a custom Ring handler for extracting the API version from the Accept
-  header."
+  header and then selecting the versioned API route accordingly."
   [default-api]
   (fn [request]
     (let [headers (:headers request)
@@ -45,7 +45,7 @@
 
 (defroutes app
   (-> default-api-version
-      version-handler
+      (version-handler)
       ;; XXX once we support SSL, api-defaults needs to be changed to
       ;; secure-api-defaults
       (wrap-defaults api-defaults)
