@@ -10,12 +10,53 @@
   * The values nested under the project.clj file's :env key"}
   lcmap.rest.config
   (:require [clojure.core.memoize :as memo]
+            [clojure.java.io :as io]
             [clojure.string :as string]
             [clojure.tools.logging :as log]
+            [clojure-ini.core :as ini]
             [leiningen.core.project :as lein-prj]
-            [lcmap.client.config]))
+            [lcmap.client.config])
+  (:refer-clojure :exclude [read]))
 
 (def env-prefix "LCMAP_SERVER")
+
+(defn file-exists?
+  [filename]
+  (.exists (io/as-file filename)))
+
+(defn read-ini
+  [filename serializer-fn]
+  (let [ini-file (io/file filename)]
+    (if (file-exists? ini-file)
+      (do
+        (log/debug "Memoizing LCMAP config ini ...")
+        (serializer-fn
+          (ini/read-ini ini-file :keywordize? true)))
+      (do
+        (log/warn "No configuration file found")
+        {}))))
+
+(defn read-edn
+  [filename serializer-fn]
+  )
+
+(def -read
+  (memo/lu
+    (fn [filename serializer-fn type]
+      (case type
+        :edn (read-edn filename serializer-fn)
+        :ini (read-ini filename serializer-fn)))))
+
+(defn read
+  "Read a config file (either :ini or :edn). After the file is read from disk
+  it is put into a least-used cache and only re-read from disk if the option
+  ``:force-reload true`` is passed."
+  [filename & {:keys [force-reload type serializer]
+               :or {force-reload false type :edn serializer #'identity}}]
+  (if (not= force-reload true)
+    (-read filename serializer type)
+    (do (memo/memo-clear! -read)
+        (-read filename serializer type))))
 
 (def -get-config
   (memo/lu

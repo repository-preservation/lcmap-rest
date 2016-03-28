@@ -1,6 +1,28 @@
 (ns lcmap.rest.config-test
   (:require [clojure.test :refer :all]
+            [omniconf.core :as cfg]
+            [clojure-ini.core :as ini]
             [lcmap.rest.config :as config]))
+
+;;; Fixture to to wrap all tests in the namespace, called just once
+
+(def ini-path "test/data/sample-config.ini")
+(def edn-path "test/data/sample-config.edn")
+(def ^:dynamic *config-ini*)
+(def ^:dynamic *config-edn*)
+
+(defn setup-once [test-fn]
+  (with-redefs [*config-ini* (config/read ini-path :type :ini)
+                *config-edn* (config/read edn-path :type :edn)]
+    (test-fn)))
+
+(defn teardown-once [])
+
+(defn fixture-once [test-fn]
+  (setup-once test-fn)
+  (teardown-once))
+
+(use-fixtures :once fixture-once)
 
 (deftest make-env-name-test
   (is (= "LCMAP_SERVER" (config/make-env-name)))
@@ -17,3 +39,6 @@
   (is (= ["thing1"] (config/parse-env-var "thing1" [:env :db :hosts])))
   (is (= ["thing1" "thing2"] (config/parse-env-var "thing1:thing2" [:env :db :hosts])))
   (is (= nil (config/parse-env-var nil [:env :db :hosts]))))
+
+(deftest config-test
+  (is (= "" *config-ini*)))
