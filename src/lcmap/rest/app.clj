@@ -17,7 +17,8 @@
 
 (defn get-api-version [version default]
   (cond
-    (and (>= version 0.0) (< version 1.0)) #'routes/v0
+    (= version 0.0) #'routes/v0
+    (= version 0.5) #'routes/v0.5
     (and (>= version 1.0) (< version 2.0)) #'routes/v1
     (and (>= version 2.0) (< version 3.0)) #'routes/v2
     :else default))
@@ -37,9 +38,9 @@
           {version :version} (util/parse-accept-version accept)
           api (get-api-version version default-api)]
       ;; (log/tracef "Headers: %s" headers)
-      ;; (log/tracef (str "Accept: %s" accept)
+      ;; (log/tracef "Accept: %s" accept)
       (log/debugf "Processing request for version %s of the API ..." version)
-      ;; (log/tracef (str "API: %s" api)
+      (log/debugf "Using API route %s ..." api)
       (response/render (api request) request))))
 
 (defroutes app
