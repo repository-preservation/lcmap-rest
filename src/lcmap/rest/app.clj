@@ -13,7 +13,7 @@
             [lcmap.rest.util :as util])
   (:gen-class))
 
-(def default-api-version #'routes/v0)
+(def default-api-version #'routes/v0.5)
 
 (defn get-api-version [version default]
   (cond
