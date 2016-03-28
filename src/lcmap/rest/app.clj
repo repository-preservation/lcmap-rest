@@ -3,11 +3,11 @@
             [org.httpkit.server :as httpkit]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
-            [ring.middleware.logger :as logger]
+            [ring.middleware.logger :as ring-logger]
             [compojure.core :refer [defroutes]]
             [compojure.response :as response]
             [com.stuartsierra.component :as component]
-            [twig.core :as twig]
+            [twig.core :as logger]
             [lcmap.rest.api.routes :as routes]
             [lcmap.rest.components :as components]
             [lcmap.rest.util :as util])
@@ -53,7 +53,7 @@
       (wrap-json-response)
       ;; XXX maybe move this handler into the httpd component setup, that way
       ;; we could enable it conditionally, based upon some configuration value.
-      (logger/wrap-with-logger)))
+      (ring-logger/wrap-with-logger)))
 
 (defn -main
   "This is the entry point. Note, however, that the system components are
@@ -65,7 +65,7 @@
   [& args]
   ;; Set the initial log-level before the components set the log-levels for
   ;; the configured namespaces
-  (twig/set-level! ['lcmap] :info)
+  (logger/set-level! ['lcmap] :info)
   (let [system (components/init #'app)
         local-ip  (.getHostAddress (java.net.InetAddress/getLocalHost))]
     (log/info "LCMAP REST server's local IP address:" local-ip)
