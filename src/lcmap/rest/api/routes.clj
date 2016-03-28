@@ -16,6 +16,15 @@
   lcmap.rest.api.routes
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [defroutes]]
+            ;; v0
+            [lcmap.rest.api.v0.auth]
+            [lcmap.rest.api.v0.compatibility]
+            [lcmap.rest.api.v0.data]
+            [lcmap.rest.api.v0.four-oh-four]
+            [lcmap.rest.api.v0.jobs]
+            [lcmap.rest.api.v0.models]
+            [lcmap.rest.api.v0.system]
+            ;; v0.5
             [lcmap.rest.api.auth]
             [lcmap.rest.api.compatibility]
             [lcmap.rest.api.data]
@@ -27,17 +36,24 @@
             [lcmap.rest.util :as util]))
 
 (defroutes v0
-  ;; LCMAP Core Functionality
-  lcmap.rest.api.data/routes
-  lcmap.rest.api.models/routes
-  ;;lcmap.rest.api.notifications/routes
-  ;; Support functionality
+  lcmap.rest.api.v0.auth/routes
+  lcmap.rest.api.v0.compatibility/routes
+  lcmap.rest.api.v0.data/routes
+  lcmap.rest.api.v0.jobs/routes
+  lcmap.rest.api.v0.models/routes
+  lcmap.rest.api.v0.system/routes
+  lcmap.rest.api.v0.four-oh-four/routes)
+
+(defroutes v0.5
   lcmap.rest.api.auth/routes
   lcmap.rest.api.compatibility/routes
+  lcmap.rest.api.data/routes
   lcmap.rest.api.jobs/routes
+  lcmap.rest.api.models/routes
+  ;;lcmap.rest.api.notifications/routes
   ;;lcmap.rest.api.operations/routes
-  ;;lcmap.rest.api.users/routes
   lcmap.rest.api.system/routes
+  ;;lcmap.rest.api.users/routes
   lcmap.rest.api.four-oh-four/routes)
 
 (defroutes v1
