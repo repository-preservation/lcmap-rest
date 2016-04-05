@@ -2,13 +2,13 @@
   (:require [clojure.tools.logging :as log]
             [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [ring.util.response :as ring]
             [lcmap.rest.api.jobs.ccdc-docker-process :refer [get-result-path
                                                              get-job-result
                                                              result-table]]
             [lcmap.client.models.ccdc-docker-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
+            [lcmap.rest.middleware.http :as http]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
             [lcmap.see.job.ccdc-docker-runner :as ccdc-docker-runner]))
@@ -44,11 +44,8 @@
       result-table
       row col in-dir out-dir scene-list verbose)
     (log/debug "Called ccdc-runner ...")
-    (ring/status
-      (ring/response
-        {:result
-          {:link {:href (get-result-path job-id)}}})
-      status/pending-link)))
+    (http/response :result {:link {:href (get-result-path job-id)}}
+                   :status status/pending-link)))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

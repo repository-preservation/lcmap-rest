@@ -2,7 +2,6 @@
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
-            [ring.util.response :as ring]
             [lcmap.client.models]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.api.models.ccdc]
@@ -10,14 +9,13 @@
             [lcmap.rest.api.models.ccdc-piped-processes]
             [lcmap.rest.api.models.sample-docker-process]
             [lcmap.rest.api.models.sample-os-process]
-            [lcmap.rest.api.models.sample-piped-processes]))
+            [lcmap.rest.api.models.sample-piped-processes]
+            [lcmap.rest.middleware.http :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn get-resources [request]
-  (ring/status
-    (ring/response "models resources tbd")
-    status/ok))
+  (http/response "models resources tbd"))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

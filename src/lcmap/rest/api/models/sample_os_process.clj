@@ -2,13 +2,13 @@
   (:require [clojure.tools.logging :as log]
             [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [ring.util.response :as ring]
             [lcmap.rest.api.jobs.sample-os-process :refer [get-result-path
                                                            get-job-result
                                                            result-table]]
             [lcmap.client.models.sample-os-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
+            [lcmap.rest.middleware.http :as http]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
             [lcmap.see.job.sample-runner :as sample-runner]))
@@ -43,11 +43,8 @@
                              seconds
                              year)
     (log/debug "Called sample-runner ...")
-    (ring/status
-      (ring/response
-        {:result
-          {:link {:href (get-result-path job-id)}}})
-      status/pending-link)))
+    (http/response :result {:link {:href (get-result-path job-id)}}
+                   :status status/pending-link)))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

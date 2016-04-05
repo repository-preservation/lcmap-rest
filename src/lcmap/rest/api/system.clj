@@ -4,18 +4,15 @@
             [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
-            [ring.util.response :as ring]
             [lcmap.client.status-codes :as status]
             [lcmap.client.system]
-            [lcmap.rest.serializer :as serializer]))
+            [lcmap.rest.serializer :as serializer]
+            [lcmap.rest.middleware.http :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn get-resources
-  [request]
-  (ring/status
-    (ring/response "system resources tbd")
-    status/ok))
+(defn get-resources [request]
+  (http/response "system resources tbd"))
 
 (defn get-sexp-status
   "Get the Tomcat-compatible status info as s-expressions."

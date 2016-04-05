@@ -24,7 +24,7 @@
 (defn get-job-resources [request]
   (http/response :result "sample job resources tbd"))
 
-(defn -job-status
+(defn get-job-status
   ([result]
     (apply #'http/response (mapcat identity result)))
   ([db job-id]
@@ -39,14 +39,8 @@
         (http/response :result :pending
                        :status status/pending)
       [({:status st} :as result)]
-        (http/response :result  (get-result-path job-id)
+        (http/response :result (get-result-path job-id)
                        :status st))))
-
-(defn get-job-status [db job-id]
-  (let [result (-job-status db job-id)]
-    (-> result
-      (ring/response)
-      (ring/status (:status result)))))
 
 ;; XXX
 (defn parse-job [arg]
@@ -56,11 +50,12 @@
 
 (defn get-job-result
   ([db-conn job-id]
-    (get-job-result db-conn job-id result-table #'-job-status))
+    (get-job-result db-conn job-id result-table #'get-job-status))
   ([db-conn job-id table func]
     (-> (db/get-job-result db-conn job-id table func)
         ;; XXX
         (parse-job)
+        ;; XXX need to unify this with lcmap.rest.middleware.http/response
         (ring/response)
         (ring/status status/ok))))
 

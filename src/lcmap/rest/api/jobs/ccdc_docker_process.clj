@@ -45,6 +45,7 @@
 (defn get-job-status [db job-id]
   (let [result (-job-status db job-id)]
     (-> result
+      ;; XXX need to unify this with lcmap.rest.middleware.http/response
       (ring/response)
       (ring/status (:status result)))))
 
@@ -61,6 +62,7 @@
     (-> (db/get-job-result db-conn job-id table func)
         ;; XXX
         (parse-job)
+        ;; XXX need to unify this with lcmap.rest.middleware.http/response
         (ring/response)
         (ring/status status/ok))))
 

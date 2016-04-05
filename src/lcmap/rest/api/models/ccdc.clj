@@ -1,6 +1,5 @@
 (ns lcmap.rest.api.models.ccdc
   (:require [clojure.tools.logging :as log]
-            [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.client.models.ccdc]
             [lcmap.client.status-codes :as status]

@@ -2,17 +2,15 @@
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
-            [ring.util.response :as ring]
             [lcmap.client.compatibility]
             [lcmap.client.status-codes :as status]
-            [lcmap.rest.api.compatibility.wmts]))
+            [lcmap.rest.api.compatibility.wmts]
+            [lcmap.rest.middleware.http :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn get-resources [request]
-  (ring/status
-    (ring/response "compatibility resources tbd")
-    status/ok))
+  (http/response "compatibility resources tbd"))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

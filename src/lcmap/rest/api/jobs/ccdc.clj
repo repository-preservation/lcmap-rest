@@ -34,6 +34,7 @@
     (get-job-result db-conn job-id result-table #'get-job-status))
   ([db-conn job-id table func]
     (-> (db/get-job-result db-conn job-id table func)
+        ;; XXX need to unify this with lcmap.rest.middleware.http/response
         (ring/response)
         (ring/status status/ok))))
 

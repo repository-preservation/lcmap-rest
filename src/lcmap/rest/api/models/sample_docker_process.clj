@@ -9,6 +9,7 @@
             [lcmap.client.models.sample-docker-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
+            [lcmap.rest.middleware.http :as http]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
             [lcmap.see.job.sample-docker-runner :as sample-docker-runner]))
@@ -43,11 +44,8 @@
                              docker-tag
                              year)
     (log/debug "Called sample-runner ...")
-    (ring/status
-      (ring/response
-        {:result
-          {:link {:href (get-result-path job-id)}}})
-      status/pending-link)))
+    (http/response :result {:link {:href (get-result-path job-id)}}
+                   :status status/pending-link)))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
