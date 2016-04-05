@@ -51,14 +51,13 @@
 (defn in?
   "This function returns true if the provided seqenuce contains the given
   elment."
-  [seq elm]
-  (some #(= elm %) seq))
+  [sequence elm]
+  (some #(= elm %) sequence))
 
 (defn response [& {:keys [result errors status]
                    :or {result nil errors [] status 200}
                    :as args}]
-  (-> (http/response :result result :errors errors :status status)
-      (ring/response)
+  (-> (http/response :result result :errors errors)
       (ring/status status)))
 
 (defn make-bool
@@ -87,3 +86,40 @@
              nil)
     (nil? value) nil
     :else (format "%s %s" flag value)))
+
+(defn get-local-ip
+  "Get the IP address of the local machine."
+  []
+  (.getHostAddress (java.net.InetAddress/getLocalHost)))
+
+(defn headers->sexp
+  "Convert response headers to S-expressions that can be consumed by
+  clojure.data.xml."
+  [headers]
+  (into [:headers] headers))
+
+(defn errors->sexp
+  "Convert the body errors to S-expressions that can be consumed by
+  clojure.data.xml."
+  [errors]
+  [:errors (map #(conj [:error] %) errors)])
+
+(defn body->sexp
+  "Convert the response body to S-expressions that can be consumed by
+  clojure.data.xml."
+  [{result :result errors :errors}]
+  (log/debug "Result:" result)
+  [:body [:result result]
+         (errors->sexp errors)])
+
+(defn response->sexp
+  "Converts the clojure.lang.PersistentArrayMap of a Ring repsonse to
+  S-expressions that can be consumed by clojure.data.xml."
+  [{status :status headers :headers body :body} & {:keys [root] :or {root :data}}]
+  (log/debug "Body:" body)
+  (log/debug "Body type:" (type body))
+  (log/debug "Body result:" (:result body))
+  [root [:status status]
+        (headers->sexp headers)
+        (body->sexp body)])
+
