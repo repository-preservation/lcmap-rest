@@ -7,13 +7,14 @@
             [lcmap.client.auth]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.auth.usgs :as usgs]
-            [lcmap.rest.components.httpd :as httpd]))
+            [lcmap.rest.components.httpd :as httpd]
+            [lcmap.rest.middleware.http :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; XXX add db-connection as parameter
 (defn login [auth-cfg username password]
-  (ring/response
+  (http/response
     {:result (usgs/login auth-cfg username password)
       :errors []}))
 

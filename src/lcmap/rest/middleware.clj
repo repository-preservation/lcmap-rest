@@ -4,7 +4,7 @@
             [clojure.tools.logging :as log]
             [clojusc.ring.xml :as ring-xml]
             [lcmap.rest.api.routes :as routes]
-            [lcmap.rest.util :as util]))
+            [lcmap.rest.middleware.http :as http]))
 
 (defn get-versioned-routes [version default]
   (cond
@@ -27,7 +27,7 @@
           ;; lower-case strings at this point in the middleware chain, despite
           ;; what *looked* like was getting logged
           accept (headers "accept")
-          {version :version} (util/parse-accept-version accept)
+          {version :version} (http/parse-accept-version accept)
           routes (get-versioned-routes version default-api)]
       ;; (log/tracef "Headers: %s" headers)
       ;; (log/tracef "Accept: %s" accept)
@@ -49,7 +49,7 @@
   [handler]
   (fn [request]
     (let [response (handler request)
-          sexp (util/response->sexp response :root :xml)]
+          sexp (http/response->sexp response :root :xml)]
       (assoc response :body sexp))))
 
 (defn xml-handler
@@ -81,7 +81,7 @@
   If any other (i.e., unsupported) content-type values are provided, the default
   content-type handler will be returned.
 
-  LCMAP REST API functions return calls to lcmap.rest.util/response, which provides
+  LCMAP REST API functions return calls to lcmap.rest.http/response, which provides
   the data structure for both results and errors. Without modification, these are
   of the form:
 
@@ -128,7 +128,7 @@
   (fn [request]
     (let [headers (:headers request)
           accept (headers "accept")
-          {content-type :content-type} (util/parse-accept-version accept)
+          {content-type :content-type} (http/parse-accept-version accept)
           wrapper-fn (get-content-type-wrapper content-type)
           wrapper (wrapper-fn handler)]
       (log/debugf "Parsed content type '%s' got %s handler" content-type wrapper-fn)

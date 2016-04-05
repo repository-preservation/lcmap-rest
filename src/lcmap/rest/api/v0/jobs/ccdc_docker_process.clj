@@ -3,11 +3,10 @@
             [clojure.core.match :refer [match]]
             [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [lcmap.client.http :as http]
             [lcmap.client.jobs.ccdc-docker-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.util :as util]
+            [lcmap.rest.middleware.http :as http]
             [lcmap.see.job.db :as db]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -23,24 +22,24 @@
           result-id))
 
 (defn get-job-resources [request]
-  (util/response :result "ccdc job resources tbd"))
+  (http/response :result "ccdc job resources tbd"))
 
 (defn -job-status
   ([result]
-    (apply #'util/response (mapcat identity result)))
+    (apply #'http/response (mapcat identity result)))
   ([db job-id]
     (match [(first @(db/job? (:conn db) job-id))]
       [[]]
-        (util/response :errors ["Job not found."]
+        (http/response :errors ["Job not found."]
                        :status status/no-resource)
       [nil]
-        (util/response :errors ["Job not found."]
+        (http/response :errors ["Job not found."]
                        :status status/no-resource)
       [({:status (st :guard #'status/pending?)} :as result)]
-        (util/response :result :pending
+        (http/response :result :pending
                        :status status/pending)
       [({:status st} :as result)]
-        (util/response :result  (get-result-path job-id)
+        (http/response :result  (get-result-path job-id)
                        :status st))))
 
 (defn get-job-status [db job-id]
@@ -66,11 +65,11 @@
         (ring/status status/ok))))
 
 (defn update-job [db job-id]
-  (util/response :result "ccdc job update tbd"
+  (http/response :result "ccdc job update tbd"
                  :status status/pending))
 
 (defn get-info [db job-id]
-  (util/response :result "ccdc job info tbd"))
+  (http/response :result "ccdc job info tbd"))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
