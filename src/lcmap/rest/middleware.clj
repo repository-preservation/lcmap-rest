@@ -110,7 +110,13 @@
           {content-type :content-type} (util/parse-accept-version accept)
           wrapper-fn (get-content-type-wrapper content-type)
           wrapper (wrapper-fn handler)]
-      (log/debugf "Got wrapper-fn %s" wrapper-fn)
-      (log/debugf "Got wrapper %s" wrapper)
       (wrapper request))))
 
+(defn lcmap-handlers
+  "This function provides the LCMAP REST server with the single means by which
+  the application pulls in all LCMAP Ring handers. Any new handlers that are
+  created should be chained here and not in ``lcmap.rest.app``."
+  [routes]
+  (-> routes
+      (versioned-route-handler)
+      (content-type-handler)))

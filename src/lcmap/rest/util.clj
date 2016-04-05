@@ -108,7 +108,6 @@
   "Convert the response body to S-expressions that can be consumed by
   clojure.data.xml."
   [{result :result errors :errors}]
-  (log/debug "Result:" result)
   [:body [:result result]
          (errors->sexp errors)])
 
@@ -116,10 +115,6 @@
   "Converts the clojure.lang.PersistentArrayMap of a Ring repsonse to
   S-expressions that can be consumed by clojure.data.xml."
   [{status :status headers :headers body :body} & {:keys [root] :or {root :data}}]
-  (log/debug "Body:" body)
-  (log/debug "Body type:" (type body))
-  (log/debug "Body result:" (:result body))
   [root [:status status]
         (headers->sexp headers)
         (body->sexp body)])
-

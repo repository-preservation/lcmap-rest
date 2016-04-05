@@ -15,8 +15,7 @@
 
 (def app
   (-> default-versioned-route
-      (middleware/versioned-route-handler)
-      (middleware/content-type-handler)
+      (middleware/lcmap-handlers)
       ;; XXX once we support SSL, api-defaults needs to be changed to
       ;; ring-defaults/secure-api-defaults
       (ring-defaults/wrap-defaults ring-defaults/api-defaults)
