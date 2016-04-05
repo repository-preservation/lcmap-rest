@@ -7,7 +7,7 @@
                  [org.clojure/core.match "0.3.0-alpha4"]
                  [org.clojure/data.codec "0.1.0"]
                  [org.clojure/data.json "0.2.6"]
-                 [org.clojure/data.xml "0.0.8"]
+                 [org.clojure/data.xml "0.1.0-beta1"]
                  [org.clojure/core.memoize "0.5.8"]
                  ;; Componentization
                  [com.stuartsierra/component "0.3.0"]
@@ -27,6 +27,7 @@
                  [ring/ring-devel "1.4.0"]
                  [ring/ring-json "0.4.0"]
                  [ring/ring-defaults "0.1.5"]
+                 [clojusc/ring-xml "0.0.6"]
                  ;; Authentication and authorization
                  [com.cemerick/friend "0.2.1"]
                  ;; Job Tracker
@@ -39,12 +40,10 @@
                  [clojurewerkz/cassaforte "2.0.0"]
                  [net.jpountz.lz4/lz4 "1.3.0"]
                  [org.xerial.snappy/snappy-java "1.1.2"]
-                 ;; Once the next version of lcmap-see is released , we will
-                 ;; uncomment the dependancy below
-                 ; [gov.usgs.eros/lcmap-see "0.0.1"]
-                 ;; Once the next version of lcmap-client-clj is released, we will
-                 ;; uncomment the dependancy below
-                 ; [gov.usgs.eros/lcmap-client-clj "0.0.1"]
+                 ;; Note that the projects in ./checkouts override these:
+                 [gov.usgs.eros/lcmap-data "0.0.1"]
+                 [gov.usgs.eros/lcmap-see "0.0.1"]
+                 [gov.usgs.eros/lcmap-client-clj "0.0.1"]
                  ;; XXX note that we may still need to explicitly include the
                  ;; Apache Java HTTP client, since the version used by the LCMAP
                  ;; client is more recent than that used by Chas Emerick's
@@ -86,6 +85,7 @@
   :logging-namespaces [lcmap.rest
                        lcmap.see
                        lcmap.client
+                       lcmap.data
                        com.datastax.driver
                        co.paralleluniverse]
   :profiles {
@@ -93,7 +93,7 @@
     ;; copy `:env { ... }` into `{:user ...}` in your ~/.lein/profiles.clj and
     ;; then override values there
     :dev {
-      :dependencies [[org.clojure/tools.namespace "0.2.11"]
+      :dependencies [[org.clojure/tools.namespace "0.3.0-alpha3"]
                      [slamhound "1.5.5"]]
       :aliases {"slamhound" ["run" "-m" "slam.hound"]}
       :source-paths ["dev-resources/src"]
