@@ -69,31 +69,52 @@
       (assoc response :body response))))
 
 (defn get-content-type-wrapper
-  "Given a content-type (mime-type), return a suitable Ring handler for that type.
+  "Given a content-type (technically, the sub-type of the mime-type), return a
+  suitable Ring handler for that type.
+
+  Supported content-type values are:
+
+  * json
+  * xml
+  * raw
+
+  If any other (i.e., unsupported) content-type values are provided, the default
+  content-type handler will be returned.
 
   LCMAP REST API functions return calls to lcmap.rest.util/response, which provides
   the data structure for both results and errors. Without modification, these are
   of the form:
 
-    [:status 200]
+    [:status ...]
     [:headers {}]
     [:body {:result ... :errors [...]}]
 
   The JSON handler converts it to data of the form:
 
-    {...}
+    {\"status\": ...,
+     \"headers\": {...},
+     \"body\": {\"result\": \"...\",
+                \"errors\":[...]}}
 
   The XML handler extracts the :body and converts it to data of the form:
 
-    <...>
-  "
-  [content-type]
-  (case (string/lower-case content-type)
-    "json" #'json-handler
-    "xml" #'xml-handler
-    "raw" #'identity-handler
-    ;; default
-    #'json-handler))
+    <?xml version=\"1.0\" encoding=\"UTF-8\"?>
+    <xml>
+      <status>...</status>
+      <headers>...</headers>
+      <body>
+        <result>...</result>
+        <errors>...</errors>
+      </body>
+    </xml>"
+  ([content-type]
+    (get-content-type-wrapper content-type #'json-handler))
+  ([content-type default-hanlder]
+    (case (string/lower-case content-type)
+      "json" #'json-handler
+      "xml" #'xml-handler
+      "raw" #'identity-handler
+      default-hanlder)))
 
 ;; XXX Both the versioned-routes handler and the content-type handler are
 ;;     performing similar operations ... this is a bit wasteful. This should
@@ -110,6 +131,7 @@
           {content-type :content-type} (util/parse-accept-version accept)
           wrapper-fn (get-content-type-wrapper content-type)
           wrapper (wrapper-fn handler)]
+      (log/debugf "Parsed content type '%s' got %s handler" content-type wrapper-fn)
       (wrapper request))))
 
 (defn lcmap-handlers
