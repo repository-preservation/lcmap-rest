@@ -150,4 +150,5 @@
   (let [system (components/init #'app)]
     (log/info "LCMAP REST server's local IP address:" (util/get-local-ip))
     (component/start system)
+    ;; Setup interrupt/terminate handling
     (util/add-shutdown-handler #(component/stop system))))

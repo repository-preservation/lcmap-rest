@@ -14,7 +14,7 @@ standalone-heavy: build
 	java -Xms3072m -Xmx3072m -jar $(STANDALONE)
 
 run:
-	@lein run
+	@lein trampoline run
 
 test-auth-server:
 	@cd test/support/auth-server && lein with-profile +dev run
