@@ -19,11 +19,17 @@
 (defn parse-accept-version [default-version string]
   (let [string (or string "")
         [_ vend str-vers vers _ ct] (re-find accept-version-regex string)]
-    (log/debugf "Parsed API version %s with content type '%s'" str-vers ct)
+    (log/tracef "Parsed API version %s with content type '%s'" str-vers ct)
     {:vendor (or vend "NoVendor")
-     :string-version (or str-vers (str "v" default-version))
-     :version  (java.lang.Double. (or vers default-version))
+     :version (or str-vers default-version)
      :content-type (or ct "")}))
+
+(defn get-accept
+  "Extract the parsed 'Accept' headers from a request."
+  [request default-version]
+  (-> (:headers request)
+      (get "accept")
+      (#(parse-accept-version default-version %))))
 
 (defn response [& {:keys [result errors status]
                    :or {result nil errors [] status 200}

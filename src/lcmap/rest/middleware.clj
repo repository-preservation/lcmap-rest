@@ -10,19 +10,23 @@
   "This is a utility function for extracting the route version from the request
   and then getting a supported route that matches the requested version."
   [request default-version]
-  (->> request
-       (:headers)
-       (get "accept")
-       (http/parse-accept-version default-version)
-       (:version)
-       (routes/get-versioned-routes default-version)))
+  (-> request
+      (http/get-accept default-version)
+      (:version)
+      (routes/get-versioned-routes default-version)))
 
 (defn versioned-routes-handler
   "This is a custom Ring handler for extracting the API version from the Accept
-  header and then selecting the versioned API route accordingly."
-  [_ default-version]
+  header and then selecting the versioned API route accordingly.
+
+  It is expected that this handler is first in the chain of LCMAP Ring handlers,
+  and as such does not take a handler as its first argument. This that ever
+  changes, this function will need to be updated."
+  [default-version]
   (fn [request]
-    ((get-versioned-routes request default-version) request)))
+    (-> request
+        (get-versioned-routes default-version)
+        (apply [request]))))
 
 (defn json-handler
   "A Ring handler that converts the entire response to JSON and then updates
@@ -57,7 +61,7 @@
     (let [response (handler request)]
       (assoc response :body response))))
 
-(defn get-content-type-wrapper
+(defn lookup-content-type-handler
   "Given a content-type (technically, the sub-type of the mime-type), return a
   suitable Ring handler for that type.
 
@@ -97,26 +101,36 @@
       </body>
     </xml>"
   ([content-type]
-    (get-content-type-wrapper content-type #'json-handler))
-  ([content-type default-hanlder]
+    (lookup-content-type-handler content-type #'json-handler))
+  ([content-type default-type-hanlder]
+    (log/tracef "Looking up handler for content type '%s' ..." content-type)
     (case (string/lower-case content-type)
       "json" #'json-handler
       "xml" #'xml-handler
       "raw" #'identity-handler
-      default-hanlder)))
+      default-type-hanlder)))
+
+(defn get-content-type-wrapper
+  "This is a utility function for extracting the route version from the request
+  and then getting a supported route that matches the requested version.
+
+  This is a custom Ring handler for extracting the content-type from the Accept
+  header and then selecting the appropriate response wrapper."
+  [request default-version]
+  (-> request
+      (http/get-accept default-version)
+      (:content-type)
+      (lookup-content-type-handler)))
 
 (defn content-type-handler
   "This is a custom Ring handler for extracting the content-type from the Accept
   header and then selecting the appropriate response wrapper."
   [handler default-version]
   (fn [request]
-    (let [headers (:headers request)
-          accept (headers "accept")
-          {content-type :content-type} (http/parse-accept-version default-version accept)
-          wrapper-fn (get-content-type-wrapper content-type)
-          wrapper (wrapper-fn handler)]
-      (log/debugf "Got %s handler" content-type wrapper-fn)
-      (wrapper request))))
+    (-> request
+        (get-content-type-wrapper default-version)
+        (apply [handler])
+        (apply [request]))))
 
 (defn lcmap-handlers
   "This function provides the LCMAP REST server with the single means by which
@@ -125,7 +139,6 @@
 
   One of the handlers called in this function is an aggregating handler which
   consolidates "
-  [handler default-version]
-  (-> handler
-      (versioned-routes-handler default-version)
+  [default-version]
+  (-> (versioned-routes-handler default-version)
       (content-type-handler default-version)))
