@@ -11,11 +11,12 @@
             [lcmap.rest.util :as util])
   (:gen-class))
 
-(def default-versioned-route #'routes/v0.5)
+(def default-version "0.5")
+(def base-handler {})
 
 (def app
-  (-> default-versioned-route
-      (middleware/lcmap-handlers)
+  (-> base-handler
+      (middleware/lcmap-handlers default-version)
       ;; XXX once we support SSL, api-defaults needs to be changed to
       ;; ring-defaults/secure-api-defaults
       (ring-defaults/wrap-defaults ring-defaults/api-defaults)

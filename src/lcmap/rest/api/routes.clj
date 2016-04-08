@@ -70,3 +70,13 @@
   lcmap.rest.api.system/routes
   lcmap.rest.api.four-oh-four/routes)
 
+(defn get-versioned-routes
+  "Performa look up for the versioned route given an API version number."
+  [default version-str]
+  (case version-str
+    "0.0" #'v0
+    "0.5" #'v0.5
+    "1.0" #'v1
+    "2.0" #'v2
+    ;; If no case applies, do the lookup using the default
+    (get-versioned-routes default default)))

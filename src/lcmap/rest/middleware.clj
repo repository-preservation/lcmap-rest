@@ -6,34 +6,23 @@
             [lcmap.rest.api.routes :as routes]
             [lcmap.rest.middleware.http :as http]))
 
-(defn get-versioned-routes [version default]
-  (cond
-    (= version 0.0) #'routes/v0
-    (= version 0.5) #'routes/v0.5
-    (and (>= version 1.0) (< version 2.0)) #'routes/v1
-    (and (>= version 2.0) (< version 3.0)) #'routes/v2
-    :else default))
+(defn get-versioned-routes
+  "This is a utility function for extracting the route version from the request
+  and then getting a supported route that matches the requested version."
+  [request default-version]
+  (->> request
+       (:headers)
+       (get "accept")
+       (http/parse-accept-version default-version)
+       (:version)
+       (routes/get-versioned-routes default-version)))
 
-(defn versioned-route-handler
+(defn versioned-routes-handler
   "This is a custom Ring handler for extracting the API version from the Accept
   header and then selecting the versioned API route accordingly."
-  [default-api]
+  [_ default-version]
   (fn [request]
-    (let [headers (:headers request)
-          ;; This next line is nuts and took a while to figure out -- results
-          ;; are rendered in log files as symbols, but (headers 'accept) and
-          ;; ('accept headers) didn't work. After an inordinate amount of trial
-          ;; and error, it was discovered that the header keys are actually in
-          ;; lower-case strings at this point in the middleware chain, despite
-          ;; what *looked* like was getting logged
-          accept (headers "accept")
-          {version :version} (http/parse-accept-version accept)
-          routes (get-versioned-routes version default-api)]
-      ;; (log/tracef "Headers: %s" headers)
-      ;; (log/tracef "Accept: %s" accept)
-      (log/debugf "Processing request for version %s of the API ..." version)
-      (log/debugf "Using API routes %s ..." routes)
-      (routes request))))
+    ((get-versioned-routes request default-version) request)))
 
 (defn json-handler
   "A Ring handler that converts the entire response to JSON and then updates
@@ -116,29 +105,27 @@
       "raw" #'identity-handler
       default-hanlder)))
 
-;; XXX Both the versioned-routes handler and the content-type handler are
-;;     performing similar operations ... this is a bit wasteful. This should
-;;     be combined into a single meta-handler -- maybe "lcmap-handler" -- that
-;;     would actually run all the lcmap-specific Ring handlers
-
 (defn content-type-handler
   "This is a custom Ring handler for extracting the content-type from the Accept
   header and then selecting the appropriate response wrapper."
-  [handler]
+  [handler default-version]
   (fn [request]
     (let [headers (:headers request)
           accept (headers "accept")
-          {content-type :content-type} (http/parse-accept-version accept)
+          {content-type :content-type} (http/parse-accept-version default-version accept)
           wrapper-fn (get-content-type-wrapper content-type)
           wrapper (wrapper-fn handler)]
-      (log/debugf "Parsed content type '%s' got %s handler" content-type wrapper-fn)
+      (log/debugf "Got %s handler" content-type wrapper-fn)
       (wrapper request))))
 
 (defn lcmap-handlers
   "This function provides the LCMAP REST server with the single means by which
   the application pulls in all LCMAP Ring handers. Any new handlers that are
-  created should be chained here and not in ``lcmap.rest.app``."
-  [routes]
-  (-> routes
-      (versioned-route-handler)
-      (content-type-handler)))
+  created should be chained here and not in ``lcmap.rest.app``.
+
+  One of the handlers called in this function is an aggregating handler which
+  consolidates "
+  [handler default-version]
+  (-> handler
+      (versioned-routes-handler default-version)
+      (content-type-handler default-version)))

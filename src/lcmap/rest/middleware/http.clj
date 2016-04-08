@@ -16,13 +16,13 @@
      :quality  (java.lang.Double. (or q "1"))
      :accept-extension ae}))
 
-(defn parse-accept-version [string]
-  ;;(log/info (str "Parsing: " string))
+(defn parse-accept-version [default-version string]
   (let [string (or string "")
         [_ vend str-vers vers _ ct] (re-find accept-version-regex string)]
+    (log/debugf "Parsed API version %s with content type '%s'" str-vers ct)
     {:vendor (or vend "NoVendor")
-     :string-version (or str-vers "v0.0") ; XXX put the default version somewhere more visible -- project.clj?
-     :version  (java.lang.Double. (or vers "1"))
+     :string-version (or str-vers (str "v" default-version))
+     :version  (java.lang.Double. (or vers default-version))
      :content-type (or ct "")}))
 
 (defn response [& {:keys [result errors status]
