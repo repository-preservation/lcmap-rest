@@ -7,7 +7,7 @@
             [lcmap.client.status-codes :as status]
             [lcmap.client.system]
             [lcmap.rest.serializer :as serializer]
-            [lcmap.rest.middleware.http :as http]))
+            [lcmap.rest.middleware.http-util :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

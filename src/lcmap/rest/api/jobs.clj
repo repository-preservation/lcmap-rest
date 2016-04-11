@@ -9,7 +9,7 @@
             [lcmap.rest.api.jobs.sample-docker-process]
             [lcmap.rest.api.jobs.sample-os-process]
             [lcmap.rest.api.jobs.sample-piped-processes]
-            [lcmap.rest.middleware.http :as http]))
+            [lcmap.rest.middleware.http-util :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

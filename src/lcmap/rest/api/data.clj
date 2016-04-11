@@ -5,7 +5,7 @@
             [lcmap.client.data]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.api.data.surface-reflectance]
-            [lcmap.rest.middleware.http :as http]))
+            [lcmap.rest.middleware.http-util :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

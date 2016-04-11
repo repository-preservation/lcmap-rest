@@ -5,7 +5,7 @@
             [lcmap.client.compatibility]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.api.compatibility.wmts]
-            [lcmap.rest.middleware.http :as http]))
+            [lcmap.rest.middleware.http-util :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -8,7 +8,7 @@
             [lcmap.client.models.sample-os-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.middleware.http :as http]
+            [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
             [lcmap.see.job.sample-runner :as sample-runner]))

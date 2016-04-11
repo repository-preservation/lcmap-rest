@@ -6,7 +6,7 @@
             [lcmap.client.jobs.ccdc-piped-processes]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.middleware.http :as http]
+            [lcmap.rest.middleware.http-util :as http]
             [lcmap.see.job.db :as db]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

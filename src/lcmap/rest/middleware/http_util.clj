@@ -1,4 +1,4 @@
-(ns lcmap.rest.middleware.http
+(ns lcmap.rest.middleware.http-util
   (:require [clojure.tools.logging :as log]
             [ring.util.response :as ring]
             [lcmap.client.http :as http]))

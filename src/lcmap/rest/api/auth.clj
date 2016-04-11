@@ -8,7 +8,7 @@
             [lcmap.client.status-codes :as status]
             [lcmap.rest.auth.usgs :as usgs]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.middleware.http :as http]))
+            [lcmap.rest.middleware.http-util :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
