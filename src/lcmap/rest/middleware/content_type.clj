@@ -3,7 +3,6 @@
             [clojure.string :as string]
             [clojure.tools.logging :as log]
             [clojusc.ring.xml :as ring-xml]
-            [lcmap.rest.api.routes :as routes]
             [lcmap.rest.middleware.core :as core]
             [lcmap.rest.middleware.http-util :as http]))
 
