@@ -32,6 +32,7 @@
 
 (defn get-runtime
   "Returns the runtime object associated with the current Java application."
+  []
   (Runtime/getRuntime))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -88,8 +89,8 @@
                          :errorCount "0"
                          :bytesReceived "0"
                          :bytesSent "0"}
-           :workers nil}}}})
- 
+           :workers nil}}}}))
+
 (defn get-json-status
   "This is the Tomcat-compatible status info as JSON data."
   []
