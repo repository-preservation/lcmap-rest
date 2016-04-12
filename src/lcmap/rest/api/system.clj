@@ -113,6 +113,7 @@
   (context lcmap.client.system/context []
     (GET "/" request
       (get-resources (:uri request)))
+    ;; Note that lcmap.rest.middleware sets up a route for /api/system/metrics
     ;; XXX add more management resources
     (GET "/status" []
       (get-xml-status))
