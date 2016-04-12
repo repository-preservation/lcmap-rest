@@ -36,8 +36,6 @@
                  [co.paralleluniverse/pulsar "0.7.3"]
                  [org.clojars.hozumi/clj-commons-exec "1.2.0"]
                  [digest "1.4.4"]
-                 ;; Data types and validation
-                 [prismatic/schema "1.1.0"]
                  ;; DB
                  [clojurewerkz/cassaforte "2.0.0"]
                  [net.jpountz.lz4/lz4 "1.3.0"]
@@ -56,12 +54,17 @@
                  [org.apache.httpcomponents/httpclient "4.5"]
                  [clojure-ini "0.0.2"]
                  [clj-http "2.0.0"]
-                 ;; Data types, encoding, etc.
+                 ;; Data types, encoding, validation, etc.
+                 [prismatic/schema "1.1.0"]
                  [byte-streams "0.2.0"]
                  [clj-time "0.11.0"]
                  [commons-codec "1.9"]
                  ;; Geospatial libraries
                  [element84/clj-gdal "0.3.2"]
+                 ;; Metrics
+                 [metrics-clojure "2.6.1"]
+                 [metrics-clojure-jvm "2.6.1"]
+                 [metrics-clojure-ring "2.6.1"]
                  ;; Dev and project metadata
                  [leiningen-core "2.5.3"]]
   :plugins [[lein-ring "0.9.7"]
@@ -74,6 +77,7 @@
   :repl-options {:init-ns lcmap.rest.dev}
   :main lcmap.rest.app
   :target-path "target/%s"
+  :metrics-registry :lcmap-rest
   :codox {:project {:name "LCMAP REST Server"
                     :description "The REST Service for the USGS Land Change Monitoring Assessment and Projection (LCMAP) Computation and Analysis Platform"}
           :namespaces [#"^lcmap.rest\."]
