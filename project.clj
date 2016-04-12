@@ -36,6 +36,8 @@
                  [co.paralleluniverse/pulsar "0.7.3"]
                  [org.clojars.hozumi/clj-commons-exec "1.2.0"]
                  [digest "1.4.4"]
+                 ;; Data types and validation
+                 [prismatic/schema "1.1.0"]
                  ;; DB
                  [clojurewerkz/cassaforte "2.0.0"]
                  [net.jpountz.lz4/lz4 "1.3.0"]
