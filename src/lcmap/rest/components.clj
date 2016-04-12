@@ -42,6 +42,7 @@
             [lcmap.rest.components.db :as rest-db]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.components.logger :as logger]
+            [lcmap.rest.components.metrics :as metrics]
             [lcmap.rest.components.system :as system]
             [lcmap.see.components.db :as see-db]
             [lcmap.see.components.eventd :as eventd]))
@@ -52,6 +53,9 @@
     :logger (component/using
               (logger/new-logger)
               [:cfg])
+    :metrics (component/using
+               (metrics/new-metrics)
+               [:cfg])
     :jobdb (component/using
              (see-db/new-job-client)
              [:cfg
