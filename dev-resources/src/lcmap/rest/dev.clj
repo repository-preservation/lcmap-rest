@@ -26,6 +26,8 @@
             [byte-streams]
             [clj-time.coerce :as time]
             [clojure.data.codec.base64 :as b64]
+            ;; metrics
+            [metrics.core :as metrics]
             ;; shell execution
             [clj-commons-exec :as exec]
             ;; api
@@ -34,6 +36,7 @@
             [lcmap.rest.config :as config]
             [lcmap.rest.exceptions :as exceptions]
             [lcmap.rest.serializer :as serial]
+            [lcmap.rest.system :as system]
             [lcmap.rest.tile.db :as tile-db]
             [lcmap.rest.util :as util]))
 

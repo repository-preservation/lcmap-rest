@@ -18,5 +18,5 @@
   (-> (versioned-api/handler default-version)
       (content-type/handler default-version)
       (ring-metrics/expose-metrics-as-json
-        (str lcmap.client.system/context "/metrics"))
+        (str lcmap.client.system/context "/metrics/all"))
       (ring-instrument/instrument)))
