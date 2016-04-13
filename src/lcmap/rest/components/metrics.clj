@@ -15,7 +15,7 @@
 
   (start [component]
     (log/info "Setting up LCMAP metrics ...")
-    (metrics-jvm/instrument-jvm (metrics/new-registry))
+    (metrics-jvm/instrument-jvm)
     (-> {}
         (metrics-jmx/reporter)
         (metrics-jmx/start))
