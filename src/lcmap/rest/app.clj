@@ -11,7 +11,7 @@
             [lcmap.rest.util :as util])
   (:gen-class))
 
-(def default-version "0.5")
+(def default-version "v0.5")
 
 (def app
   (-> (middleware/lcmap-handlers default-version)

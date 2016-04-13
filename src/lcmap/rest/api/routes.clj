@@ -74,9 +74,9 @@
   "Perform a look up for the versioned route given an API version number."
   [version-str default]
   (case version-str
-    "0.0" #'v0
-    "0.5" #'v0.5
-    "1.0" #'v1
-    "2.0" #'v2
+    "v0.0" #'v0
+    "v0.5" #'v0.5
+    "v1.0" #'v1
+    "v2.0" #'v2
     ;; If no case applies, do the lookup using the default
     (get-versioned-routes default default)))
