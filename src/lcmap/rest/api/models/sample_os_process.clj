@@ -2,6 +2,8 @@
   (:require [clojure.tools.logging :as log]
             [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
+            [dire.core :refer [with-handler!]]
+            [schema.core :as schema]
             [lcmap.rest.api.jobs.sample-os-process :refer [get-result-path
                                                            get-job-result
                                                            result-table]]
@@ -9,6 +11,7 @@
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
+            [lcmap.rest.types :refer [StrInt StrYear]]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
             [lcmap.see.job.sample-runner :as sample-runner]))
@@ -20,7 +23,12 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn run-model [db eventd seconds year]
+(schema/defn run-model
+  ""
+  [db
+   eventd
+   seconds :- StrInt
+   year :- StrYear]
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where sample result will
   ;; be
@@ -52,13 +60,19 @@
   (context lcmap.client.models.sample-os-process/context []
     (POST "/" [token delay year :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
-      (run-model (httpd/jobdb-key request)
-                 (httpd/eventd-key request)
-                 delay
-                 year))
+      (schema/with-fn-validation
+        (run-model
+          (httpd/jobdb-key request)
+          (httpd/eventd-key request)
+          delay
+          year)))
     (GET "/:job-id" [job-id :as request]
       (get-job-result (httpd/jobdb-key request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; XXX TBD
+(with-handler! #'schema/with-fn-validation
+  RuntimeException
+  (fn [e & args]
+    (log/error "error: %s; args: %s" e args)
+    (http/response :errors [e])))
