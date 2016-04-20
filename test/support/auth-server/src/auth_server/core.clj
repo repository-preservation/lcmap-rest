@@ -90,6 +90,17 @@
   (let [cfg (lein-prj/read)
         ip (get-ip cfg)
         port (get-port cfg)
+        ;; XXX note that getLocalHost uses /etc/hosts, so if your hostname is
+        ;; manually configured there, you may see unexpected results. Possibly
+        ;; a more general solution will be to use something like the following:
+        ;;  (->> (NetworkInterface/getNetworkInterfaces)
+        ;;       (enumeration-seq)
+        ;;       (map (fn [x] (.getInterfaceAddresses x)))
+        ;;       (map #(into [] %))
+        ;;       (flatten)
+        ;;       (map (fn [x] (.toString (.getAddress x)))))
+        ;; This would be for display purposes, showing what's getting listened
+        ;; on when 0.0.0.0 is used as the server IP address ...
         local-ip  (.getHostAddress (java.net.InetAddress/getLocalHost))]
     (twig/set-level! '[auth-server] :info)
     (log/info "Test auth server's local IP address:" local-ip)
