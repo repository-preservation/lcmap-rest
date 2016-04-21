@@ -48,17 +48,17 @@
             :detail ""
             :instance "<URL at error>"}
     ;; Authentication errors
-    :20000 {:title ""
+    :20400 {:title "Bad username or password"
             :category :auth
             :type (get-in category [:auth :uri])
             :detail ""
             :instance "<URL at error>"}
-    :20001 {:title ""
+    :20404 {:title "Authentication resource not found"
             :category :auth
             :type (get-in category [:auth :uri])
             :detail ""
             :instance "<URL at error>"}
-    :20002 {:title ""
+    :20500 {:title "Authentication server error"
             :category :auth
             :type (get-in category [:auth :uri])
             :detail ""
