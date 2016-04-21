@@ -56,12 +56,12 @@
   (context lcmap.client.system/reference []
     (GET "/error-types" []
       (http/response :result errors/category))
-    (GET "/error-type/:id" []
-      (http/response :result (id errors/category)))
+    (GET "/error-type/:id" [id]
+      (http/response :result ((keyword id) errors/category)))
     (GET "/errors" []
       (http/response :result errors/lookup))
-    (GET "/error/:id" []
-      (http/response :result (id errors/lookup)))))
+    (GET "/error/:id" [id]
+      (http/response :result ((keyword id) errors/lookup)))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
