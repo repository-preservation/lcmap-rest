@@ -3,7 +3,7 @@
             [clojure.string :as string]
             [schema.core :as schema]))
 
-;;; Supporting Predicates and Other Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Supporting Predicates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn matches?
   "A predicate that returns true if the provided regex matches the given value.
@@ -123,6 +123,10 @@
   "A Schema type that may be used for simple integer-as-string schemas."
   (schema/pred string-int?))
 
+(def StrBool
+  "A Schema type that may be used for simple boolean-as-string schemas."
+  (schema/pred string-bool?))
+
 (def StrDay
   "A Schema type that may be used for integer-as-day-of-the-month schemas."
   (schema/pred string-day?))
@@ -135,13 +139,11 @@
   "A Schema type that may be used for integer-as-year schemas."
   (schema/pred string-year?))
 
+;;; Schemas for Compound Value Types ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (def StrDate
   "A compoound schema representing a string date.
 
   For details on formatting, see ``string-date?`` and its accompanying unit
   tests."
   (schema/pred string-date?))
-
-(def StrBool
-  "A Schema type that may be used for simple boolean-as-string schemas."
-  (schema/pred string-bool?))
