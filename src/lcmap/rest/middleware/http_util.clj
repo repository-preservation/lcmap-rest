@@ -32,19 +32,20 @@
       (#(parse-accept-version default-version %))))
 
 (defn problem-header
-  "Create a problem header given a mime sub-type (default :json).
+  "Returns an updated Ring response with the Content-Type header set to the
+  given content-type.
 
   This is per IETF RFC-7807."
-  [& {:keys [mime] :or {mime :json} :as args}]
-    (format "Content-Type: application/problem+%s" mime))
+  [resp & {:keys [mime] :or {mime :json} :as args}]
+  (ring/content-type resp (str "application/problem+" mime)))
 
 (defn response [& {:keys [result errors status headers]
-                   :or {result nil errors [] status 200 headers []}
+                   :or {result nil errors [] status 200 headers {}}
                    :as args}]
   ;; XXX how much of this should go in lcmap.client.http?
-  (-> (ring/response)
-      (update-in [:headers] #(into headers %))
-      (assoc :body (http/response :result result :errors errors))
+  (-> (http/response :result result :errors errors)
+      (ring/response)
+      (assoc :headers headers)
       (ring/status status)))
 
 (defn headers->sexp
