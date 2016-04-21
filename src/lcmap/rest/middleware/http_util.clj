@@ -31,10 +31,20 @@
       (get "accept")
       (#(parse-accept-version default-version %))))
 
-(defn response [& {:keys [result errors status]
-                   :or {result nil errors [] status 200}
+(defn problem-header
+  "Create a problem header given a mime sub-type (default :json).
+
+  This is per IETF RFC-7807."
+  [& {:keys [mime] :or {mime :json} :as args}]
+    (format "Content-Type: application/problem+%s" mime))
+
+(defn response [& {:keys [result errors status headers]
+                   :or {result nil errors [] status 200 headers []}
                    :as args}]
-  (-> (http/response :result result :errors errors)
+  ;; XXX how much of this should go in lcmap.client.http?
+  (-> (ring/response)
+      (update-in [:headers] #(into headers %))
+      (assoc :body (http/response :result result :errors errors))
       (ring/status status)))
 
 (defn headers->sexp
