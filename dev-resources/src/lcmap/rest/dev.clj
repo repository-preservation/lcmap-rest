@@ -30,10 +30,11 @@
             [metrics.core :as metrics]
             ;; shell execution
             [clj-commons-exec :as exec]
+            ;; other LCMAP libraries
+            [lcmap.config :as config]
             ;; api
             [lcmap.rest.app :as app]
             [lcmap.rest.components :as components]
-            [lcmap.rest.config :as config]
             [lcmap.rest.exceptions :as exceptions]
             [lcmap.rest.serializer :as serial]
             [lcmap.rest.system :as system]

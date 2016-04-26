@@ -38,7 +38,7 @@
   lcmap.rest.components
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
-            [lcmap.rest.components.config :as config]
+            [lcmap.config.components.config :as config]
             [lcmap.rest.components.db :as rest-db]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.components.logger :as logger]
