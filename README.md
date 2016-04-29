@@ -3,6 +3,7 @@
 **IMPORTANT**: This project is under active development and should be
 considered a work-in-progress.
 
+
 #### Contents
 
 * [About](#about-)
@@ -11,10 +12,14 @@ considered a work-in-progress.
   * [Sample Model](#sample-model-)
 * [Structure](#structure-)
 * [Development](#development-)
+  * [Component Dependencies](#component-dependencies-)
+  * [Daemon Dependencies](#daemon-dependencies-)
+  * [Startup](#startup-)
 * [Deployment](#deployment-)
   * [Testing & Staging](#testing--staging-)
   * [Production](#production-)
 * [License](#license-)
+
 
 ## About [&#x219F;](#contents)
 
@@ -104,6 +109,7 @@ The codebase for lcmap.rest is structured along the following lines:
 
 ## Development [&#x219F;](#contents)
 
+### Component Dependencies [&#x219F;](#contents)
 If you are developing from sources and you need the latest code from the various LCMAP projects/components, then you will need to override the dependencies that are in the ``project.clj`` file with a ``checkouts`` directory. In your lcmap.rest working directory:
 
 ```bash
@@ -117,6 +123,18 @@ $ git clone git@github.com:USGS-EROS/lcmap-event.git
 ```
 
 If these repositories have already been cloned to your workstation, you may optionally make symbolic links (i.e., ``ln -s ../../path/to/repo .``) in your ``checkouts`` directory.
+
+
+### Daemon Dependencies [&#x219F;](#contents)
+
+In order for the LCMAP system to run successfully, it will need to have access to the following:
+
+* Cassandra (host and port)
+* RabbitMQ (host, port, and vhost)
+* Test Auth Server (includedd in lcmap-rest; run with ``make test-auth-server``)
+
+
+### Startup [&#x219F;](#contents)
 
 To start the REST server and dependent components, do the following:
 
@@ -189,6 +207,8 @@ TBD
 
 # License [&#x219F;](#contents)
 
-Copyright © 2015 United States Government
+```
+Copyright © 2015-2016 United States Government
 
 NASA Open Source Agreement, Version 1.3
+```
