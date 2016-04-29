@@ -39,6 +39,7 @@
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
             [lcmap.config.components.config :as config]
+            [lcmap.event.components.messaging :as event]
             [lcmap.rest.components.db :as rest-db]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.components.logger :as logger]
@@ -56,10 +57,15 @@
     :metrics (component/using
                (metrics/new-metrics)
                [:cfg])
+    :msging (component/using
+              (event/new-messaging-client)
+              [:cfg
+               :logger])
     :jobdb (component/using
              (see-db/new-job-client)
              [:cfg
-              :logger])
+              :logger
+              :msging])
     :tiledb (component/using
              (rest-db/new-tile-client)
               [:cfg
@@ -74,14 +80,16 @@
               :logger
               :jobdb
               :tiledb
-              :eventd])
+              :eventd
+              :msging])
     :sys (component/using
            (system/new-lcmap-toplevel)
            [:cfg
             :logger
             :jobdb
             :eventd
-            :httpd])))
+            :httpd
+            :msging])))
 
 (defn stop [system component-key]
   (let [updated-component (component/stop (component-key system))]

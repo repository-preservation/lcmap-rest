@@ -30,6 +30,8 @@
                  [clojusc/ring-xml "0.0.6"]
                  ;; Authentication and authorization
                  [com.cemerick/friend "0.2.1"]
+                 ;; Event system support
+                 [com.novemberain/langohr "3.5.0"]
                  ;; Job Tracker
                  [org.clojure/core.memoize "0.5.6"] ; These two are not used directly, but
                  [org.clojure/core.cache "0.6.4"]   ; without them an exception is raised
@@ -45,6 +47,7 @@
                  [gov.usgs.eros/lcmap-see "0.0.1"]
                  [gov.usgs.eros/lcmap-client-clj "0.0.1"]
                  ;[gov.usgs.eros/lcmap-config "0.5.0-SNAPSHOT"]
+                 ;[gov.usgs.eros/lcmap-event "0.5.0-SNAPSHOT"]
                  ;; XXX note that we may still need to explicitly include the
                  ;; Apache Java HTTP client, since the version used by the LCMAP
                  ;; client is more recent than that used by Chas Emerick's
@@ -111,18 +114,23 @@
               :protocol-version 3
               :keyspace "lcmap"
               :credentials {
-                :username nil
-                :password nil}}
-          :http {:port 1077     ; port number obtained via this bit of geekery:
+              :username nil
+              :password nil}}
+         :messaging {:host "127.0.0.1"
+                     :port 5672
+                     :vhost "/"
+                     :default-exchange-name "lcmap.event"
+                     :default-queue-name "lcmap.event-stream"}
+         :http {:port 1077     ; port number obtained via this bit of geekery:
                  :ip "0.0.0.0"} ;   (reduce + (map int "USGS-EROS LCMAP"))
-          :auth {
-            :backend :usgs
-            ;:backend :nasa
-            :usgs {:endpoint "http://127.0.0.1:8888/api"
+         :auth {
+           :backend :usgs
+           ;:backend :nasa
+           :usgs {:endpoint "http://127.0.0.1:8888/api"
                    ;:endpoint "https://ers.cr.usgs.gov/api"
-                   :login-resource "/auth"
-                   :user-resource "/me"}}
-          :log-level :debug}}
+                  :login-resource "/auth"
+                  :user-resource "/me"}}
+         :log-level :debug}}
     ;; configuration for testing environment
     :testing {
       :env

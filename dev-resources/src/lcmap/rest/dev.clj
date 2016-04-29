@@ -22,6 +22,13 @@
             [clojurewerkz.cassaforte.client :as cc]
             [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :as query]
+            ;; messaging
+            [langohr.core :as rmq]
+            [langohr.channel :as lch]
+            [langohr.queue :as lq]
+            [langohr.exchange :as le]
+            [langohr.consumers :as lc]
+            [langohr.basic :as lb]
             ;; data types
             [byte-streams]
             [clj-time.coerce :as time]
