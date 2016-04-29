@@ -104,6 +104,20 @@ The codebase for lcmap.rest is structured along the following lines:
 
 ## Development [&#x219F;](#contents)
 
+If you are developing from sources and you need the latest code from the various LCMAP projects/components, then you will need to override the dependencies that are in the ``project.clj`` file with a ``checkouts`` directory. In your lcmap.rest working directory:
+
+```bash
+$ mkdir checkouts
+$ cd checkouts
+$ git clone git@github.com:USGS-EROS/lcmap-config.git
+$ git clone git@github.com:USGS-EROS/lcmap-client.git
+$ git clone git@github.com:USGS-EROS/lcmap-data.git
+$ git clone git@github.com:USGS-EROS/lcmap-see.git
+$ git clone git@github.com:USGS-EROS/lcmap-event.git
+```
+
+If these repositories have already been cloned to your workstation, you may optionally make symbolic links (i.e., ``ln -s ../../path/to/repo .``) in your ``checkouts`` directory.
+
 To start the REST server and dependent components, do the following:
 
 ```bash
