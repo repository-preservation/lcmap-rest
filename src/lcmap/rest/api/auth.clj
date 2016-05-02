@@ -15,8 +15,8 @@
 ;; XXX add db-connection as parameter
 (defn login [auth-cfg username password]
   (http/response
-    {:result (usgs/login auth-cfg username password)
-      :errors []}))
+    :result (usgs/login auth-cfg username password)
+    :errors []))
 
 (defn logout [auth-cfg db-conn token]
   (ring/response
