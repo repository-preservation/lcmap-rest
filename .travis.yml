@@ -7,7 +7,7 @@ before_script:
   - cd checkouts && git clone https://github.com/USGS-EROS/lcmap-see.git && cd -
   - cd checkouts && git clone https://github.com/USGS-EROS/lcmap-event.git && cd -
 script:
-  - lein with-profile +testing,-dev test
+  - make check
 jdk:
   - oraclejdk8
   #- oraclejdk7

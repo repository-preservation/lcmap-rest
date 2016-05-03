@@ -40,3 +40,6 @@ include resources/make/docker.mk
 
 loc:
 	@find src -name "*.clj" -exec cat {} \;|wc -l
+
+check:
+	@lein with-profile +testing,-dev test
