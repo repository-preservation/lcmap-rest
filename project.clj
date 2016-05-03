@@ -135,7 +135,7 @@
         {:active-profile "testing"
          :db {}
          :http {}
-         :log-level :debug}}
+         :log-level :info}}
     ;; configuration for staging environment
     :staging {
       :env
