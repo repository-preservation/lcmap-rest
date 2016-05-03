@@ -121,7 +121,7 @@ If you are developing from sources and you need the latest code from the various
 $ mkdir checkouts
 $ cd checkouts
 $ git clone git@github.com:USGS-EROS/lcmap-config.git
-$ git clone git@github.com:USGS-EROS/lcmap-client.git
+$ git clone git@github.com:USGS-EROS/lcmap-client-clj.git
 $ git clone git@github.com:USGS-EROS/lcmap-data.git
 $ git clone git@github.com:USGS-EROS/lcmap-see.git
 $ git clone git@github.com:USGS-EROS/lcmap-event.git
