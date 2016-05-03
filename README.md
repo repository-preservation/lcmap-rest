@@ -1,6 +1,9 @@
-# LCMAP REST Service [![Build Status][travis-badge]][travis][![Clojars Project][clojars-badge]][clojars]
+# lcmap-rest [![Build Status][travis-badge]][travis][![Clojars Project][clojars-badge]][clojars]
 
 [![LCMAP open source project logo][lcmap-logo]][lcmap-logo-large]
+
+*The REST Service for the USGS Land Change Monitoring Assessment and Projection (LCMAP) Computation and Analysis Platform*
+
 
 **IMPORTANT**: This project is under active development and should be
 considered a work-in-progress.
@@ -218,8 +221,8 @@ NASA Open Source Agreement, Version 1.3
 
 <!-- Named page links below: /-->
 
-[travis]: https://travis-ci.org/clojang/clojang
-[travis-badge]: https://travis-ci.org/clojang/clojang.png?branch=master
+[travis]: https://travis-ci.org/usgs-eros/lcmap-rest
+[travis-badge]: https://travis-ci.org/usgs-eros/lcmap-rest.png?branch=master
 [lcmap-logo]: resources/images/lcmap-logo-1-250px.png
 [lcmap-logo-large]: resources/images/lcmap-logo-1-1000px.png
 [clojars]: https://clojars.org/gov.usgs.eros/lcmap-rest
