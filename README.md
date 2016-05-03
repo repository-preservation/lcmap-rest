@@ -1,4 +1,6 @@
-# LCMAP REST Service
+# LCMAP REST Service [![Build Status][travis-badge]][travis][![Clojars Project][clojars-badge]][clojars]
+
+[![LCMAP open source project logo][lcmap-logo]][lcmap-logo-large]
 
 **IMPORTANT**: This project is under active development and should be
 considered a work-in-progress.
@@ -212,3 +214,14 @@ Copyright © 2015-2016 United States Government
 
 NASA Open Source Agreement, Version 1.3
 ```
+
+
+<!-- Named page links below: /-->
+
+[travis]: https://travis-ci.org/clojang/clojang
+[travis-badge]: https://travis-ci.org/clojang/clojang.png?branch=master
+[lcmap-logo]: resources/images/lcmap-logo-1-250px.png
+[lcmap-logo-large]: resources/images/lcmap-logo-1-1000px.png
+[clojars]: https://clojars.org/gov.usgs.eros/lcmap-rest
+[clojars-badge]: https://img.shields.io/clojars/v/gov.usgs.eros/lcmap-rest.svg
+
