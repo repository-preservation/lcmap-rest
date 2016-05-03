@@ -2,15 +2,19 @@
   (:require [clojure.tools.logging :as log]
             [clj-time.format :as time-fmt]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
+            [ring.util.response :refer [response]]
+            [lcmap.rest.middleware.http-util :as util]
             [lcmap.client.data]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.tile.db :as tile-db])
   (:import [org.apache.commons.codec.binary Base64]))
 
+
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; this mutates the buffer by reading it...
+
 (defn base64-encode [src-data]
   (let [size (- (.limit src-data) (.position src-data))
         copy (byte-array size)]
@@ -42,7 +46,9 @@
         times   (iso8601->datetimes time)
         spec    (tile-db/find-spec band system)
         results (tile-db/find-tiles band x y times system)
-        encoded (map #(assoc % :data (base64-encode (% :data))) results)]
+        encoded (map #(assoc %
+                             :data (base64-encode (% :data))
+                             :acquired (str (% :acquired))) results)]
     (log/debug "GET tiles" band x y times (count results))
     {:spec spec :tiles encoded}))
 
