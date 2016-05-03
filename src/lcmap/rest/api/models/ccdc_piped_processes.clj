@@ -20,6 +20,8 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defn run-model [db eventd spectra x-val y-val start-time end-time
                            row col in-dir out-dir scene-list verbose]
   ;; generate job-id from hash of args

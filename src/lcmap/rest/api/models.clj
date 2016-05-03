@@ -14,15 +14,24 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn get-resources [request]
-  (http/response "models resources tbd"))
+;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn get-resources [context]
+  (log/info (str "get-resources: " context))
+  {:links (map #(str context %) ["/ccdc"
+                                 "/ccdc-docker-process"
+                                 "/ccdc-piped-processes"
+                                 "/sample-docker-process"
+                                 "/sample-os-process"
+                                 "/sample-piped-processes"])})
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
   (context lcmap.client.models/context []
     (GET "/" request
-      (get-resources (:uri request))))
+      (http/response :result
+        (get-resources (:uri request)))))
   lcmap.rest.api.models.ccdc/routes
   lcmap.rest.api.models.ccdc-docker-process/routes
   lcmap.rest.api.models.ccdc-piped-processes/routes

@@ -21,6 +21,8 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defn run-model [db eventd docker-tag year]
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where sample result will

@@ -13,15 +13,18 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defn get-resources [request]
-  (http/response "jobs resources tbd"))
+  "jobs resources tbd")
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
   (context lcmap.client.jobs/context []
     (GET "/" request
-      (get-resources (:uri request))))
+      (http/response :result
+        (get-resources (:uri request)))))
   lcmap.rest.api.jobs.ccdc/routes
   lcmap.rest.api.jobs.ccdc-docker-process/routes
   lcmap.rest.api.jobs.sample-docker-process/routes

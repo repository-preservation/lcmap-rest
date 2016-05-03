@@ -9,15 +9,18 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defn get-resources [request]
-  (http/response "compatibility resources tbd"))
+  "compatibility resources tbd")
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
   (context lcmap.client.compatibility/context []
     (GET "/" request
-      (get-resources (:uri request))))
+      (http/response :result
+        (get-resources (:uri request)))))
   ;;lcmap.rest.api.compatibility.wmts/routes
   )
 

@@ -12,8 +12,10 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defn get-resources [request]
-  (http/response "system resources tbd"))
+  "system resources tbd")
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -23,7 +25,8 @@
   ;; Top-level system routes
   (context lcmap.client.system/context []
     (GET "/" request
-      (get-resources (:uri request)))
+      (http/response :result
+        (get-resources (:uri request))))
     ;; XXX add more management resources
     (GET "/status" []
       (system/get-xml-status))

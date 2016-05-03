@@ -18,6 +18,8 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defn run-model [db eventd arg1 arg2]
   (log/debugf "run-model got args: [%s %s]" arg1 arg2)
   (let [job-id (util/get-args-hash "ccdc" :arg1 arg1 :arg2 arg2)]

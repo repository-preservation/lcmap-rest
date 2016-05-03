@@ -12,22 +12,29 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn get-resources [context]
+  (log/info (str "get-resources: " context))
+  {:links (map #(str context %) ["/login" "/logout"])})
+
 ;; XXX add db-connection as parameter
 (defn login [auth-cfg username password]
-  (http/response
-    :result (usgs/login auth-cfg username password)
-    :errors []))
+  (usgs/login auth-cfg username password))
 
 (defn logout [auth-cfg db-conn token]
-  (ring/response
-    (usgs/logout auth-cfg db-conn token)))
+  (usgs/logout auth-cfg db-conn token))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
   (context lcmap.client.auth/context []
+    (GET "/" request
+      (http/response :result
+        (get-resources (:uri request))))
     (POST "/login" [username password :as request]
-      (login (httpd/authcfg-key request) username password))
+      (http/response :result
+        (login (httpd/authcfg-key request) username password)))
     ;; XXX once we've got user data being saved in the db, we need to come
     ;; back to this and add a logout function which destroys the ephemeral
     ;; user data (such as token association)

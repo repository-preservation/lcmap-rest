@@ -20,6 +20,8 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defn run-model [db eventd row col in-dir out-dir scene-list verbose]
   (log/debugf "run-model got args: %s" [row col in-dir out-dir scene-list verbose])
   (let [job-id (util/get-args-hash science-model-name
