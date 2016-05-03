@@ -221,8 +221,8 @@ NASA Open Source Agreement, Version 1.3
 
 <!-- Named page links below: /-->
 
-[travis]: https://travis-ci.org/usgs-eros/lcmap-rest
-[travis-badge]: https://travis-ci.org/usgs-eros/lcmap-rest.png?branch=master
+[travis]: https://travis-ci.org/USGS-EROS/lcmap-rest
+[travis-badge]: https://travis-ci.org/USGS-EROS/lcmap-rest.png?branch=master
 [lcmap-logo]: resources/images/lcmap-logo-1-250px.png
 [lcmap-logo-large]: resources/images/lcmap-logo-1-1000px.png
 [clojars]: https://clojars.org/gov.usgs.eros/lcmap-rest
