@@ -37,7 +37,7 @@
 
   This is per IETF RFC-7807."
   [resp & {:keys [mime] :or {mime :json} :as args}]
-  (ring/content-type resp (str "application/problem+" mime)))
+  (ring/content-type resp (str "application/problem+" (name mime))))
 
 (defn response [& {:keys [result errors status headers]
                    :or {result nil errors [] status 200 headers {}}
