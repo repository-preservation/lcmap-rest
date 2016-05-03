@@ -12,10 +12,21 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; XXX TBD
+
 ;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn get-resources [request]
-  "system resources tbd")
+(defn get-resources [context]
+  {:links (map #(str context %) ["/status"
+                                 "/json-status"
+                                 "/metrics"
+                                 "/reference"])})
+
+(defn get-reference-resources [context]
+  {:links (map #(str context %) ["/error-types"
+                                 "/error-type/:id"
+                                 "/errors"
+                                 "/error/:id"])})
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -27,7 +38,9 @@
     (GET "/" request
       (http/response :result
         (get-resources (:uri request))))
-    ;; XXX add more management resources
+    ;; NOTE! The following two resources differ from the standard LCMAP
+    ;; responses in order to provide Tomcat-application-server
+    ;; compatibility for monitoring tools
     (GET "/status" []
       (system/get-xml-status))
     ;; XXX json-status is a hack until we get dynamic content type support
@@ -57,6 +70,9 @@
         (system/get-metrics-timers metrics/default-registry))))
   ;; system/reference routes
   (context lcmap.client.system/reference []
+    (GET "/" request
+      (http/response :result
+        (get-reference-resources (:uri request))))
     (GET "/error-types" []
       (http/response :result errors/category))
     (GET "/error-type/:id" [id]
