@@ -109,9 +109,7 @@
       :plugins [[lein-kibit "0.1.2"]]
       :env
         {:active-profile "development"
-         :db {:hosts ["127.0.0.1"]
-              :port 9042
-              :protocol-version 3
+         :db {:hosts []
               :keyspace "lcmap"
               :credentials {
               :username nil
