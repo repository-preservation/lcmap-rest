@@ -6,6 +6,7 @@
             [lcmap.client.jobs.ccdc]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
+            [lcmap.rest.middleware.http-util :as http]
             [lcmap.see.job.db :as db]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -33,10 +34,8 @@
   ([db-conn job-id]
     (get-job-result db-conn job-id result-table #'get-job-status))
   ([db-conn job-id table func]
-    (-> (db/get-job-result db-conn job-id table func)
-        ;; XXX need to unify this with lcmap.rest.middleware.http/response
-        (ring/response)
-        (ring/status status/ok))))
+    (db/get-job-result db-conn job-id table func)))
+
 
 (defn update-job [job-id]
   "job update tbd")

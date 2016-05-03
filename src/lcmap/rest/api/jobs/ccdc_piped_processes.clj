@@ -24,7 +24,7 @@
 (defn get-job-resources [request]
   (http/response :result "CCDC job resources tbd"))
 
-(defn -job-status
+(defn get-job-status
   ([result]
     (apply #'http/response (mapcat identity result)))
   ([db job-id]
@@ -42,29 +42,11 @@
         (http/response :result  (get-result-path job-id)
                        :status st))))
 
-(defn get-job-status [db job-id]
-  (let [result (-job-status db job-id)]
-    (-> result
-      ;; XXX need to unify this with lcmap.rest.middleware.http/response
-      (ring/response)
-      (ring/status (:status result)))))
-
-;; XXX
-(defn parse-job [arg]
-  (log/debug "Parsing job ...")
-  (log/debug "Got args:" arg)
-  arg)
-
 (defn get-job-result
   ([db-conn job-id]
-    (get-job-result db-conn job-id result-table #'-job-status))
+    (get-job-result db-conn job-id result-table #'get-job-status))
   ([db-conn job-id table func]
-    (-> (db/get-job-result db-conn job-id table func)
-        ;; XXX
-        (parse-job)
-        ;; XXX need to unify this with lcmap.rest.middleware.http/response
-        (ring/response)
-        (ring/status status/ok))))
+    (db/get-job-result db-conn job-id table func)))
 
 (defn update-job [db job-id]
   (http/response :result "CCDC job update tbd"

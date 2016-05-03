@@ -42,22 +42,11 @@
         (http/response :result (get-result-path job-id)
                        :status st))))
 
-;; XXX
-(defn parse-job [arg]
-  (log/debug "Parsing job ...")
-  (log/debug "Got args:" arg)
-  arg)
-
 (defn get-job-result
   ([db-conn job-id]
     (get-job-result db-conn job-id result-table #'get-job-status))
   ([db-conn job-id table func]
-    (-> (db/get-job-result db-conn job-id table func)
-        ;; XXX
-        (parse-job)
-        ;; XXX need to unify this with lcmap.rest.middleware.http/response
-        (ring/response)
-        (ring/status status/ok))))
+    (db/get-job-result db-conn job-id table func)))
 
 (defn update-job [db job-id]
   (http/response :result "sample job update tbd"
