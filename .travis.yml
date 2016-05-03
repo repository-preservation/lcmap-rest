@@ -1,17 +1,17 @@
 language: clojure
 before_script:
   - mkdir checkouts
-  - cd checkouts && git clone git@github.com:USGS-EROS/lcmap-config.git
-  - cd checkouts && git clone git@github.com:USGS-EROS/lcmap-client.git
-  - cd checkouts && git clone git@github.com:USGS-EROS/lcmap-data.git
-  - cd checkouts && git clone git@github.com:USGS-EROS/lcmap-see.git
-  - cd checkouts && git clone git@github.com:USGS-EROS/lcmap-event.git
+  - cd checkouts && git clone https://github.com/USGS-EROS/lcmap-config.git
+  - cd checkouts && git clone https://github.com/USGS-EROS/lcmap-client.git
+  - cd checkouts && git clone https://github.com/USGS-EROS/lcmap-data.git
+  - cd checkouts && git clone https://github.com/USGS-EROS/lcmap-see.git
+  - cd checkouts && git clone https://github.com/USGS-EROS/lcmap-event.git
 script:
   - lein with-profile +testing,-dev test
 jdk:
   - oraclejdk8
-  - oraclejdk7
-  - openjdk6
+  #- oraclejdk7
+  #- openjdk6
   - openjdk7
   #- openjdk8
 #addons:
