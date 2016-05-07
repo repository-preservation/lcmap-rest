@@ -29,6 +29,9 @@
 
   (start [component]
     (log/info "Starting HTTP server ...")
+    ;; XXX conventions may obviate this...
+    ;; XXX why reference components like this? the system map
+    ;;     make them available if they are dependencies?
     (let [httpd-cfg (get-in component [:cfg :env :http])
           auth-backend (get-in component [:cfg :env :auth :backend])
           auth-cfg (get-in component [:cfg :env :auth auth-backend])

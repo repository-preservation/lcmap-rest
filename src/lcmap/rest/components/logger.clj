@@ -21,7 +21,8 @@
     (let [log-level (get-in component [:cfg :env :log-level])
           namespaces (get-in component [:cfg :logging-namespaces])]
       (log/info "Using log-level" log-level)
-      (logger/set-level! namespaces log-level)
+      ;; XXX figure out how to parse from config -- some code does this already
+      ;;(logger/set-level! namespaces log-level)
       ;;(dorun (map #(logger/set-level! % log-level) namespaces))
       (log/debug "Logging agent:" log/*logging-agent*)
       (log/debug "Logging factory:" (logger/get-factory))
