@@ -12,3 +12,10 @@ jdk:
 #  apt:
 #    sources:
 #      - 
+notifications:
+  email: lcmap-dev-notifications@googlegroups.com
+  slack:
+    rooms:
+      - lcmap:UTqlh9PfPVomfpli10WKyZoh#cicd
+      - lcmap:UTqlh9PfPVomfpli10WKyZoh#rest
+
