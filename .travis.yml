@@ -13,7 +13,12 @@ jdk:
 #    sources:
 #      - 
 notifications:
-  email: lcmap-dev-notifications@googlegroups.com
+  email:
+      # the following won't work until the Travis
+      # but here is sorted:
+      # https://github.com/travis-ci/travis-ci/issues/2513
+      - lcmap-dev-notifications@googlegroups.com
+      - duncan.mcgreggor.ctr@usgs.gov
   slack:
     rooms:
       - lcmap:UTqlh9PfPVomfpli10WKyZoh#cicd
