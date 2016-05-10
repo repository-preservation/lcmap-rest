@@ -67,7 +67,7 @@
               :logger
               :msging])
     :tiledb (component/using
-             (rest-db/new-tile-client)
+             (tile-db/new-database)
               [:cfg
                :logger])
     :eventd (component/using
