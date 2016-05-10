@@ -64,9 +64,9 @@
     (GET "/" request
       (get-resources (:uri request)))
     (GET "/tiles" [band point time :as request]
-      (get-tiles band point time (httpd/tiledb-key request)))
+      (get-tiles band point time (:tiledb request)))
     (GET "/rod" [band point time :as request]
-      (get-rod point time band request (httpd/tiledb-key request)))))
+      (get-rod point time band request (:tiledb request)))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

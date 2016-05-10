@@ -34,7 +34,7 @@
         (get-resources (:uri request))))
     (POST "/login" [username password :as request]
       (http/response :result
-        (login (httpd/authcfg-key request) username password)))
+        (login (get-in request [:cfg :lcmap.rest]) username password)))
     ;; XXX once we've got user data being saved in the db, we need to come
     ;; back to this and add a logout function which destroys the ephemeral
     ;; user data (such as token association)

@@ -6,41 +6,30 @@
   lcmap.rest.components.httpd
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
-            [org.httpkit.server :as httpkit]))
+            [org.httpkit.server :as httpkit]
+            [lcmap.rest.config :as config]
+            [lcmap.config.helpers :as cfg-help]))
 
-;; We should keep these definitions here so that component interdependencies
-;; are kept to a minimum.
-(def authcfg-key ::authcfg)
-(def jobdb-key ::jobdb)
-(def eventd-key ::eventd)
-(def tiledb-key ::tiledb)
+(-> (cfg-help/build-cfg config/defaults) :lcmap.rest.components.httpd/httpkit)
 
-(defn inject-app [handler auth-cfg eventd-component
-                  jobdb-component tiledb-component]
+(def jobdb-key :jobdb)
+(def eventd-key :eventd)
+
+(defn inject-app
+  "Make app components available to request handlers."
+  [handler component]
   (fn [request]
-    (handler (-> request
-                 (assoc authcfg-key auth-cfg)
-                 (assoc jobdb-key jobdb-component)
-                 (assoc eventd-key eventd-component)
-                 (assoc tiledb-key tiledb-component)))))
+    (handler (merge request component))))
 
 (defrecord HTTPServer [ring-handler]
   component/Lifecycle
 
   (start [component]
     (log/info "Starting HTTP server ...")
-    ;; XXX conventions may obviate this...
-    ;; XXX why reference components like this? the system map
-    ;;     make them available if they are dependencies?
-    (let [httpd-cfg (get-in component [:cfg :env :http])
-          auth-backend (get-in component [:cfg :env :auth :backend])
-          auth-cfg (get-in component [:cfg :env :auth auth-backend])
-          eventd (:eventd component)
-          jobdb (:jobdb component)
-          tiledb (:tiledb component)
-          handler (inject-app ring-handler auth-cfg eventd jobdb tiledb)
-          server (httpkit/run-server handler httpd-cfg)]
-      (log/debug "Using config:" httpd-cfg)
+    (let [http-cfg (get-in component [:cfg :lcmap.rest])
+          handler (inject-app ring-handler component)
+          server (httpkit/run-server handler http-cfg)]
+      (log/debug "Using config:" http-cfg)
       (log/debug "Component keys:" (keys component))
       (log/debug "Successfully created server:" server)
       (assoc component :httpd server)))
