@@ -70,10 +70,11 @@
       (let [error (.getMessage e)]
         (log/error "Got error:" error)
         (->
-          (http/response :errors [error]
-                         :status status/client-error)
-          ;; update to take mime sub-type from Accept
-          (http/problem-header))))))
+         ;; XXX status/client-error doesn't exist?
+         (http/response :errors [error]
+                        :status status/server-error)
+         ;; update to take mime sub-type from Accept
+         (http/problem-header))))))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
