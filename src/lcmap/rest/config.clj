@@ -16,8 +16,7 @@
                 schema/Keyword schema/Str}})
 
 (def cfg-schema
-  (merge {}
-         client-cfg/client-schema
+  (merge client-cfg/client-schema
          data-cfg/data-schema
          see-cfg/see-schema
          event-cfg/event-schema
