@@ -7,7 +7,8 @@
             [lcmap.client.data]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
-            [lcmap.rest.tile.db :as tile-db])
+            [lcmap.data.tile-spec :as tile-spec]
+            [lcmap.data.tile :as tile])
   (:import [org.apache.commons.codec.binary Base64]))
 
 
@@ -41,11 +42,11 @@
 
 (defn get-tiles
   ""
-  [band point time system]
+  [band point time db]
   (let [[x y]   (point->pair point)
         times   (iso8601->datetimes time)
-        spec    (tile-db/find-spec band system)
-        results (tile-db/find-tiles band x y times system)
+        spec    (tile-spec/find db {:ubid band})
+        results (tile/find db {:ubid band :x x :y y :acquired times})
         encoded (map #(assoc %
                              :data (base64-encode (% :data))
                              :acquired (str (% :acquired))) results)]
@@ -61,7 +62,7 @@
         (get-resources (:uri request))))
     (GET "/tiles" [band point time :as request]
       (http/response :result
-        (get-tiles band point time (httpd/tiledb-key request))))))
+        (get-tiles band point time (:tiledb request))))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
