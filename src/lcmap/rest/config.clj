@@ -10,13 +10,14 @@
 
 (def rest-schema
   {:lcmap.rest {:http-ip schema/Str
-                :http-port schema/Str
+                :http-port schema/Num
                 :auth-backend schema/Str
                 :auth-endpoint schema/Str
                 schema/Keyword schema/Str}})
 
 (def cfg-schema
-  (merge client-cfg/client-schema
+  (merge rest-schema
+         client-cfg/client-schema
          data-cfg/data-schema
          see-cfg/see-schema
          event-cfg/event-schema

@@ -15,12 +15,12 @@
 
 (defn- post-auth [auth-cfg username password]
   "Post to the USGS auth service and return the auth code."
-  (http/post (str (:endpoint auth-cfg) (:login-resource auth-cfg))
+  (http/post (str (:auth-endpoint auth-cfg) (:auth-login-resource auth-cfg))
              {:form-params {:username username :password password}
               :as :json}))
 
 (defn- get-user [auth-cfg token]
-  (http/get (str (:endpoint auth-cfg) (:user-resource auth-cfg))
+  (http/get (str (:auth-endpoint auth-cfg) (:auth-user-resource auth-cfg))
             {:headers {:x-authtoken token}
              :as :json}))
 
@@ -53,4 +53,3 @@
 (defn logout [auth-cfg db-conn token]
   ;; XXX delete the records for the user session/token
   )
-
