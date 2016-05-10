@@ -1,5 +1,5 @@
 (ns lcmap.rest.config
-  (:require [lcmap.config.helpers :as cfg]
+  (:require [lcmap.config.helpers :refer :all]
             [lcmap.client.config :as client-cfg]
             [lcmap.data.config :as data-cfg]
             [lcmap.event.config :as event-cfg]
@@ -8,15 +8,23 @@
 
 (def opt-spec [])
 
+(def rest-schema
+  {:lcmap.rest {:http-ip schema/Str
+                :http-port schema/Str
+                :auth-backend schema/Str
+                :auth-endpoint schema/Str
+                schema/Keyword schema/Str}})
+
 (def cfg-schema
-  (merge client-cfg/cfg-schema
-         data-cfg/cfg-schema
-         see-cfg/cfg-schema
-         event-cfg/cfg-schema
+  (merge {}
+         client-cfg/client-schema
+         data-cfg/data-schema
+         see-cfg/see-schema
+         event-cfg/event-schema
          {schema/Keyword schema/Any}))
 
 (def defaults
-  {:ini (clojure.java.io/file (System/getenv "HOME") ".usgs" "lcmap.ini")
-   :spec opt-spec
+  {:ini *lcmap-config-ini*
    :args *command-line-args*
+   :spec opt-spec
    :schema cfg-schema})
