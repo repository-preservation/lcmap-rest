@@ -110,25 +110,6 @@
       :plugins [[lein-kibit "0.1.2"]]
       :env
         {:active-profile "development"
-         :db {:hosts []
-              :keyspace "lcmap"
-              :credentials {
-              :username nil
-              :password nil}}
-         :messaging {:host "127.0.0.1"
-                     :port 5672
-                     :vhost "/"
-                     :default-exchange-name "lcmap.event"
-                     :default-queue-name "lcmap.event-stream"}
-         :http {:port 1077     ; port number obtained via this bit of geekery:
-                 :ip "0.0.0.0"} ;   (reduce + (map int "USGS-EROS LCMAP"))
-         :auth {
-           :backend :usgs
-           ;:backend :nasa
-           :usgs {:endpoint "http://127.0.0.1:8888/api"
-                   ;:endpoint "https://ers.cr.usgs.gov/api"
-                  :login-resource "/auth"
-                  :user-resource "/me"}}
          :log-level :debug}}
     ;; configuration for testing environment
     :testing {
