@@ -33,8 +33,8 @@
       (http/response :result
         (get-resources (:uri request))))
     (POST "/login" [username password :as request]
+      (log/debugf "Authenticating to %s ..." (get-in request [:cfg :lcmap.rest]))
       (http/response :result
-        (log/debugf "Authenticating to %s ..." (get-in request [:cfg :lcmap.rest]))
         (login (get-in request [:cfg :lcmap.rest]) username password)))
     ;; XXX once we've got user data being saved in the db, we need to come
     ;; back to this and add a logout function which destroys the ephemeral
