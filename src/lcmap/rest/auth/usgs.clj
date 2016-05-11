@@ -28,7 +28,7 @@
 
 (defn get-user-data [httpd-cfg token]
   (let [results (get-user httpd-cfg token)]
-    (log/debugf "Got user data %s for token %s" results token)
+    (log/debug "Extracting user data from" results)
     (get-in results [:body :data])))
 
 (defn check-status [ers-status errors]
@@ -38,12 +38,14 @@
 (defn login [httpd-cfg username password]
   (let [results (post-auth httpd-cfg username password)
         token (get-in results [:body :data :authToken])]
+    (log/debug "Login results:" results)
     (check-status (get-in results [:body :status])
                   (get-in results [:body :errors]))
     (log/infof "User %s successfully authenticated with token %s"
                username
                token)
     (let [user-data (get-user-data httpd-cfg token)]
+      (log/debugf "Got user data %s for token %s" user-data token)
       ;; XXX save user data in db
       {:user-id (:contact_id user-data)
        :username (:username user-data)
