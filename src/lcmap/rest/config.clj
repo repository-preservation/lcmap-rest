@@ -9,8 +9,8 @@
 (def opt-spec [])
 
 (def rest-schema
-  {:lcmap.rest {:http-ip schema/Str
-                :http-port schema/Num
+  {:lcmap.rest {:ip schema/Str
+                :port schema/Num
                 :auth-backend schema/Str
                 :auth-endpoint schema/Str
                 schema/Keyword schema/Str}})
