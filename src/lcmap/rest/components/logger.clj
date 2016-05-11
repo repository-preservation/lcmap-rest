@@ -19,7 +19,10 @@
 
 (defn get-namespaces [component]
   "A convenience function for use in the Logger component."
-  (map symbol (get-in component [:cfg :lcmap.logging :namespaces])))
+  (->> [:cfg :lcmap.logging :namespaces]
+       (get-in component)
+       (map symbol)
+       (into [])))
 
 (defrecord Logger []
   component/Lifecycle
