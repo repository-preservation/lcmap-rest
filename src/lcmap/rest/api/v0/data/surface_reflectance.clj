@@ -4,7 +4,7 @@
             [ring.util.response :refer [response]]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.tile.db :as tile-db]
-            [lcmap.client.data.surface-reflectance]
+            [lcmap.client.data]
             [clj-time.format :as time-fmt])
   (:import [org.apache.commons.codec.binary Base64]))
 
@@ -58,13 +58,15 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.data.surface-reflectance/context []
+  ;; XXX we may have a problem with keeping routes in the client:
+  ;; this context has been moved. Some duplication may be necessary...
+  (context (str lcmap.client.data/context "/surface-reflectance") []
     (GET "/" request
       (get-resources (:uri request)))
     (GET "/tiles" [band point time :as request]
-      (get-tiles band point time (httpd/tiledb-key request)))
+      (get-tiles band point time (:tiledb request)))
     (GET "/rod" [band point time :as request]
-      (get-rod point time band request (httpd/tiledb-key request)))))
+      (get-rod point time band request (:tiledb request)))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

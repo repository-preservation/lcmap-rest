@@ -1,4 +1,4 @@
-(defproject gov.usgs.eros/lcmap-rest "0.0.2-SNAPSHOT"
+(defproject gov.usgs.eros/lcmap-rest "0.5.0-SNAPSHOT"
   :description "LCMAP REST Service API"
   :url "https://github.com/USGS-EROS/lcmap-rest"
   :license {:name "NASA Open Source Agreement, Version 1.3"
@@ -43,11 +43,11 @@
                  [net.jpountz.lz4/lz4 "1.3.0"]
                  [org.xerial.snappy/snappy-java "1.1.2"]
                  ;; Note that the projects in ./checkouts override these:
-                 [gov.usgs.eros/lcmap-data "0.0.1"]
-                 [gov.usgs.eros/lcmap-see "0.0.1"]
-                 [gov.usgs.eros/lcmap-client-clj "0.0.1"]
-                 ;[gov.usgs.eros/lcmap-config "0.5.0-SNAPSHOT"]
-                 ;[gov.usgs.eros/lcmap-event "0.5.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-config "0.5.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-data "0.5.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-see "0.0.2-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-client-clj "0.5.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-event "0.5.0-SNAPSHOT"]
                  ;; XXX note that we may still need to explicitly include the
                  ;; Apache Java HTTP client, since the version used by the LCMAP
                  ;; client is more recent than that used by Chas Emerick's
@@ -102,32 +102,14 @@
     ;; copy `:env { ... }` into `{:user ...}` in your ~/.lein/profiles.clj and
     ;; then override values there
     :dev {
-      :dependencies [[org.clojure/tools.namespace "0.3.0-alpha3"]
+      ;; XXX 0.3.0-alpha3 breaks reload
+      :dependencies [[org.clojure/tools.namespace "0.2.11"]
                      [slamhound "1.5.5"]]
       :aliases {"slamhound" ["run" "-m" "slam.hound"]}
       :source-paths ["dev-resources/src"]
       :plugins [[lein-kibit "0.1.2"]]
       :env
         {:active-profile "development"
-         :db {:hosts []
-              :keyspace "lcmap"
-              :credentials {
-              :username nil
-              :password nil}}
-         :messaging {:host "127.0.0.1"
-                     :port 5672
-                     :vhost "/"
-                     :default-exchange-name "lcmap.event"
-                     :default-queue-name "lcmap.event-stream"}
-         :http {:port 1077     ; port number obtained via this bit of geekery:
-                 :ip "0.0.0.0"} ;   (reduce + (map int "USGS-EROS LCMAP"))
-         :auth {
-           :backend :usgs
-           ;:backend :nasa
-           :usgs {:endpoint "http://127.0.0.1:8888/api"
-                   ;:endpoint "https://ers.cr.usgs.gov/api"
-                  :login-resource "/auth"
-                  :user-resource "/me"}}
          :log-level :debug}}
     ;; configuration for testing environment
     :testing {

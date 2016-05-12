@@ -125,7 +125,6 @@
 (defn reset []
   (stop)
   (deinit)
-  (config/get-config :force-reload)
   (refresh :after 'lcmap.rest.dev/run))
 
 ;;; Aliases

@@ -16,7 +16,7 @@
 
 (defn get-resources [context]
   (log/info (str "get-resources: " context))
-  {:links (map #(str context %) ["/login" "/logout"])})
+  {:links (map #(str context %) ["login" "logout"])})
 
 ;; XXX add db-connection as parameter
 (defn login [auth-cfg username password]
@@ -33,8 +33,9 @@
       (http/response :result
         (get-resources (:uri request))))
     (POST "/login" [username password :as request]
+      (log/debugf "Authenticating to %s ..." (get-in request [:cfg :lcmap.rest]))
       (http/response :result
-        (login (httpd/authcfg-key request) username password)))
+        (login (get-in request [:cfg :lcmap.rest]) username password)))
     ;; XXX once we've got user data being saved in the db, we need to come
     ;; back to this and add a logout function which destroys the ephemeral
     ;; user data (such as token association)

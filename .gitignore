@@ -4,3 +4,4 @@ checkouts
 .nrepl*
 *.*~
 docs/master/current
+*.sw[po]

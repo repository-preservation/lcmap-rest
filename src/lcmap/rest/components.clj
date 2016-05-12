@@ -40,17 +40,20 @@
             [com.stuartsierra.component :as component]
             [lcmap.config.components.config :as config]
             [lcmap.event.components.messaging :as event]
-            [lcmap.rest.components.db :as rest-db]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.components.logger :as logger]
             [lcmap.rest.components.metrics :as metrics]
             [lcmap.rest.components.system :as system]
+            [lcmap.rest.config]
             [lcmap.see.components.db :as see-db]
-            [lcmap.see.components.eventd :as eventd]))
+            [lcmap.see.components.eventd :as eventd]
+            [lcmap.data.components.database :as tile-db]))
 
 (defn init [app]
   (component/system-map
-    :cfg (config/new-configuration)
+   ;; XXX instead of specifying defaults here, it would
+   ;; be best to pass them as a param to init
+    :cfg (config/new-configuration lcmap.rest.config/defaults)
     :logger (component/using
               (logger/new-logger)
               [:cfg])
@@ -67,7 +70,7 @@
               :logger
               :msging])
     :tiledb (component/using
-             (rest-db/new-tile-client)
+             (tile-db/new-database)
               [:cfg
                :logger])
     :eventd (component/using
