@@ -45,7 +45,7 @@
                  ;; Note that the projects in ./checkouts override these:
                  [gov.usgs.eros/lcmap-config "0.5.0-SNAPSHOT"]
                  [gov.usgs.eros/lcmap-data "0.5.0-SNAPSHOT"]
-                 [gov.usgs.eros/lcmap-see "0.0.2-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-see "0.5.0-SNAPSHOT"]
                  [gov.usgs.eros/lcmap-client-clj "0.5.0-SNAPSHOT"]
                  [gov.usgs.eros/lcmap-event "0.5.0-SNAPSHOT"]
                  ;; XXX note that we may still need to explicitly include the
