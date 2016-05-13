@@ -3,15 +3,15 @@
             [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [ring.util.response :as ring]
-            [lcmap.rest.api.jobs.ccdc-piped-processes :refer [get-result-path
-                                                              get-job-result
-                                                              result-table]]
+            [lcmap.rest.api.v0.jobs.ccdc-piped-processes :refer [get-result-path
+                                                                 get-job-result
+                                                                 result-table]]
             [lcmap.client.models.ccdc-piped-processes]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
-            [lcmap.see.job.ccdc-pipe-runner :as ccdc-pipe-runner]))
+            [lcmap.see.model.ccdc-pipe :as ccdc-pipe-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

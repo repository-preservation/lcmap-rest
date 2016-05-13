@@ -3,15 +3,15 @@
             [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [ring.util.response :as ring]
-            [lcmap.rest.api.jobs.sample-os-process :refer [get-result-path
-                                                           get-job-result
-                                                           result-table]]
+            [lcmap.rest.api.v0.jobs.sample-os-process :refer [get-result-path
+                                                              get-job-result
+                                                              result-table]]
             [lcmap.client.models.sample-os-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
-            [lcmap.see.job.sample-runner :as sample-runner]))
+            [lcmap.see.model.sample :as sample-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
