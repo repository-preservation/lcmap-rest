@@ -2,11 +2,10 @@
   (:require [clojure.tools.logging :as log]
             [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [lcmap.rest.api.jobs.ccdc-piped-processes :refer [get-result-path
-                                                              get-job-result
-                                                              result-table]]
             [lcmap.client.models.ccdc-piped-processes]
             [lcmap.client.status-codes :as status]
+            [lcmap.rest.api.jobs.ccdc-piped-processes :refer [result-table]]
+            [lcmap.rest.api.jobs.core :as jobs]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util :as util]
@@ -55,7 +54,7 @@
                                   spectra x-val y-val start-time end-time
                                   row col in-dir out-dir scene-list verbose)
     (log/debug "Called ccdc-piped-processes runner ...")
-    (http/response :result {:link {:href (get-result-path job-id)}}
+    (http/response :result {:link {:href (jobs/get-result-path job-id)}}
                    :status status/pending-link)))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -70,7 +69,7 @@
                  spectra x-val y-val start-time end-time
                  row col in-dir out-dir scene-list verbose))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (httpd/jobdb-key request) job-id))))
+      (jobs/get-job-result (httpd/jobdb-key request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

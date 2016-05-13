@@ -3,11 +3,10 @@
             [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [ring.util.response :as ring]
-            [lcmap.rest.api.jobs.sample-docker-process :refer [get-result-path
-                                                               get-job-result
-                                                               result-table]]
             [lcmap.client.models.sample-docker-process]
             [lcmap.client.status-codes :as status]
+            [lcmap.rest.api.jobs.core :as jobs]
+            [lcmap.rest.api.jobs.sample-docker-process :refer [result-table]]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util :as util]
@@ -46,7 +45,7 @@
                              docker-tag
                              year)
     (log/debug "Called sample-runner ...")
-    (http/response :result {:link {:href (get-result-path job-id)}}
+    (http/response :result {:link {:href (jobs/get-result-path job-id)}}
                    :status status/pending-link)))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -60,7 +59,7 @@
                  docker-tag
                  year))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (httpd/jobdb-key request) job-id))))
+      (jobs/get-job-result (httpd/jobdb-key request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

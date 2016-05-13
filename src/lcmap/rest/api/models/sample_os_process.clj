@@ -4,11 +4,10 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
             [schema.core :as schema]
-            [lcmap.rest.api.jobs.sample-os-process :refer [get-result-path
-                                                           get-job-result
-                                                           result-table]]
             [lcmap.client.models.sample-os-process]
             [lcmap.client.status-codes :as status]
+            [lcmap.rest.api.jobs.core :as jobs]
+            [lcmap.rest.api.jobs.sample-os-process :refer [result-table]]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any StrInt StrYear]]
@@ -57,7 +56,7 @@
       seconds
                        year)
     (log/debug "Called sample-runner ...")
-    (http/response :result {:link {:href (get-result-path job-id)}}
+    (http/response :result {:link {:href (jobs/get-result-path job-id)}}
                    :status status/pending-link)))
 
 (defn run-model
@@ -90,7 +89,7 @@
         delay
         year))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (httpd/jobdb-key request) job-id))))
+      (jobs/get-job-result (httpd/jobdb-key request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

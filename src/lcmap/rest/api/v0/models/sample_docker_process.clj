@@ -3,9 +3,9 @@
             [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [ring.util.response :as ring]
-            [lcmap.rest.api.jobs.sample-docker-process :refer [get-result-path
-                                                               get-job-result
-                                                               result-table]]
+            [lcmap.rest.api.v0.jobs.sample-docker-process :refer [get-result-path
+                                                                  get-job-result
+                                                                  result-table]]
             [lcmap.client.models.sample-docker-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]

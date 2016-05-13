@@ -3,13 +3,12 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.client.models.ccdc]
             [lcmap.client.status-codes :as status]
-            [lcmap.rest.api.jobs.ccdc :refer [get-result-path
-                                              get-job-result
-                                              result-table]]
+            [lcmap.rest.api.jobs.core :as jobs]
+            [lcmap.rest.api.jobs.ccdc :refer [result-table]]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
-            [lcmap.see.job.sample-runner :as sample-runner]))
+            [lcmap.see.model.sample :as sample-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -36,7 +35,7 @@
                  arg1
                  arg2))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (httpd/jobdb-key request) job-id))))
+      (jobs/get-job-result (httpd/jobdb-key request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
