@@ -12,7 +12,7 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
-            [lcmap.see.job.sample-docker-runner :as sample-docker-runner]))
+            [lcmap.see.model.sample-docker :as sample-docker-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

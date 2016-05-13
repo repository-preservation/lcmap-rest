@@ -14,7 +14,7 @@
             [lcmap.rest.types :refer [Any StrInt StrYear]]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
-            [lcmap.see.job.sample-runner :as sample-runner]))
+            [lcmap.see.model.sample :as sample-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

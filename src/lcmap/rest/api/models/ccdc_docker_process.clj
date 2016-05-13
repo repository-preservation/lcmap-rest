@@ -11,7 +11,7 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
-            [lcmap.see.job.ccdc-docker-runner :as ccdc-docker-runner]))
+            [lcmap.see.model.ccdc-docker :as ccdc-docker-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

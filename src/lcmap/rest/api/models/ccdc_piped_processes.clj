@@ -11,7 +11,7 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
-            [lcmap.see.job.ccdc-pipe-runner :as ccdc-pipe-runner]))
+            [lcmap.see.model.ccdc-pipe :as ccdc-pipe-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
