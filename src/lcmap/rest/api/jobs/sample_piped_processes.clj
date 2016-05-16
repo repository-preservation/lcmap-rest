@@ -10,10 +10,6 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.see.job.db :as db]))
 
-;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(def result-table "samplemodel")
-
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
@@ -21,7 +17,7 @@
     (GET "/" request
       (jobs/get-resources (:uri request)))
     (GET "/:job-id" [job-id :as request]
-      (jobs/get-job-result (httpd/jobdb-key request) result-table job-id))
+      (jobs/get-job-result (httpd/jobdb-key request) job-id))
     (PUT "/:job-id" [job-id :as request]
       (jobs/update-job (httpd/jobdb-key request) job-id))
     (HEAD "/:job-id" [job-id :as request]

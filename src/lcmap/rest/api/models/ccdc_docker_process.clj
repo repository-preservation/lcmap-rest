@@ -4,7 +4,6 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.client.models.ccdc-docker-process]
             [lcmap.client.status-codes :as status]
-            [lcmap.rest.api.jobs.ccdc-docker-process :refer [result-table]]
             [lcmap.rest.api.jobs.core :as jobs]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
@@ -14,10 +13,13 @@
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(def result-table "ccdcmodel")
 (def science-model-name "ccdc")
 (def result-keyspace "lcmap")
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TBD
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

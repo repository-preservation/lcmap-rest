@@ -6,7 +6,6 @@
             [lcmap.client.models.sample-docker-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.api.jobs.core :as jobs]
-            [lcmap.rest.api.jobs.sample-docker-process :refer [result-table]]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util :as util]
@@ -15,10 +14,13 @@
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(def result-table "samplemodel")
 (def science-model-name "sample docker")
 (def result-keyspace "lcmap")
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TBD
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

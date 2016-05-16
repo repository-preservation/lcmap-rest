@@ -4,7 +4,6 @@
             [lcmap.client.models.ccdc]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.api.jobs.core :as jobs]
-            [lcmap.rest.api.jobs.ccdc :refer [result-table]]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]
@@ -12,10 +11,13 @@
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(def result-table "XXX")
 (def science-model-name "ccdc model")
 (def result-keyspace "lcmap")
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TBD
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

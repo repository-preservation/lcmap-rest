@@ -7,7 +7,6 @@
             [lcmap.client.models.sample-os-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.api.jobs.core :as jobs]
-            [lcmap.rest.api.jobs.sample-os-process :refer [result-table]]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any StrInt StrYear]]
@@ -17,6 +16,7 @@
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(def result-table "samplemodel")
 (def science-model-name "sample model")
 (def result-keyspace "lcmap")
 

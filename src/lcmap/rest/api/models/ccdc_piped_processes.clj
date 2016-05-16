@@ -4,7 +4,6 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.client.models.ccdc-piped-processes]
             [lcmap.client.status-codes :as status]
-            [lcmap.rest.api.jobs.ccdc-piped-processes :refer [result-table]]
             [lcmap.rest.api.jobs.core :as jobs]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
@@ -14,10 +13,13 @@
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(def result-table "samplemodel")
 (def science-model-name "sample model")
 (def result-keyspace "lcmap")
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TBD
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

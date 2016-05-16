@@ -41,10 +41,13 @@
                        :status st))))
 
 (defn get-job-result
-  ([db-conn result-table job-id]
-    (get-job-result db-conn job-id result-table #'get-job-status))
-  ([db-conn job-id result-table func]
-    (db/get-job-result db-conn job-id result-table func)))
+  ([db-component job-id]
+    (let [conn (:conn db-component)
+          result-table (db/get-results-table conn job-id)]
+      (log/debugf "Got result-table: %s (type: %s)" result-table (type result-table))
+      (get-job-result conn job-id result-table #'get-job-status)))
+  ([conn job-id result-table func]
+    (db/get-job-result conn job-id result-table func)))
 
 (defn update-job [db job-id]
   (http/response :result "sample job update tbd"
@@ -55,4 +58,4 @@
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; XXX TBD
+;; TBD
