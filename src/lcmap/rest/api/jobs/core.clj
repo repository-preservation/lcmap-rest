@@ -25,8 +25,8 @@
 (defn get-job-status
   ([result]
     (apply #'http/response (mapcat identity result)))
-  ([db job-id]
-    (match [(first @(db/job? (:conn db) job-id))]
+  ([db-conn job-id]
+    (match [(first @(db/job? db-conn job-id))]
       [[]]
         (http/response :errors ["Job not found."]
                        :status status/no-resource)
