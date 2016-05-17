@@ -2,11 +2,10 @@
   (:require [clojure.tools.logging :as log]
             [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [dire.core :refer [with-handler!]]
             [schema.core :as schema]
             [lcmap.client.models.sample-os-process]
             [lcmap.client.status-codes :as status]
-            [lcmap.rest.api.jobs :as jobs]
+            [lcmap.rest.api.jobs :as job]
             [lcmap.rest.api.models.core :as model]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
@@ -49,7 +48,7 @@
       seconds
       year)
     (log/debug "Called sample-runner ...")
-    (http/response :result {:link {:href (jobs/get-result-path job-id)}}
+    (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -60,7 +59,7 @@
       ;; XXX use token to check user/session/authorization
       (model/validate #'run-model request delay year))
     (GET "/:job-id" [job-id :as request]
-      (jobs/get-job-result (httpd/jobdb-key request) job-id))))
+      (job/get-job-result (httpd/jobdb-key request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
