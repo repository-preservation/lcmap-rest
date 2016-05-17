@@ -3,7 +3,7 @@
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.client.models.ccdc]
             [lcmap.client.status-codes :as status]
-            [lcmap.rest.api.jobs.core :as jobs]
+            [lcmap.rest.api.jobs :as jobs]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.util :as util]
             [lcmap.see.job.db :as db]

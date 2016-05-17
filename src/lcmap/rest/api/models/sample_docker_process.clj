@@ -5,7 +5,7 @@
             [ring.util.response :as ring]
             [lcmap.client.models.sample-docker-process]
             [lcmap.client.status-codes :as status]
-            [lcmap.rest.api.jobs.core :as jobs]
+            [lcmap.rest.api.jobs :as jobs]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util :as util]
