@@ -115,6 +115,38 @@
   [x]
   (and (string? x) (.contains ["true" "false"] (string/lower-case x))))
 
+;;; Optional Supporting Predicates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn optional-string-int?
+  "The optional variant of string-int? where a nil value also validates."
+  [x]
+  (or (nil? x) (string-int? x)))
+
+(defn optional-string-bool?
+  "The optional variant of string-bool? where a nil value also validates."
+  [x]
+  (or (nil? x) (string-bool? x)))
+
+(defn optional-string-day?
+  "The optional variant of string-day? where a nil value also validates."
+  [x]
+  (or (nil? x) (string-day? x)))
+
+(defn optional-string-month?
+  "The optional variant of string-month? where a nil value also validates."
+  [x]
+  (or (nil? x) (string-month? x)))
+
+(defn optional-string-year?
+  "The optional variant of string-year? where a nil value also validates."
+  [x]
+  (or (nil? x) (string-year? x)))
+
+(defn optional-string-date?
+  "The optional variant of string-date? where a nil value also validates."
+  [x]
+  (or (nil? x) (string-date? x)))
+
 ;;; Schemas for Atomic Value Types ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def Any schema/Any)
@@ -147,3 +179,45 @@
   For details on formatting, see ``string-date?`` and its accompanying unit
   tests."
   (schema/pred string-date?))
+
+
+;;; Optional Schema Variants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def OptionalStrInt
+  "A Schema type that may be used for simple integer-as-string schemas.
+
+  As this is an optional scheme, nil is a valid value."
+  (schema/pred optional-string-int?))
+
+(def OptionalStrBool
+  "A Schema type that may be used for simple boolean-as-string schemas.
+
+  As this is an optional scheme, nil is a valid value."
+  (schema/pred optional-string-bool?))
+
+(def OptionalStrDay
+  "A Schema type that may be used for integer-as-day-of-the-month schemas.
+
+  As this is an optional scheme, nil is a valid value."
+  (schema/pred optional-string-day?))
+
+(def OptionalStrMonth
+  "A Schema type that may be used for integer-as-month-of-the-year schemas.
+
+  As this is an optional scheme, nil is a valid value."
+  (schema/pred optional-string-month?))
+
+(def OptionalStrYear
+  "A Schema type that may be used for integer-as-year schemas.
+
+  As this is an optional scheme, nil is a valid value."
+  (schema/pred optional-string-year?))
+
+(def OptionalStrDate
+  "A compoound schema representing a string date.
+
+  For details on formatting, see ``string-date?`` and its accompanying unit
+  tests.
+
+  As this is an optional scheme, nil is a valid value."
+  (schema/pred optional-string-date?))
