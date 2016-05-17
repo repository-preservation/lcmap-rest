@@ -56,6 +56,21 @@
 (defn get-info [db job-id]
   (http/response :result "sample job info tbd"))
 
+;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defroutes routes
+  (context lcmap.client.jobs/context []
+    (GET "/" request
+      (get-resources (:uri request)))
+    (GET "/:job-id" [job-id :as request]
+      (get-job-result (httpd/jobdb-key request) job-id))
+    (PUT "/:job-id" [job-id :as request]
+      (update-job (httpd/jobdb-key request) job-id))
+    (HEAD "/:job-id" [job-id :as request]
+      (get-info (httpd/jobdb-key request) job-id))
+    (GET "/status/:job-id" [job-id :as request]
+      (get-job-status (httpd/jobdb-key request) job-id))))
+
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; TBD
