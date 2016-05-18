@@ -1,6 +1,5 @@
 (ns lcmap.rest.api.models.ccdc-docker-process
   (:require [clojure.tools.logging :as log]
-            [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [schema.core :as schema]
             [lcmap.client.models.ccdc-docker-process]
