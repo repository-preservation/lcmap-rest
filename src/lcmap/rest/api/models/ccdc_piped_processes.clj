@@ -16,8 +16,8 @@
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def result-table "samplemodel")
-(def science-model-name "sample model")
+(def result-table "ccdcmodel")
+(def science-model-name "ccdc")
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -59,7 +59,6 @@
                                    :out-dir out-dir
                                    :scene-list scene-list
                                    :verbose verbose)]
-
     (ccdc-pipe-runner/run-model
       (:conn (httpd/jobdb-key request))
       (:eventd (httpd/eventd-key request))
@@ -78,7 +77,6 @@
   (context lcmap.client.models.ccdc-piped-processes/context []
     (POST "/" [token spectra x-val y-val start-time end-time
                      row col in-dir out-dir scene-list verbose :as request]
-      ;;(log/debug "Request data keys in routes:" (keys request))
       (model/validate
         #'run-model request
         spectra x-val y-val start-time end-time
