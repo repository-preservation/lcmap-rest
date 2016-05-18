@@ -1,16 +1,12 @@
 (ns lcmap.rest.api.v0.models.ccdc
   (:require [clojure.tools.logging :as log]
-            [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.client.models.ccdc]
-            [lcmap.client.status-codes :as status]
             [lcmap.rest.api.v0.jobs.ccdc :refer [get-result-path
                                                  get-job-result
                                                  result-table]]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.util :as util]
-            [lcmap.see.job.db :as db]
-            [lcmap.see.model.sample :as sample-runner]))
+            [lcmap.rest.util :as util]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

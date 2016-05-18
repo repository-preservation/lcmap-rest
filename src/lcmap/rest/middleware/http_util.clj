@@ -8,8 +8,9 @@
 (def accept-version-regex
   (re-pattern #"application/vnd\.(usgs\.lcmap.)(v(\d(\.\d)?))\+([^;]+)"))
 
-(defn parse-accept [string]
+(defn parse-accept
   "Parse a single accept string into a map"
+  [string]
   ;; according to RFC2616, the "q" parameter must precede the accept-extension
   (let [[_ mr q ae] (re-find accept-regex string)]
     {:media-range mr

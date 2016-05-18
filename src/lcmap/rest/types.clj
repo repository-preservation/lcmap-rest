@@ -1,6 +1,5 @@
 (ns lcmap.rest.types
-  (:require [clojure.tools.logging :as log]
-            [clojure.string :as string]
+  (:require [clojure.string :as string]
             [schema.core :as schema]))
 
 ;;; Supporting Predicates ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

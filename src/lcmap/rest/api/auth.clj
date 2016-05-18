@@ -3,11 +3,9 @@
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
-            [ring.util.response :as ring]
             [lcmap.client.auth]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.auth.usgs :as usgs]
-            [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

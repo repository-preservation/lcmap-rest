@@ -3,7 +3,6 @@
             [clojure.tools.logging :as log]
             [slingshot.slingshot :refer [throw+]]
             [clj-http.client :as http]
-            [lcmap.client.status-codes :as status]
             [lcmap.rest.exceptions :as exceptions]
             [lcmap.rest.util :as util]))
 
@@ -13,8 +12,9 @@
 (def generic-error 30)
 (def input-error 31)
 
-(defn- post-auth [httpd-cfg username password]
+(defn- post-auth
   "Post to the USGS auth service and return the auth code."
+  [httpd-cfg username password]
   (let [url (str (:auth-endpoint httpd-cfg) (:auth-login-resource httpd-cfg))]
     (log/debugf "Authenticating to %s ..." url)
     (http/post url

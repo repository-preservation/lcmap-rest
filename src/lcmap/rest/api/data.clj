@@ -2,10 +2,8 @@
   (:require [clojure.tools.logging :as log]
             [clj-time.format :as time-fmt]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [ring.util.response :refer [response]]
             [lcmap.rest.middleware.http-util :as util]
             [lcmap.client.data]
-            [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.data.tile-spec :as tile-spec]
             [lcmap.data.tile :as tile])

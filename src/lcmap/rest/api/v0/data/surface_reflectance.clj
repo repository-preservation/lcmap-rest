@@ -2,7 +2,6 @@
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [ring.util.response :refer [response]]
-            [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.tile.db :as tile-db]
             [lcmap.client.data]
             [clj-time.format :as time-fmt])
@@ -66,7 +65,7 @@
     (GET "/tiles" [band point time :as request]
       (get-tiles band point time (:tiledb request)))
     (GET "/rod" [band point time :as request]
-      (get-rod point time band request (:tiledb request)))))
+      (get-rod band point time (:tiledb request)))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -1,9 +1,7 @@
 (ns lcmap.rest.api.models
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [dire.core :refer [with-handler!]]
             [lcmap.client.models]
-            [lcmap.client.status-codes :as status]
             [lcmap.rest.api.models.ccdc]
             [lcmap.rest.api.models.ccdc-docker-process]
             [lcmap.rest.api.models.ccdc-piped-processes]

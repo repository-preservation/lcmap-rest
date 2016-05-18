@@ -1,9 +1,7 @@
 (ns lcmap.rest.api.v0.system
   (:import [java.lang Runtime])
   (:require [clojure.data.xml :as xml]
-            [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [dire.core :refer [with-handler!]]
             [ring.util.response :as ring]
             [lcmap.client.status-codes :as status]
             [lcmap.client.system]

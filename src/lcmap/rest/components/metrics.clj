@@ -6,7 +6,6 @@
   lcmap.rest.components.metrics
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
-            [metrics.core :as metrics]
             [metrics.jvm.core :as metrics-jvm]
             [metrics.reporters.jmx :as metrics-jmx]))
 

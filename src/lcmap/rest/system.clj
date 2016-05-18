@@ -1,9 +1,6 @@
 (ns lcmap.rest.system
   (:import [java.lang Runtime])
   (:require [clojure.data.xml :as xml]
-            [clojure.tools.logging :as log]
-            [dire.core :refer [with-handler!]]
-            [metrics.core :as metrics]
             [lcmap.rest.serializer :as serializer])
   (:import [com.codahale.metrics MetricRegistry]))
 

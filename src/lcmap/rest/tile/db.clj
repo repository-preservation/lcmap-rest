@@ -1,7 +1,5 @@
 (ns lcmap.rest.tile.db
-  (:require [clojure.tools.logging :as log]
-            [clojurewerkz.cassaforte.client :as cc]
-            [clojurewerkz.cassaforte.cql :as cql]
+  (:require [clojurewerkz.cassaforte.cql :as cql]
             [clojurewerkz.cassaforte.query :as query]
             [gdal.core :as gdal-core]
             [dire.core :refer [with-handler!]])

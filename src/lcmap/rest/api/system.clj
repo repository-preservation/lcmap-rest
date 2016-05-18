@@ -1,11 +1,8 @@
 (ns lcmap.rest.api.system
   (:import [java.lang Runtime])
-  (:require [clojure.tools.logging :as log]
-            [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [dire.core :refer [with-handler!]]
+  (:require [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [metrics.core :as metrics]
             [lcmap.client.system]
-            [lcmap.rest.serializer :as serializer]
             [lcmap.rest.system :as system]
             [lcmap.rest.errors :as errors]
             [lcmap.rest.middleware.http-util :as http]))

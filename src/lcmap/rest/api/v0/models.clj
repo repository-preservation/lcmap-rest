@@ -1,7 +1,5 @@
 (ns lcmap.rest.api.v0.models
-  (:require [clojure.tools.logging :as log]
-            [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [dire.core :refer [with-handler!]]
+  (:require [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [ring.util.response :as ring]
             [lcmap.client.models]
             [lcmap.client.status-codes :as status]

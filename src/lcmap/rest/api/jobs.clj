@@ -1,7 +1,6 @@
 (ns lcmap.rest.api.jobs
   (:require [clojure.tools.logging :as log]
             [clojure.core.match :refer [match]]
-            [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.client.jobs]
             [lcmap.client.status-codes :as status]

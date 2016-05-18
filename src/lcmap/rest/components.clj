@@ -36,8 +36,7 @@
    * https://github.com/stuartsierra/component
    * https://www.youtube.com/watch?v=13cmHf_kt-Q"}
   lcmap.rest.components
-  (:require [clojure.tools.logging :as log]
-            [com.stuartsierra.component :as component]
+  (:require [com.stuartsierra.component :as component]
             [lcmap.config.components.config :as config]
             [lcmap.event.components.messaging :as event]
             [lcmap.rest.components.httpd :as httpd]
@@ -104,5 +103,5 @@
 
 (defn restart [system component-key]
   (-> system
-      (stop)
-      (start)))
+      (stop component-key)
+      (start component-key)))

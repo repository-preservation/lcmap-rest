@@ -1,6 +1,5 @@
 (ns lcmap.rest.api.v0.models.ccdc-piped-processes
   (:require [clojure.tools.logging :as log]
-            [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [ring.util.response :as ring]
             [lcmap.rest.api.v0.jobs.ccdc-piped-processes :refer [get-result-path
@@ -10,7 +9,6 @@
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.util :as util]
-            [lcmap.see.job.db :as db]
             [lcmap.see.model.ccdc-pipe :as ccdc-pipe-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -2,10 +2,8 @@
   (:require [clojure.tools.logging :as log]
             [ring.middleware.defaults :as ring-defaults]
             [ring.middleware.logger :as ring-logger]
-            [clojusc.ring.xml :as ring-xml]
             [com.stuartsierra.component :as component]
             [twig.core :as logger]
-            [lcmap.rest.api.routes :as routes]
             [lcmap.rest.components :as components]
             [lcmap.rest.middleware :as middleware]
             [lcmap.rest.util :as util])

@@ -1,11 +1,9 @@
 (ns lcmap.rest.api.compatibility
-  (:require [clojure.tools.logging :as log]
-            [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [dire.core :refer [with-handler!]]
+  (:require [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.client.compatibility]
-            [lcmap.client.status-codes :as status]
-            [lcmap.rest.api.compatibility.wmts]
-            [lcmap.rest.middleware.http-util :as http]))
+            ; [lcmap.rest.api.compatibility.wmts]
+            [lcmap.rest.middleware.http-util :as http]
+            ))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

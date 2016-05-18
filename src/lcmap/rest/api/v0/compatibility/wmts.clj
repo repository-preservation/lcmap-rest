@@ -1,1 +1,1 @@
-(ns lcmap.rest.api.v0.compatibility.ns)
+(ns lcmap.rest.api.v0.compatibility.wmts)

@@ -10,7 +10,7 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any Str StrBool StrInt StrDate]]
             [lcmap.rest.util :as util]
-            [lcmap.see.job.db :as db]
+            ; [lcmap.see.job.db :as db]
             ; [lcmap.see.model.ccdc :as ccdc-runner]
             ))
 
@@ -22,8 +22,8 @@
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn make-default-row
-  [id]
   ""
+  [id]
   (model/make-default-row id result-table science-model-name))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

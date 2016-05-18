@@ -1,12 +1,7 @@
 (ns lcmap.rest.middleware
-  (:require [clojure.data.json :as json]
-            [clojure.string :as string]
-            [clojure.tools.logging :as log]
-            [clojusc.ring.xml :as ring-xml]
-            [metrics.ring.expose :as ring-metrics]
+  (:require [metrics.ring.expose :as ring-metrics]
             [metrics.ring.instrument :as ring-instrument]
             [lcmap.client.system]
-            [lcmap.rest.api.routes :as routes]
             [lcmap.rest.middleware.content-type :as content-type]
             [lcmap.rest.middleware.versioned-api :as versioned-api]))
 

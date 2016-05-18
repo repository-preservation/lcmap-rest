@@ -1,8 +1,5 @@
 (ns lcmap.rest.util
-  (:require [clojure.core.memoize :as memo]
-            [clojure.string :as string]
-            [clojure.tools.logging :as log]
-            [ring.util.response :as ring]
+  (:require [clojure.string :as string]
             [digest])
   (:import [java.security.MessageDigest]
            [java.math.BigInteger]))

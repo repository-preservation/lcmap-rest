@@ -1,6 +1,5 @@
 (ns lcmap.rest.middleware.versioned-api
-  (:require [clojure.tools.logging :as log]
-            [lcmap.rest.api.routes :as routes]
+  (:require [lcmap.rest.api.routes :as routes]
             [lcmap.rest.middleware.http-util :as http]))
 
 (defn get-versioned-routes

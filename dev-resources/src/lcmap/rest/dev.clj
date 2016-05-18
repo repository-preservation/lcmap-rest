@@ -116,8 +116,9 @@
   ([& args]
     (apply #'repl/refresh args)))
 
-(defn refresh [& args]
+(defn refresh
   "This is essentially an alias for clojure.tools.namespace.repl/refresh."
+  [& args]
   (if (util/in? [:started :running] state)
     (stop))
   (apply -refresh args))

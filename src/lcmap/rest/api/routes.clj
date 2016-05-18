@@ -14,8 +14,7 @@
   of supporting code for this project that lives in ``lcmap.rest.*``, not
   under ``lcmap.rest.api``."}
   lcmap.rest.api.routes
-  (:require [clojure.tools.logging :as log]
-            [compojure.core :refer [defroutes]]
+  (:require [compojure.core :refer [defroutes]]
             ;; v0
             [lcmap.rest.api.v0.auth]
             [lcmap.rest.api.v0.compatibility]
@@ -31,9 +30,7 @@
             [lcmap.rest.api.four-oh-four]
             [lcmap.rest.api.jobs]
             [lcmap.rest.api.models]
-            [lcmap.rest.api.system]
-            [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.util :as util]))
+            [lcmap.rest.api.system]))
 
 (defroutes v0
   lcmap.rest.api.v0.auth/routes

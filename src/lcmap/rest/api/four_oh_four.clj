@@ -1,9 +1,7 @@
 (ns lcmap.rest.api.four-oh-four
   (:import [java.lang Runtime])
-  (:require [clojure.tools.logging :as log]
-            [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [compojure.route :as route]
-            [dire.core :refer [with-handler!]]))
+  (:require [compojure.core :refer [GET HEAD POST PUT context defroutes]]
+            [compojure.route :as route]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

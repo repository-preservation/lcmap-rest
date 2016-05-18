@@ -1,18 +1,9 @@
 (ns lcmap.rest.api.models.core
   (:require [clojure.tools.logging :as log]
-            [clojure.core.match :refer [match]]
-            [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [dire.core :refer [with-handler!]]
             [schema.core :as schema]
-            [lcmap.client.models.sample-os-process]
             [lcmap.client.status-codes :as status]
-            [lcmap.rest.api.jobs :as jobs]
-            [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.middleware.http-util :as http]
-            [lcmap.rest.types :refer [Any StrInt StrYear]]
-            [lcmap.rest.util :as util]
-            [lcmap.see.job.db :as db]
-            [lcmap.see.model.sample :as sample-runner]))
+            [lcmap.rest.middleware.http-util :as http]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

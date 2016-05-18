@@ -6,8 +6,7 @@
             [ring.util.response :as ring]
             [lcmap.client.auth]
             [lcmap.client.status-codes :as status]
-            [lcmap.rest.auth.usgs :as usgs]
-            [lcmap.rest.components.httpd :as httpd]))
+            [lcmap.rest.auth.usgs :as usgs]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

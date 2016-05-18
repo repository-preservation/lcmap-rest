@@ -1,7 +1,5 @@
 (ns lcmap.rest.api.v0.jobs.ccdc
-  (:require [clojure.tools.logging :as log]
-            [clojure.core.match :refer [match]]
-            [ring.util.response :as ring]
+  (:require [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.client.jobs.ccdc]
             [lcmap.client.status-codes :as status]
@@ -52,11 +50,11 @@
     (GET "/:job-id" [job-id :as request]
       (get-job-result (httpd/jobdb-key request) job-id))
     (PUT "/:job-id" [job-id :as request]
-      (update-job (httpd/jobdb-key request) job-id))
+      (update-job job-id))
     (HEAD "/:job-id" [job-id :as request]
-      (get-info (httpd/jobdb-key request) job-id))
+      (get-info job-id))
     (GET "/status/:job-id" [job-id :as request]
-      (get-job-status (httpd/jobdb-key request) job-id))))
+      (get-job-status job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

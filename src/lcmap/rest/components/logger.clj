@@ -13,12 +13,14 @@
             [com.stuartsierra.component :as component]
             [twig.core :as logger]))
 
-(defn get-log-level [component]
+(defn get-log-level
   "A convenience function for use in the Logger component."
+  [component]
   (keyword (get-in component [:cfg :lcmap.logging :level])))
 
-(defn get-namespaces [component]
+(defn get-namespaces
   "A convenience function for use in the Logger component."
+  [component]
   (->> [:cfg :lcmap.logging :namespaces]
        (get-in component)
        (map symbol)

@@ -1,6 +1,5 @@
 (ns lcmap.rest.api.models.sample-piped-processes
   (:require [clojure.tools.logging :as log]
-            [clojure.core.match :refer [match]]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [schema.core :as schema]
             [lcmap.client.models.sample-piped-processes]
@@ -11,7 +10,6 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any OptionalStrBool]]
             [lcmap.rest.util :as util]
-            [lcmap.see.job.db :as db]
             [lcmap.see.model.sample-pipe :as sample-pipe-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -22,8 +20,8 @@
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn make-default-row
-  [id]
   ""
+  [id]
   (model/make-default-row id result-table science-model-name))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
