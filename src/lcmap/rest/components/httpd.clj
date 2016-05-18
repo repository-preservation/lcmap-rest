@@ -10,7 +10,7 @@
             [lcmap.rest.config :as config]
             [lcmap.config.helpers :as cfg-help]))
 
-(-> (cfg-help/build-cfg config/defaults) :lcmap.rest.components.httpd/httpkit)
+(:lcmap.rest.components.httpd/httpkit (cfg-help/build-cfg config/defaults))
 
 (def jobdb-key :jobdb)
 (def eventd-key :eventd)

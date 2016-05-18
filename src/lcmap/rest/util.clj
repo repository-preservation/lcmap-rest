@@ -53,9 +53,7 @@
   * a flag which should not be passed, since no value was given"
   [flag value & {:keys [unary?] :or {unary? false}}]
   (cond
-    unary? (if (make-bool value)
-             flag
-             nil)
+    unary? (when (make-bool value) flag)
     (nil? value) nil
     :else (format "%s %s" flag value)))
 
