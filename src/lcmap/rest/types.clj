@@ -151,6 +151,8 @@
 
 (def Any schema/Any)
 
+(def Str schema/Str)
+
 (def StrInt
   "A Schema type that may be used for simple integer-as-string schemas."
   (schema/pred string-int?))
