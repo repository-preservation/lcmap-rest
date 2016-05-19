@@ -2,10 +2,12 @@ DOCKER_ORG=usgseros
 LCMAP_REST_REPO=ubuntu-lcmap-rest
 LCMAP_AUTH_REPO=ubuntu-lcmap-test-auth-server
 LCMAP_NGINX_REPO=debian-lcmap-nginx
+LCMAP_DATA_REPO=ubuntu-lcmap-data
 LCMAP_JUPYTER_REPO=ubuntu-gis-notebooks
 DOCKERHUB_LCMAP_REST = $(DOCKER_ORG)/$(LCMAP_REST_REPO):$(VERSION)
 DOCKERHUB_LCMAP_TEST_AUTH = $(DOCKER_ORG)/$(LCMAP_AUTH_REPO):$(VERSION)
 DOCKERHUB_LCMAP_NGINX = $(DOCKER_ORG)/$(LCMAP_NGINX_REPO):$(VERSION)
+DOCKERHUB_LCMAP_DATA = $(DOCKER_ORG)/$(LCMAP_DATA_REPO):$(VERSION)
 DOCKERHUB_LCMAP_JUPYTER = $(DOCKER_ORG)/$(LCMAP_JUPYTER_REPO):$(VERSION)
 LCMAP_REST_DEPLOY = lcmap-rest-deploy:$(VERSION)
 LCMAP_REST_CCDC_DEPLOY = lcmap-rest-ccdc-deploy:$(VERSION)
@@ -77,6 +79,15 @@ docker-jupyter-deploy-build:
 	@cd $(BUILD_DIR) && \
 	git clone https://github.com/USGS-EROS/lcmap-test-notebooks.git
 	@docker build -t $(LCMAP_JUPYTER_DEPLOY) $(CONTEXT)
+
+docker-data-build: CONTEXT=./docker/lcmap-data
+docker-data-build: BUILD_DIR=$(CONTEXT)/build
+docker-data-build:
+	@mkdir -p $(BUILD_DIR)
+	@rm -rf $(BUILD_DIR)/*
+	@cp ~/.usgs/lcmap.ini $(BUILD_DIR)
+	@docker build -t $(DOCKERHUB_LCMAP_DATA) $(CONTEXT)
+	@rm -rf $(BUILD_DIR)
 
 docker-server:
 	@docker run \
@@ -161,6 +172,12 @@ docker-nginx-bash:
 
 docker-nginx-publish:
 	@docker push $(DOCKERHUB_LCMAP_NGINX)
+
+docker-data:
+	@docker run -t $(DOCKERHUB_LCMAP_DATA)
+
+docker-data-bash:
+	@docker run -it --entrypoint=/bin/bash $(DOCKERHUB_LCMAP_DATA) -s
 
 docker-publish: docker-server-publish docker-auth-publish docker-nginx-publish
 
