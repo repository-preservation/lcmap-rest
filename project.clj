@@ -11,11 +11,9 @@
                  [org.clojure/core.memoize "0.5.8"]
                  ;; Componentization
                  [com.stuartsierra/component "0.3.0"]
-                 [com.grammarly/omniconf "0.2.2"]
                  ;; Logging and Error Handling -- note that we need to explicitly pull
                  ;; in a version of slf4j so that we don't get conflict messages on the
                  ;; console
-                 [twig "0.1.6"]
                  [ring.middleware.logger "0.5.0" :exclusions [org.slf4j/slf4j-log4j12]]
                  [dire "0.5.3"]
                  [slingshot "0.12.2"]
@@ -44,6 +42,7 @@
                  [org.xerial.snappy/snappy-java "1.1.2"]
                  ;; Note that the projects in ./checkouts override these:
                  [gov.usgs.eros/lcmap-config "0.5.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-logger "0.5.0-SNAPSHOT"]
                  [gov.usgs.eros/lcmap-data "0.5.0-SNAPSHOT"]
                  [gov.usgs.eros/lcmap-see "0.5.0-SNAPSHOT"]
                  [gov.usgs.eros/lcmap-client-clj "0.5.0-SNAPSHOT"]

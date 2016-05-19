@@ -38,15 +38,15 @@
   lcmap.rest.components
   (:require [com.stuartsierra.component :as component]
             [lcmap.config.components.config :as config]
+            [lcmap.data.components.database :as tile-db]
             [lcmap.event.components.messaging :as event]
+            [lcmap.logger.components.logger :as logger]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.components.logger :as logger]
             [lcmap.rest.components.metrics :as metrics]
             [lcmap.rest.components.system :as system]
             [lcmap.rest.config]
             [lcmap.see.components.db :as see-db]
-            [lcmap.see.components.eventd :as eventd]
-            [lcmap.data.components.database :as tile-db]))
+            [lcmap.see.components.eventd :as eventd]))
 
 (defn init [app]
   (component/system-map
