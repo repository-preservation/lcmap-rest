@@ -15,7 +15,7 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn run-model [db eventd arg1 arg2]
+(defn run-model [component arg1 arg2]
   (log/debugf "run-model got args: [%s %s]" arg1 arg2)
   (let [job-id (util/get-args-hash "ccdc" :arg1 arg1 :arg2 arg2)]
     (str "model run (job id: " job-id ") tbd")))
@@ -26,12 +26,11 @@
   (context lcmap.client.models.ccdc/context []
     (POST "/" [arg1 arg2 :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
-      (run-model (httpd/jobdb-key request)
-                 (httpd/eventd-key request)
+      (run-model (:component request)
                  arg1
                  arg2))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (httpd/jobdb-key request) job-id))))
+      (get-job-result (:component request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

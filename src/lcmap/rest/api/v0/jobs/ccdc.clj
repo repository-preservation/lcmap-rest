@@ -28,8 +28,8 @@
   "job status tbd")
 
 (defn get-job-result
-  ([db-conn job-id]
-    (get-job-result db-conn job-id result-table #'get-job-status))
+  ([component job-id]
+    (get-job-result (db/get-conn component) job-id result-table #'get-job-status))
   ([db-conn job-id table func]
     (-> (db/get-job-result db-conn job-id table func)
         (ring/response)
@@ -48,7 +48,7 @@
     (GET "/" request
       (get-job-resources (:uri request)))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (httpd/jobdb-key request) job-id))
+      (get-job-result (:component request) job-id))
     (PUT "/:job-id" [job-id :as request]
       (update-job job-id))
     (HEAD "/:job-id" [job-id :as request]

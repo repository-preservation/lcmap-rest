@@ -35,8 +35,9 @@
   (if (util/in? [auth-error input-error generic-error] ers-status)
       (throw+ (exceptions/auth-error (string/join "; " errors)))))
 
-(defn login [httpd-cfg username password]
-  (let [results (post-auth httpd-cfg username password)
+(defn login [component username password]
+  (let [httpd-cfg (get-in component [:cfg :lcmap.rest])
+        results (post-auth httpd-cfg username password)
         token (get-in results [:body :data :authToken])]
     (log/debug "Login results:" results)
     (check-status (get-in results [:body :status])
@@ -53,6 +54,6 @@
        :email (:email user-data)
        :token token})))
 
-(defn logout [httpd-cfg db-conn token]
+(defn logout [component token]
   ;; XXX delete the records for the user session/token
   )

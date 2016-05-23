@@ -20,9 +20,11 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn run-model [db eventd row col in-dir out-dir scene-list verbose]
+(defn run-model [component row col in-dir out-dir scene-list verbose]
   (log/debugf "run-model got args: %s" [row col in-dir out-dir scene-list verbose])
-  (let [job-id (util/get-args-hash science-model-name
+  (let [db (:jobdb component)
+        eventd (:eventd component)
+        job-id (util/get-args-hash science-model-name
                                    :row row
                                    :col col
                                    :in-dir in-dir
@@ -37,8 +39,7 @@
     ;;(log/debugf "ccdc model run (job id: %s)" job-id)
     ;;(log/debugf "default row: %s" default-row)
     (ccdc-docker-runner/run-model
-      (:conn db)
-      (:eventd eventd)
+      component
       job-id
       default-row
       result-table
@@ -57,11 +58,10 @@
     (POST "/" [token row col in-dir out-dir scene-list verbose :as request]
       ;;(log/debugf "POST request got: %s" request)
       ;;(log/debug "Request data keys in routes:" (keys request))-
-      (run-model (httpd/jobdb-key request)
-                 (httpd/eventd-key request)
+      (run-model (:component request)
                  row col in-dir out-dir scene-list verbose))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (httpd/jobdb-key request) job-id))))
+      (get-job-result (:component request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

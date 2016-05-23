@@ -24,8 +24,8 @@
 (defn get-job-status
   ([result]
     (apply #'http/response (mapcat identity result)))
-  ([db-conn job-id]
-    (match [(first @(db/job? db-conn job-id))]
+  ([component job-id]
+    (match [(first @(db/job? (db/get-conn component) job-id))]
       [[]]
         (http/response :errors ["Job not found."]
                        :status status/no-resource)
@@ -40,19 +40,19 @@
                        :status st))))
 
 (defn get-job-result
-  ([db-component job-id]
-    (let [conn (:conn db-component)
+  ([component job-id]
+    (let [conn (db/get-conn component)
           result-table (db/get-results-table conn job-id)]
       (log/debugf "Got result-table: %s (type: %s)" result-table (type result-table))
       (get-job-result conn job-id result-table #'get-job-status)))
   ([conn job-id result-table func]
     (db/get-job-result conn job-id result-table func)))
 
-(defn update-job [db job-id]
+(defn update-job [component job-id]
   (http/response :result "sample job update tbd"
                  :status status/pending))
 
-(defn get-info [db job-id]
+(defn get-info [component job-id]
   (http/response :result "sample job info tbd"))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -62,13 +62,13 @@
     (GET "/" request
       (get-resources (:uri request)))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (httpd/jobdb-key request) job-id))
+      (get-job-result (:component request) job-id))
     (PUT "/:job-id" [job-id :as request]
-      (update-job (httpd/jobdb-key request) job-id))
+      (update-job (:component request) job-id))
     (HEAD "/:job-id" [job-id :as request]
-      (get-info (httpd/jobdb-key request) job-id))
+      (get-info (:component request) job-id))
     (GET "/status/:job-id" [job-id :as request]
-      (get-job-status (httpd/jobdb-key request) job-id))))
+      (get-job-status (:component request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -5,3 +5,4 @@ checkouts
 *.*~
 docs/master/current
 *.sw[po]
+logs/*

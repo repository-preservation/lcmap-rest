@@ -12,14 +12,17 @@
 
 (:lcmap.rest.components.httpd/httpkit (cfg-help/build-cfg config/defaults))
 
-(def jobdb-key :jobdb)
-(def eventd-key :eventd)
-
 (defn inject-app
-  "Make app components available to request handlers."
+  "Make app components available to request handlers.
+
+  Note that even though it is called ``:component``, the association performed
+  in this function is for the ``:httpd`` component as defined in
+  ``lcmap.rest.components``. This is done for the sake of clarity in other parts
+  of the lcmap-rest codebase where ``:httpd`` might be ambigious and
+  ``:component`` is a better symmantic fit."
   [handler component]
   (fn [request]
-    (handler (merge request component))))
+    (handler (assoc request :component component))))
 
 (defrecord HTTPServer [ring-handler]
   component/Lifecycle

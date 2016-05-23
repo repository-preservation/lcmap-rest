@@ -18,14 +18,16 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn run-model [db eventd spectra x-val y-val start-time end-time
+(defn run-model [component spectra x-val y-val start-time end-time
                            row col in-dir out-dir scene-list verbose]
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where the ccdc result will
   ;; be
   (log/debugf "run-model got args: %s" [spectra x-val y-val start-time end-time
                                         row col in-dir out-dir scene-list verbose])
-  (let [job-id (util/get-args-hash science-model-name
+  (let [db (:jobdb component)
+        eventd (:eventd component)
+        job-id (util/get-args-hash science-model-name
                                    :spectra spectra
                                    :x-val x-val
                                    :y-val y-val
@@ -43,13 +45,13 @@
                      :result_id job-id
                      :status status/pending}]
 
-    (ccdc-pipe-runner/run-model (:conn db)
-                                  (:eventd eventd)
-                                  job-id
-                                  default-row
-                                  result-table
-                                  spectra x-val y-val start-time end-time
-                                  row col in-dir out-dir scene-list verbose)
+    (ccdc-pipe-runner/run-model
+      component
+      job-id
+      default-row
+      result-table
+      spectra x-val y-val start-time end-time
+                            row col in-dir out-dir scene-list verbose)
     (log/debug "Called ccdc-piped-processes runner ...")
     (ring/status
       (ring/response
@@ -64,12 +66,11 @@
     (POST "/" [token spectra x-val y-val start-time end-time
                      row col in-dir out-dir scene-list verbose :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
-      (run-model (httpd/jobdb-key request)
-                 (httpd/eventd-key request)
+      (run-model (:component request)
                  spectra x-val y-val start-time end-time
                  row col in-dir out-dir scene-list verbose))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (httpd/jobdb-key request) job-id))))
+      (get-job-result (:component request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

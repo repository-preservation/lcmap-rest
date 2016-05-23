@@ -60,8 +60,7 @@
     ;;(log/debugf "ccdc model run (job id: %s)" job-id)
     ;;(log/debugf "default row: %s" default-row)
     (ccdc-docker-runner/run-model
-      (:conn (httpd/jobdb-key request))
-      (:eventd (httpd/eventd-key request))
+      (:component request)
       job-id
       (make-default-row job-id)
       result-table
@@ -81,7 +80,7 @@
         spectra x-val y-val start-time end-time
         row col in-dir out-dir scene-list verbose))
     (GET "/:job-id" [job-id :as request]
-      (job/get-job-result (httpd/jobdb-key request) job-id))))
+      (job/get-job-result (:component request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

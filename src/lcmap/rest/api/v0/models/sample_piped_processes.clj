@@ -20,12 +20,14 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn run-model [db eventd number count bytes words lines]
+(defn run-model [component number count bytes words lines]
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where sample result will
   ;; be
   (log/debugf "run-model got args: %s" [number count bytes words lines])
-  (let [job-id (util/get-args-hash science-model-name
+  (let [db (:jobdb component)
+        eventd (:eventd component)
+        job-id (util/get-args-hash science-model-name
                                    :number number
                                    :count count
                                    :bytes bytes
@@ -38,12 +40,12 @@
                      :status status/pending}]
     ;;(log/debugf "sample model run (job id: %s)" job-id)
     ;;(log/debugf "default row: %s" default-row)
-    (sample-pipe-runner/run-model (:conn db)
-                                  (:eventd eventd)
-                                  job-id
-                                  default-row
-                                  result-table
-                                  number count bytes words lines)
+    (sample-pipe-runner/run-model
+      component
+      job-id
+      default-row
+      result-table
+      number count bytes words lines)
     (log/debug "Called sample-piped-processes runner ...")
     (ring/status
       (ring/response
@@ -57,11 +59,10 @@
   (context lcmap.client.models.sample-piped-processes/context []
     (POST "/" [token number count bytes words lines :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
-      (run-model (httpd/jobdb-key request)
-                 (httpd/eventd-key request)
+      (run-model (:component request)
                  number count bytes words lines))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (httpd/jobdb-key request) job-id))))
+      (get-job-result (:component request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -39,8 +39,7 @@
   (let [job-id (util/get-args-hash
                  science-model-name :delay seconds :year year)]
     (sample-runner/run-model
-      (:conn (httpd/jobdb-key request))
-      (:eventd (httpd/eventd-key request))
+      (:component request)
       job-id
       (make-default-row job-id)
       result-table
@@ -58,7 +57,7 @@
       ;; XXX use token to check user/session/authorization
       (model/validate #'run-model request delay year))
     (GET "/:job-id" [job-id :as request]
-      (job/get-job-result (httpd/jobdb-key request) job-id))))
+      (job/get-job-result (:component request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

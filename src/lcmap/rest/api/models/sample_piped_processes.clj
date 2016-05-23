@@ -39,9 +39,7 @@
                  science-model-name :number number :count count
                  :bytes bytes :words words :lines lines)]
     (sample-pipe-runner/run-model
-      (:conn (httpd/jobdb-key request))
-      (:eventd (httpd/eventd-key request))
-      job-id
+      (:component request)
       (make-default-row job-id)
       result-table
       number
@@ -61,7 +59,7 @@
       ;; XXX use token to check user/session/authorization
       (model/validate #'run-model request number count bytes words lines))
     (GET "/:job-id" [job-id :as request]
-      (job/get-job-result (httpd/jobdb-key request) job-id))))
+      (job/get-job-result (:component request) job-id))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
