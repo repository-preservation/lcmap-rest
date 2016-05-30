@@ -1,5 +1,6 @@
 (ns lcmap.rest.api.data
   (:require [clojure.tools.logging :as log]
+            [clojure.data.json :as json]
             [clj-time.format :as time-fmt]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.rest.middleware.http-util :as util]
@@ -43,13 +44,20 @@
   [band point time db]
   (let [[x y]   (point->pair point)
         times   (iso8601->datetimes time)
-        spec    (tile-spec/find db {:ubid band})
+        spec    (first (tile-spec/find db {:ubid band}))
         results (tile/find db {:ubid band :x x :y y :acquired times})
         encoded (map #(assoc %
                              :data (base64-encode (% :data))
                              :acquired (str (% :acquired))) results)]
     (log/debug "GET tiles" band x y times (count results))
     {:spec spec :tiles encoded}))
+
+(defn save-tile
+  ""
+  [request db]
+  (let [tile (-> request :body :tile)]
+    (log/debug "POST tile" tile)
+    (tile/save db tile)))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -60,7 +68,11 @@
         (get-resources (:uri request))))
     (GET "/tiles" [band point time :as request]
       (http/response :result
-        (get-tiles band point time (:tiledb request))))))
+        (get-tiles band point time (get-in request [:component :tiledb]))))
+    (POST "/tiles" [:as request]
+      (log/debug (dissoc request :component))
+      (http/response :result
+        (save-tile request (get-in request [:component :tiledb]))))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
