@@ -14,20 +14,20 @@
 
 (defn- post-auth
   "Post to the USGS auth service and return the auth code."
-  [httpd-cfg username password]
-  (let [url (str (:auth-endpoint httpd-cfg) (:auth-login-resource httpd-cfg))]
+  [rest-cfg username password]
+  (let [url (str (:auth-endpoint rest-cfg) (:auth-login-resource rest-cfg))]
     (log/debugf "Authenticating to %s ..." url)
     (http/post url
                {:form-params {:username username :password password}
                 :as :json})))
 
-(defn- get-user [httpd-cfg token]
-  (http/get (str (:auth-endpoint httpd-cfg) (:auth-user-resource httpd-cfg))
+(defn- get-user [rest-cfg token]
+  (http/get (str (:auth-endpoint rest-cfg) (:auth-user-resource rest-cfg))
             {:headers {:x-authtoken token}
              :as :json}))
 
-(defn get-user-data [httpd-cfg token]
-  (let [results (get-user httpd-cfg token)]
+(defn get-user-data [rest-cfg token]
+  (let [results (get-user rest-cfg token)]
     (log/debug "Extracting user data from" results)
     (get-in results [:body :data])))
 
@@ -36,8 +36,8 @@
       (throw+ (exceptions/auth-error (string/join "; " errors)))))
 
 (defn login [component username password]
-  (let [httpd-cfg (get-in component [:cfg :lcmap.rest])
-        results (post-auth httpd-cfg username password)
+  (let [rest-cfg (get-in component [:cfg :lcmap.rest])
+        results (post-auth rest-cfg username password)
         token (get-in results [:body :data :authToken])]
     (log/debug "Login results:" results)
     (check-status (get-in results [:body :status])
@@ -45,7 +45,7 @@
     (log/infof "User %s successfully authenticated with token %s"
                username
                token)
-    (let [user-data (get-user-data httpd-cfg token)]
+    (let [user-data (get-user-data rest-cfg token)]
       (log/debugf "Got user data %s for token %s" user-data token)
       ;; XXX save user data in db
       {:user-id (:contact_id user-data)
