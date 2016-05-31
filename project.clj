@@ -1,3 +1,28 @@
+(def centos-lib-paths
+  ["/usr/java/packages/lib/amd64"
+   "/usr/lib64"
+   "/lib64"
+   "/lib"
+   "/usr/lib"])
+
+(def ubuntu-lib-paths
+  ["/usr/java/packages/lib/amd64"
+   "/usr/lib/x86_64-linux-gnu/jni"
+   "/lib/x86_64-linux-gnu"
+   "/usr/lib/x86_64-linux-gnu"
+   "/usr/lib/jni"
+   "/lib:/usr/lib"])
+
+(def gdal-paths
+  ["/usr/lib/java/gdal"])
+
+(defn get-lib-path []
+  (->> gdal-paths
+       (into centos-lib-paths)
+       (into ubuntu-lib-paths)
+       (clojure.string/join ":")
+       (str "-Djava.library.path=")))
+
 (defproject gov.usgs.eros/lcmap-rest "0.5.0-SNAPSHOT"
   :description "LCMAP REST Service API"
   :url "https://github.com/USGS-EROS/lcmap-rest"
@@ -102,6 +127,7 @@
     ;; then override values there
     :dev {
       ;; XXX 0.3.0-alpha3 breaks reload
+      :jvm-opts [~(get-lib-path)]
       :dependencies [[org.clojure/tools.namespace "0.2.11"]
                      [slamhound "1.5.5"]]
       :aliases {"slamhound" ["run" "-m" "slam.hound"]}
