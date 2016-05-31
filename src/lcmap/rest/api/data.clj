@@ -2,6 +2,7 @@
   (:require [clojure.tools.logging :as log]
             [clojure.data.json :as json]
             [clj-time.format :as time-fmt]
+            [clj-time.coerce :as time-coerce]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.rest.middleware.http-util :as util]
             [lcmap.client.data]
@@ -33,6 +34,10 @@
         dates (clojure.string/split iso8601 #"/")]
     (map parse dates)))
 
+(defn date->iso8601 [date]
+  (time-fmt/unparse (time-fmt/formatters :date-time-no-ms)
+                    (time-coerce/from-date date)))
+
 ;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn get-resources [context]
@@ -48,7 +53,7 @@
         results (tile/find db {:ubid band :x x :y y :acquired times})
         encoded (map #(assoc %
                              :data (base64-encode (% :data))
-                             :acquired (str (% :acquired))) results)]
+                             :acquired (date->iso8601 (% :acquired))) results)]
     (log/debug "GET tiles" band x y times (count results))
     {:spec spec :tiles encoded}))
 
