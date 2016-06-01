@@ -88,7 +88,7 @@
                  [clj-time "0.11.0"]
                  [commons-codec "1.9"]
                  ;; Geospatial libraries
-                 [clj-gdal "0.3.5-SNAPSHOT"]
+                 [clj-gdal "0.3.4"]
                  ;; Metrics
                  [metrics-clojure "2.6.1"]
                  [metrics-clojure-jvm "2.6.1"]
