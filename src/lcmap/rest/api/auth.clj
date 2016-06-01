@@ -2,7 +2,6 @@
   (:import [java.lang Runtime])
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [dire.core :refer [with-handler!]]
             [lcmap.client.auth]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.auth.usgs :as usgs]
@@ -31,39 +30,37 @@
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(with-handler! #'usgs/login
+(http/add-error-handler
+  #'usgs/login
   java.net.ConnectException
-  (fn [e & args]
-    (-> (http/response)
-        (http/add-error (errors/process-error e errors/no-auth-conn))
-        (http/add-status status/bad-gateway)
-        (http/add-problem-header))))
+  errors/no-auth-conn
+  status/bad-gateway)
 
 ;; If we want to use our own exceptions, we can catch those by checking the
 ;; key we used to define our error types (see lcmap.rest.exceptions).
 
-(with-handler! #'usgs/login
+(http/add-error-handler
+  #'usgs/login
   [:type 'Auth-Error]
-  (fn [e & args]
-    (http/response :errors [(errors/process-error e errors/bad-creds)]
-                   :status status/unauthorized)))
+  errors/bad-creds
+  status/unauthorized)
 
 ;; HTTP error status codes returned as exceptions from clj-http
 
-(with-handler! #'usgs/login
+(http/add-error-handler
+  #'usgs/login
   [:status status/server-error]
-  (fn [e & args]
-    (http/response :errors [(errors/process-error e errors/auth-server-error)]
-                   :status status/server-error)))
+  errors/auth-server-error
+  status/server-error)
 
-(with-handler! #'usgs/login
+(http/add-error-handler
+  #'usgs/login
   [:status status/unauthorized]
-  (fn [e & args]
-    (http/response :errors [(errors/process-error e errors/bad-creds)]
-                   :status status/unauthorized)))
+  errors/bad-creds
+  status/unauthorized)
 
-(with-handler! #'usgs/login
+(http/add-error-handler
+  #'usgs/login
   [:status status/no-resource]
-  (fn [e & args]
-    (http/response :errors [(errors/process-error e errors/auth-not-found)]
-                   :status status/no-resource)))
+  errors/auth-not-found
+  status/no-resource)

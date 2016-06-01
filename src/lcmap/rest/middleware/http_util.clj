@@ -1,7 +1,9 @@
 (ns lcmap.rest.middleware.http-util
   (:require [clojure.tools.logging :as log]
             [ring.util.response :as ring]
-            [lcmap.client.http :as http]))
+            [dire.core :refer [with-handler!]]
+            [lcmap.client.http :as http]
+            [lcmap.rest.errors :as errors]))
 
 (def accept-regex
   (re-pattern #"([^;]+)\s*(?:;q=([0-9+\.]+))?\s*(;.+)*"))
@@ -84,6 +86,18 @@
       (ring/response)
       (add-headers headers)
       (ring/status status)))
+
+(defn add-error-handler
+  ""
+  [func ex err-id err-status]
+  (with-handler!
+    func
+    ex
+    (fn [e & args]
+      (-> (response)
+          (add-error (errors/process-error e err-id))
+          (add-status err-status)
+          (add-problem-header)))))
 
 (defn headers->sexp
   "Convert response headers to S-expressions that can be consumed by
