@@ -42,7 +42,7 @@
              (http/response :errors [error]
                             :status status/server-error)
              ;; update to take mime sub-type from Accept
-             (http/problem-header))))))
+             (http/add-problem-header))))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
