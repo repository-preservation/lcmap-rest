@@ -11,6 +11,7 @@
 ;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 ;;; USGS EROS status codes for the ERS authentication API
+
 (def success 10)
 (def auth-error 20)
 (def generic-error 30)
@@ -36,17 +37,33 @@
 
 (defn check-status [ers-status errors]
   (if (util/in? [auth-error input-error generic-error] ers-status)
-      ;; XXX this needs to be updated to use the new error handling
-      ;;     see LCMAP-498 ticket for task info
+      ;; Note that the custom exception thrown here is caught by an
+      ;; error handler in lcmap.rest.api.auth where an appropriate
+      ;; message with error info payload is sent to the client.
       (throw+ (exceptions/auth-error (string/join "; " errors)))))
 
-(defn save-user-data [user-data token]
+;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+;;; DB calls for user/session data
+;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+(defn save-session-data [user-data token]
   ;; XXX save user data in db
   {:user-id (:contact_id user-data)
    :username (:username user-data)
    :roles (:roles user-data)
    :email (:email user-data)
    :token token})
+
+;; XXX add a function to ensure that the given token is associated with valid
+;; user/session data (e.g., ensure that the user hasn't logged out or been
+;; logged out/invalidated by the system)
+(defn valid-session? [conn token]
+  )
+
+;; XXX add a function that removes the saved user/session data (to be used by
+;; the logout API function)
+(defn remove-session-data [conn token]
+  )
 
 ;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;;; HTTP calls to ERS
@@ -68,7 +85,7 @@
 
 ;;; The data structure of the results in these functions is defined by the
 ;;; ERS service over which the LCMAP project has no control. For this reason
-;;; it does not match the payload structure defined in most other areas of 
+;;; it does not match the payload structure defined in most other areas of
 ;;; the LCMAP codebase.
 
 (defn get-user-data [rest-cfg token]
@@ -91,6 +108,7 @@
 
 (defn login [component username password]
   (let [rest-cfg (get-in component [:cfg :lcmap.rest])
+        ; user-db (get-in component [:userdb])
         results (post-auth rest-cfg username password)
         token (get-user-token results)]
     (log/debug "Login results:" results)
@@ -100,8 +118,13 @@
                token)
     (let [user-data (get-user-data rest-cfg token)]
       (log/debugf "Got user data %s for token %s" user-data token)
-      (save-user-data user-data token))))
+      ; (save-session-data (:conn user-db) user-data token)
+      (save-session-data user-data token))))
 
 (defn logout [component token]
-  ;; XXX delete the records for the user session/token
+  ; (let [rest-cfg (get-in component [:cfg :lcmap.rest])
+  ;       user-db (get-in component [:userdb])]
+  ;   (remove-session-data (:conn user-db) token)
+  ;   (log/debug (str "Successfully removed token %s and associated "
+  ;                   "session data") token)
   )
