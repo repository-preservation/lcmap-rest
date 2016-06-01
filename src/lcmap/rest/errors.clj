@@ -5,7 +5,8 @@
   for LCMAP REST as well as related accessor and utility functions.
   "}
   lcmap.rest.errors
-  (:require [lcmap.client.system]))
+  (:require [clojure.tools.logging :as log]
+            [lcmap.client.system]))
 
 (def context lcmap.client.system/reference)
 (def category-uri (str context "/error-type/%s"))
@@ -158,3 +159,8 @@
             :type (get-in category [:system :uri])
             :detail ""
             :instance "<URL at error>"}})
+
+(defn process-error [exception id]
+  (let [error-data (id lookup)]
+    (log/error (:title error-data))
+    (assoc error-data :detail (.getMessage exception))))
