@@ -4,30 +4,40 @@
   This namespace presents a data structure containing all the errors defined
   for LCMAP REST as well as related accessor and utility functions.
   "}
-  lcmap.rest.errors)
+  lcmap.rest.errors
+  (:require [lcmap.client.system]))
+
+(def context lcmap.client.system/reference)
+(def category-uri (str context "/error-type/%s"))
 
 (def category
-  {:gen {:uri ""
-         :title ""
+  {:gen {:uri (format category-uri "gen")
+         :title "General Errors"
          :description ""}
-   :auth {:uri ""
-          :title ""
+   :auth {:uri (format category-uri "auth")
+          :title "Authentication Errors"
           :description ""}
-   :data {:uri ""
-          :title ""
+   :data {:uri (format category-uri "data")
+          :title "Data Errors"
           :description ""}
-   :model {:uri ""
-           :title ""
+   :model {:uri (format category-uri "model")
+           :title "Execution Environment Errors"
            :description ""}
-   :event {:uri ""
-           :title ""
+   :event {:uri (format category-uri "event")
+           :title "Event System Errors"
            :description ""}
-   :user {:uri ""
-          :title ""
+   :user {:uri (format category-uri "user")
+          :title "User Management Errors"
           :description ""}
-   :system {:uri ""
-            :title ""
+   :system {:uri (format category-uri "system")
+            :title "System Management Errors"
             :description ""}})
+
+;; XXX Below we mention "<URL at error>" ... idea: save errors to logging
+;; service (or db) and get a UUID for 1) the full log + traceback (accessible)
+;; only be those with admin permissions) and for 2) a limited error log entry
+;; that any user would have access to. This extended info would then be made
+;; available via an /api/errors/:uuid resource request.
 
 (def lookup
   "LCMAP REST service error lookup map."
@@ -48,6 +58,11 @@
             :detail ""
             :instance "<URL at error>"}
     ;; Authentication errors
+    :20000 {:title "Cannot connect to authentication server"
+            :category :auth
+            :type (get-in category [:auth :uri])
+            :detail ""
+            :instance "<URL at error>"}
     :20400 {:title "Bad username or password"
             :category :auth
             :type (get-in category [:auth :uri])
