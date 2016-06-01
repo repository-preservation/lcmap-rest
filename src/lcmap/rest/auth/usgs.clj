@@ -47,7 +47,7 @@
   (log/debug "Checking remote auth service status ...")
   (if (util/in? error-states ers-status)
       (do
-        (log/errorf "Got non-successful ERS status: %s (%s)"
+        (log/debugf "Got non-successful ERS status: %s (%s)"
                     ers-status
                     (state-lookup ers-status))
         ;; Note that the custom exception thrown here is caught by an
