@@ -32,21 +32,57 @@
       (get "accept")
       (#(parse-accept-version default-version %))))
 
-(defn problem-header
-  "Returns an updated Ring response with the Content-Type header set to the
-  given content-type.
+(defn add-problem-header
+  "Returns an updated Ring response with the HTTP problem header set for the
+  given mime sub-type.
 
   This is per IETF RFC-7807."
-  [resp & {:keys [mime] :or {mime :json} :as args}]
+  [resp & {:keys [mime] :or {mime :json}}]
   (ring/content-type resp (str "application/problem+" (name mime))))
 
-(defn response [& {:keys [result errors status headers]
-                   :or {result nil errors [] status 200 headers {}}
-                   :as args}]
+(defn add-result
+  "Update the response with the given result."
+  [resp result]
+  (-> resp
+      (assoc-in [:body :result] result)))
+
+(defn append-error
+  ""
+  [resp error]
+  (-> resp
+      (get-in resp [:body :errors])
+      (or [])
+      (conj error)))
+
+(defn add-error
+  "Update the response with the given errors."
+  [resp error]
+  (-> resp
+      (assoc-in [:body :errors] (append-error resp error))))
+
+(defn add-headers
+  "Update the response with the given result."
+  [resp headers]
+  (-> resp
+      (assoc :headers headers)))
+
+(defn add-status
+  "Update the response with the given status."
+  [resp status]
+  (-> resp
+      (ring/status status)))
+
+(defn response
+  "If the developer is inclinded, this function allows one to set the result,
+  errors, headers, and status in one call. Otherwise, one may use individual
+  functions for each (see above), if that better suits one's needs."
+  [& {:keys [result errors status headers]
+      :or {result nil errors [] status 200 headers {}}
+      :as args}]
   ;; XXX how much of this should go in lcmap.client.http?
   (-> (http/response :result result :errors errors)
       (ring/response)
-      (assoc :headers headers)
+      (add-headers headers)
       (ring/status status)))
 
 (defn headers->sexp
