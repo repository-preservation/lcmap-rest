@@ -62,7 +62,7 @@
                  [org.clojars.hozumi/clj-commons-exec "1.2.0"]
                  [digest "1.4.4"]
                  ;; DB
-                 [clojurewerkz/cassaforte "2.0.0"]
+                 [clojurewerkz/cassaforte "2.0.2"]
                  [net.jpountz.lz4/lz4 "1.3.0"]
                  [org.xerial.snappy/snappy-java "1.1.2"]
                  ;; Note that the projects in ./checkouts override these:
@@ -88,7 +88,7 @@
                  [clj-time "0.11.0"]
                  [commons-codec "1.9"]
                  ;; Geospatial libraries
-                 [clj-gdal "0.3.4"]
+                 [clj-gdal "0.3.5-SNAPSHOT"]
                  ;; Metrics
                  [metrics-clojure "2.6.1"]
                  [metrics-clojure-jvm "2.6.1"]
