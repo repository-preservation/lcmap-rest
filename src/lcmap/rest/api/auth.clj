@@ -34,8 +34,10 @@
 (with-handler! #'usgs/login
   java.net.ConnectException
   (fn [e & args]
-    (http/response :errors [(errors/process-error e errors/no-auth-conn)]
-                   :status status/bad-gateway)))
+    (-> (http/response)
+        (http/add-error (errors/process-error e errors/no-auth-conn))
+        (http/add-status status/bad-gateway)
+        (http/add-problem-header))))
 
 ;; If we want to use our own exceptions, we can catch those by checking the
 ;; key we used to define our error types (see lcmap.rest.exceptions).
