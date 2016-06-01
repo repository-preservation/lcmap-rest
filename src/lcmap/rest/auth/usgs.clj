@@ -2,8 +2,9 @@
   (:require [clojure.string :as string]
             [clojure.tools.logging :as log]
             [slingshot.slingshot :refer [throw+]]
-            [clj-http.client :as http]
+            [clj-http.client :as httpc]
             [lcmap.rest.exceptions :as exceptions]
+            [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util :as util]))
 
 ;;; Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -85,10 +86,10 @@
   [rest-cfg username password]
   (let [url (make-auth-url rest-cfg)]
     (log/debugf "Authenticating to %s ..." url)
-    (http/post url (make-cred-form username password))))
+    (httpc/post url (make-cred-form username password))))
 
 (defn- get-user [rest-cfg token]
-  (http/get (make-user-url rest-cfg) (make-token-header token)))
+  (httpc/get (make-user-url rest-cfg) (make-token-header token)))
 
 ;;; ERS data structure functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -126,7 +127,8 @@
     (let [user-data (get-user-data rest-cfg token)]
       (log/debugf "Got user data %s for token %s" user-data token)
       ; (save-session-data (:conn user-db) user-data token)
-      (save-session-data user-data token))))
+      (-> (http/response)
+          (http/add-result (save-session-data user-data token))))))
 
 (defn logout [component token]
   ; (let [rest-cfg (get-config component)

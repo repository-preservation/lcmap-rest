@@ -88,7 +88,15 @@
       (ring/status status)))
 
 (defn add-error-handler
-  ""
+  "The error handler needs to return a response, since the response headers
+  need to be updated with the problem HTTP content type. This does mean,
+  though, that to support a symmetry-of-results between a function that
+  returns successfully (e.g., login) and the handler that is called in the
+  event of the function raising an exception, each must return the same
+  data type. In other words, (login ...) cannot be wrapped in a response,
+  since -- when it fails -- its error handler will return one. This would
+  result in a regular response upon success and a nested (improper) response
+  upon failure."
   [func ex err-id err-status]
   (with-handler!
     func
