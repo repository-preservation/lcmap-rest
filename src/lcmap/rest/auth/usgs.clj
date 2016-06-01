@@ -59,7 +59,8 @@
 ;;; DB calls for user/session data ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn save-session-data [user-data token]
-  ;; XXX save user data in db
+; (defn save-session-data [conn user-data token]
+; XXX save user data in db
   {:user-id (:contact_id user-data)
    :username (:username user-data)
    :roles (:roles user-data)
