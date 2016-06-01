@@ -50,7 +50,7 @@
   ""
   [resp error]
   (-> resp
-      (get-in resp [:body :errors])
+      (get-in [:body :errors])
       (or [])
       (conj error)))
 
