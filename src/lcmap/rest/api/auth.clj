@@ -6,6 +6,7 @@
             [lcmap.client.auth]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.auth.usgs :as usgs]
+            [lcmap.rest.errors :as errors]
             [lcmap.rest.middleware.http-util :as http]))
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -33,32 +34,34 @@
 (with-handler! #'usgs/login
   java.net.ConnectException
   (fn [e & args]
-    (log/error "Cannot connect to remote server")
-    (http/response :errors [e] :status status/server-error)))
+    (http/response :errors [(errors/process-error e errors/no-auth-conn)]
+                   :status status/bad-gateway)))
 
-;; If we want to use our own exceptions, we can catch those in the following
-;; manner:
+;; If we want to use our own exceptions, we can catch those by checking the
+;; key we used to define our error types (see lcmap.rest.exceptions).
+
 (with-handler! #'usgs/login
   [:type 'Auth-Error]
   (fn [e & args]
-    (log/error e)
-    (http/response :errors [e] :status status/unauthorized)))
+    (http/response :errors [(errors/process-error e errors/bad-creds)]
+                   :status status/unauthorized)))
 
 ;; HTTP error status codes returned as exceptions from clj-http
+
 (with-handler! #'usgs/login
   [:status status/server-error]
   (fn [e & args]
-    (log/error "Authentication server error")
-    (http/response :errors [e] :status status/server-error)))
+    (http/response :errors [(errors/process-error e errors/auth-server-error)]
+                   :status status/server-error)))
 
 (with-handler! #'usgs/login
-  [:status status/forbidden]
+  [:status status/unauthorized]
   (fn [e & args]
-    (log/error "Bad username or password")
-    (http/response :errors [e] :status status/unauthorized)))
+    (http/response :errors [(errors/process-error e errors/bad-creds)]
+                   :status status/unauthorized)))
 
 (with-handler! #'usgs/login
   [:status status/no-resource]
   (fn [e & args]
-    (log/error "Authentication resource not found")
-    (http/response :errors [e] :status status/no-resource)))
+    (http/response :errors [(errors/process-error e errors/auth-not-found)]
+                   :status status/no-resource)))
