@@ -14,21 +14,19 @@
 
 (defn get-resources [context]
   (log/info (str "get-resources: " context))
-  {:links (map #(str context %) ["login" "logout"])})
+  (http/response :result
+    {:links (map #(str context %) ["login" "logout"])}))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
   (context lcmap.client.auth/context []
     (GET "/" request
-      (http/response :result
-        (get-resources (:uri request))))
+      (get-resources (:uri request)))
     (POST "/login" [username password :as request]
-      (http/response :result
-        (usgs/login (:component request) username password)))
+      (usgs/login (:component request) username password))
     (POST "/logout" [token :as request]
-      (http/response :result
-        (usgs/logout (:component request) token)))))
+      (usgs/logout (:component request) token))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -36,7 +34,7 @@
   java.net.ConnectException
   (fn [e & args]
     (log/error "Cannot connect to remote server")
-    (http/response :errors [e])))
+    (http/response :errors [e] :status status/server-error)))
 
 ;; If we want to use our own exceptions, we can catch those in the following
 ;; manner:
@@ -44,23 +42,23 @@
   [:type 'Auth-Error]
   (fn [e & args]
     (log/error e)
-    (http/response :errors [e])))
+    (http/response :errors [e] :status status/unauthorized)))
 
 ;; HTTP error status codes returned as exceptions from clj-http
 (with-handler! #'usgs/login
   [:status status/server-error]
   (fn [e & args]
     (log/error "Authentication server error")
-    (http/response :errors [e])))
+    (http/response :errors [e] :status status/server-error)))
 
 (with-handler! #'usgs/login
   [:status status/forbidden]
   (fn [e & args]
     (log/error "Bad username or password")
-    (http/response :errors [e])))
+    (http/response :errors [e] :status status/unauthorized)))
 
 (with-handler! #'usgs/login
   [:status status/no-resource]
   (fn [e & args]
     (log/error "Authentication resource not found")
-    (http/response :errors [e])))
+    (http/response :errors [e] :status status/no-resource)))

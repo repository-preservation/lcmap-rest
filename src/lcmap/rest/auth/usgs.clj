@@ -6,9 +6,7 @@
             [lcmap.rest.exceptions :as exceptions]
             [lcmap.rest.util :as util]))
 
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;;; Constants
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+;;; Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; USGS EROS status codes for the ERS authentication API
 
@@ -16,10 +14,20 @@
 (def auth-error 20)
 (def generic-error 30)
 (def input-error 31)
+(def error-states [auth-error generic-error input-error])
+(def state-lookup
+  {success :success
+   auth-error :auth-error
+   generic-error :generic-error
+   input-error :input-error})
 
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;;; Supporting functions
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+;;; Supporting and utility functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn get-config [component]
+  (get-in component [:cfg :lcmap.rest]))
+
+(defn get-db [component]
+  (get-in component [:userdb]))
 
 (defn make-auth-url [rest-cfg]
   (str (:auth-endpoint rest-cfg) (:auth-login-resource rest-cfg)))
@@ -36,15 +44,18 @@
    :as :json})
 
 (defn check-status [ers-status errors]
-  (if (util/in? [auth-error input-error generic-error] ers-status)
-      ;; Note that the custom exception thrown here is caught by an
-      ;; error handler in lcmap.rest.api.auth where an appropriate
-      ;; message with error info payload is sent to the client.
-      (throw+ (exceptions/auth-error (string/join "; " errors)))))
+  (log/debug "Checking remote auth service status ...")
+  (if (util/in? error-states ers-status)
+      (do
+        (log/errorf "Got non-successful ERS status: %s (%s)"
+                    ers-status
+                    (state-lookup ers-status))
+        ;; Note that the custom exception thrown here is caught by an
+        ;; error handler in lcmap.rest.api.auth where an appropriate
+        ;; message with error info payload is sent to the client.
+        (throw+ (exceptions/auth-error (string/join "; " errors))))))
 
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;;; DB calls for user/session data
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+;;; DB calls for user/session data ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn save-session-data [user-data token]
   ;; XXX save user data in db
@@ -57,17 +68,17 @@
 ;; XXX add a function to ensure that the given token is associated with valid
 ;; user/session data (e.g., ensure that the user hasn't logged out or been
 ;; logged out/invalidated by the system)
+
 (defn valid-session? [conn token]
   )
 
 ;; XXX add a function that removes the saved user/session data (to be used by
 ;; the logout API function)
+
 (defn remove-session-data [conn token]
   )
 
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;;; HTTP calls to ERS
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+;;; HTTP calls to ERS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn- post-auth
   "Post to the USGS auth service and return the auth code."
@@ -79,9 +90,7 @@
 (defn- get-user [rest-cfg token]
   (http/get (make-user-url rest-cfg) (make-token-header token)))
 
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;;; ERS data structure functions
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+;;; ERS data structure functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; The data structure of the results in these functions is defined by the
 ;;; ERS service over which the LCMAP project has no control. For this reason
@@ -102,13 +111,11 @@
 (defn get-ers-errors [results]
   (get-in results [:body :errors]))
 
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;;; USGS Auth API
-;;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+;;; USGS Auth API ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn login [component username password]
-  (let [rest-cfg (get-in component [:cfg :lcmap.rest])
-        ; user-db (get-in component [:userdb])
+  (let [rest-cfg (get-config component)
+        ; user-db (get-db component)
         results (post-auth rest-cfg username password)
         token (get-user-token results)]
     (log/debug "Login results:" results)
@@ -122,8 +129,8 @@
       (save-session-data user-data token))))
 
 (defn logout [component token]
-  ; (let [rest-cfg (get-in component [:cfg :lcmap.rest])
-  ;       user-db (get-in component [:userdb])]
+  ; (let [rest-cfg (get-config component)
+  ;       user-db (get-db component)]
   ;   (remove-session-data (:conn user-db) token)
   ;   (log/debug (str "Successfully removed token %s and associated "
   ;                   "session data") token)
