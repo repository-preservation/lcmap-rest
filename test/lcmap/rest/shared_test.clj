@@ -2,8 +2,9 @@
   (:require [clojure.tools.logging :as logging]
             [com.stuartsierra.component :as component]
             [dire.core :refer [with-handler!]]
-            [lcmap.data.system :as system]
-            [lcmap.data.config :as config]
+            [lcmap.rest.components :as rest-components]
+            [lcmap.rest.config :as rest-config]
+            [lcmap.rest.app :as rest-app]
             [lcmap.config.helpers :as config-helpers])
   (:import  [com.datastax.driver.core.exceptions NoHostAvailableException]))
 
@@ -15,9 +16,9 @@
 
 (def cfg-file (clojure.java.io/file config-helpers/*lcmap-config-dir* "lcmap.test.ini"))
 
-(def cfg-opts (merge config/defaults {:ini cfg-file}))
+(def cfg-opts (merge rest-config/defaults {:ini cfg-file}))
 
-(def test-system (-> (system/build cfg-opts)
+(def test-system (-> (rest-components/init rest-app/app)
                      (component/start)))
 
 ;; XXX lcmap-client-clj does not use a component for configuration in
