@@ -127,7 +127,7 @@
     ;; then override values there
     :dev {
       ;; XXX 0.3.0-alpha3 breaks reload
-      :jvm-opts [~(get-lib-path)]
+      :jvm-opts []
       :dependencies [[org.clojure/tools.namespace "0.2.11"]
                      [slamhound "1.5.5"]]
       :aliases {"slamhound" ["run" "-m" "slam.hound"]}
