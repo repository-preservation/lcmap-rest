@@ -18,8 +18,10 @@
 
 (def cfg-opts (merge rest-config/defaults {:ini cfg-file}))
 
-(def test-system (-> (rest-components/init rest-app/app)
-                     (component/start)))
+(defn get-system []
+  (-> rest-app/app
+      (rest-components/init)
+      (component/start)))
 
 ;; XXX lcmap-client-clj does not use a component for configuration in
 ;; this namespace. Given the utility-like nature of these functions
