@@ -1,4 +1,8 @@
 language: clojure
+before_install:
+  - sudo apt-add-repository ppa:ubuntugis/ppa -y
+  - sudo apt-get update -qq
+  - sudo apt-get install libgdal-dev libgdal-java -y
 before_script: test/support/setup.sh
 script:
   - make check
