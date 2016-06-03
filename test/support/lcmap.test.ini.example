@@ -35,7 +35,7 @@ auth-user-resource = /me
 db-hosts = localhost
 db-user = cassandra
 db-pass = cassandra
-job-namespace = lcmap
+job-keyspace = lcmap
 job-table = jobs
 
 [lcmap.config]
@@ -44,4 +44,3 @@ log-level = debug
 [lcmap.logging]
 level = debug
 namespaces = lcmap.rest,lcmap.config,lcmap.event,lcmap.data,lcmap.event
-
