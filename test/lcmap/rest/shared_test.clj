@@ -8,7 +8,7 @@
   (:import  [com.datastax.driver.core.exceptions NoHostAvailableException]))
 
 (with-handler! #'component/start
-  [NoHostAvailableException]
+  NoHostAvailableException
   (fn [e & args]
     (logging/warn "no db host -- not unusual")
     args))
@@ -17,4 +17,11 @@
 
 (def cfg-opts (merge config/defaults {:ini cfg-file}))
 
-(def test-system (-> (system/build cfg-opts) (component/start)))
+(def test-system (-> (system/build cfg-opts)
+                     (component/start)))
+
+;; XXX lcmap-client-clj does not use a component for configuration in
+;; this namespace. Given the utility-like nature of these functions
+;; I don't think adapting it to use components make sense for now.
+(alter-var-root #'lcmap.client.http/*http-config*
+                (fn [_] (cfg-opts :lcmap.client)))
