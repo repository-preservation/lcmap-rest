@@ -4,7 +4,14 @@
             [dire.core :refer [with-handler!]]
             [lcmap.data.system :as system]
             [lcmap.data.config :as config]
-            [lcmap.config.helpers :as config-helpers]))
+            [lcmap.config.helpers :as config-helpers])
+  (:import  [com.datastax.driver.core.exceptions NoHostAvailableException]))
+
+(with-handler! #'component/start
+  [NoHostAvailableException]
+  (fn [e & args]
+    (logging/warn "no db host -- not unusual")
+    args))
 
 (def cfg-file (clojure.java.io/file config-helpers/*lcmap-config-dir* "lcmap.test.ini"))
 
