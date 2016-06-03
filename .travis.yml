@@ -1,5 +1,5 @@
 language: clojure
-before_script: test/support/setup_deps.sh
+before_script: test/support/setup.sh
 script:
   - make check
 jdk:
@@ -11,7 +11,7 @@ jdk:
 #addons:
 #  apt:
 #    sources:
-#      - 
+#      -
 notifications:
   email:
       # the following won't work until the Travis
@@ -23,4 +23,3 @@ notifications:
     rooms:
       - lcmap:UTqlh9PfPVomfpli10WKyZoh#cicd
       - lcmap:UTqlh9PfPVomfpli10WKyZoh#rest
-

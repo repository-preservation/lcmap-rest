@@ -7,4 +7,4 @@ cd checkouts && git clone https://github.com/USGS-EROS/lcmap-data.git && cd -
 cd checkouts && git clone https://github.com/USGS-EROS/lcmap-see.git && cd -
 cd checkouts && git clone https://github.com/USGS-EROS/lcmap-event.git && cd -
 mkdir ~/.usgs/
-cp test/support/sample_config.ini ~/.usgs/lcmap.ini
+cp test/support/lcmap.test.ini.example ~/.usgs/lcmap.test.ini
