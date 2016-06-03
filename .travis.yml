@@ -9,10 +9,10 @@ before_script: test/support/setup.sh
 script:
   - make check
 jdk:
-  - oraclejdk8
+  #- oraclejdk8
   #- oraclejdk7
   #- openjdk6
-  #- openjdk7
+  - openjdk7
   #- openjdk8
 #addons:
 #  apt:
