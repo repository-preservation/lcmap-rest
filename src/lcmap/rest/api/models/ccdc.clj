@@ -9,10 +9,7 @@
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any Str StrBool StrInt StrDate]]
-            [lcmap.rest.util :as util]
-            ; [lcmap.see.job.db :as db]
-            ; [lcmap.see.model.ccdc :as ccdc-runner]
-            ))
+            [lcmap.rest.util :as util]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

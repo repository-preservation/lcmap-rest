@@ -15,9 +15,7 @@
 (defroutes routes
   (context "/api/models/ndvi" []
     (POST "/" [token x y t1 t2 :as request]
-      ;; use token somehow
-      ;; track job
-      (http/response :result (ndvi/run "meow-job-id" x y t1 t2)))
+      (http/response :result (ndvi/run "job-id-tbd" x y t1 t2)))
     (GET "/:job-id" [job-id :as request]
       (job/get-job-result (:component request) job-id))))
 

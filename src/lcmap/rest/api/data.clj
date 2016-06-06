@@ -14,7 +14,8 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; this mutates the buffer by reading it...
+(defn base64-decode [tile]
+  (assoc tile :data (Base64/decodeBase64 (tile :data))))
 
 (defn base64-encode [src-data]
   (let [size (- (.limit src-data) (.position src-data))
@@ -60,9 +61,13 @@
 (defn save-tile
   ""
   [request db]
-  (let [tile (-> request :body :tile)]
+  (let [tile (-> request :body :tile)
+        band (:ubid tile)
+        spec (first (tile-spec/find db {:ubid band}))
+        keyspace (:keyspace-name spec)
+        table (:table-name spec)]
     (log/debug "POST tile" tile)
-    (tile/save db tile)))
+    (tile/save db keyspace table (base64-decode tile))))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
