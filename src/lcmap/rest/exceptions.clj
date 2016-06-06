@@ -8,3 +8,6 @@
 
 (defn auth-error [msg]
   (error 'Auth-Error msg))
+
+(defn type-error [msg]
+  (error 'Type-Error msg))

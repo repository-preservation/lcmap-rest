@@ -1,8 +1,9 @@
 (ns lcmap.rest.api.models.core
   (:require [clojure.tools.logging :as log]
-            [dire.core :refer [with-handler!]]
+            [slingshot.slingshot :refer [throw+]]
             [schema.core :as schema]
             [lcmap.client.status-codes :as status]
+            [lcmap.rest.exceptions :as exceptions]
             [lcmap.rest.middleware.http-util :as http]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -29,25 +30,24 @@
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn validate
-  ""
+  "A general purpose API function parameters validation function.
+
+  The various models supported by the LCMAP REST API use this function in order
+  to check that developers (and their applications) are passing the appropriate
+  data types in their function arguments."
   [func & args]
   (try
     (schema/with-fn-validation
       (apply func args))
     (catch RuntimeException e
-      (let [error (.getMessage e)]
-        (log/error "Got error:" error)
-        (->
-             ;; XXX status/client-error doesn't exist?
-             (http/response :errors [error]
-                            :status status/server-error)
-             ;; update to take mime sub-type from Accept
-             (http/add-problem-header))))))
+      (-> (.getMessage e)
+          (exceptions/type-error)
+          (throw+)))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(with-handler! #'validate
-  RuntimeException
-  (fn [e & args]
-    (log/error "error: %s; args: %s" e args)
-    (http/response :errors [e])))
+(http/add-error-handler
+  #'validate
+  [:type 'Type-Error]
+  errors/invalid-type
+  status/client-error)
