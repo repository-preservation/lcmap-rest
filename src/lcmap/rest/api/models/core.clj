@@ -4,6 +4,7 @@
             [schema.core :as schema]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.exceptions :as exceptions]
+            [lcmap.rest.errors :as errors]
             [lcmap.rest.middleware.http-util :as http]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
