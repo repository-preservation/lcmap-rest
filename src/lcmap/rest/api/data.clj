@@ -64,9 +64,9 @@
   (let [tile (-> request :body :tile)
         band (:ubid tile)
         spec (first (tile-spec/find db {:ubid band}))
-        keyspace (:keyspace-name spec)
-        table (:table-name spec)]
-    (log/debug "POST tile" tile)
+        keyspace (:keyspace_name spec)
+        table (:table_name spec)]
+    (log/debug "POST tile" (dissoc tile :data))
     (tile/save db keyspace table (base64-decode tile))))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -80,7 +80,6 @@
       (http/response :result
         (get-tiles band point time (get-in request [:component :tiledb]))))
     (POST "/tiles" [:as request]
-      (log/debug (dissoc request :component))
       (http/response :result
         (save-tile request (get-in request [:component :tiledb]))))))
 
