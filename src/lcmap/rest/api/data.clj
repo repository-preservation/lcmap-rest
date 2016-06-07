@@ -69,6 +69,12 @@
     (log/debug "POST tile" (dissoc tile :data))
     (tile/save db keyspace table (base64-decode tile))))
 
+(defn get-specs
+  ""
+  [band db]
+  (log/debug "GET spec" band)
+  (tile-spec/find db {:ubid band}))
+
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
@@ -81,7 +87,10 @@
         (get-tiles band point time (get-in request [:component :tiledb]))))
     (POST "/tiles" [:as request]
       (http/response :result
-        (save-tile request (get-in request [:component :tiledb]))))))
+                     (save-tile request (get-in request [:component :tiledb]))))
+    (GET "/specs" [band :as request]
+      (http/response :result
+                     (get-specs band (get-in request [:component :tiledb]))))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
