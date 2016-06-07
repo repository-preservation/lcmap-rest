@@ -98,6 +98,9 @@
     (GET "/specs" [band :as request]
       (http/response :result
                      (get-specs band (get-in request [:component :tiledb]))))
+    (GET "/scenes" [scene :as request]
+      (http/response :result
+                     (get-scenes scene (get-in request [:component :tiledb]))))
     (GET "/scenes/:scene" [scene :as request]
       (http/response :result
                      (get-scenes scene (get-in request [:component :tiledb]))))))
