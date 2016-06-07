@@ -7,8 +7,9 @@
             [lcmap.rest.middleware.http-util :as util]
             [lcmap.client.data]
             [lcmap.rest.middleware.http-util :as http]
-            [lcmap.data.tile-spec :as tile-spec]
-            [lcmap.data.tile :as tile])
+            [lcmap.data.scene :as tile-scene]
+            [lcmap.data.tile :as tile]
+            [lcmap.data.tile-spec :as tile-spec])
   (:import [org.apache.commons.codec.binary Base64]))
 
 
@@ -75,6 +76,12 @@
   (log/debug "GET spec" band)
   (tile-spec/find db {:ubid band}))
 
+(defn get-scenes
+  ""
+  [scene db]
+  (log/debug "GET scene" scene)
+  (distinct (tile-scene/find db {:source scene})))
+
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
@@ -90,7 +97,10 @@
                      (save-tile request (get-in request [:component :tiledb]))))
     (GET "/specs" [band :as request]
       (http/response :result
-                     (get-specs band (get-in request [:component :tiledb]))))))
+                     (get-specs band (get-in request [:component :tiledb]))))
+    (GET "/scenes/:scene" [scene :as request]
+      (http/response :result
+                     (get-scenes scene (get-in request [:component :tiledb]))))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
