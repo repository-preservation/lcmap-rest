@@ -1,0 +1,8 @@
+#!/bin/bash
+
+SPEC=$(curl -s \
+  -H "$LCMAP_ACCEPT_HDR" \
+  -H "$LCMAP_TOKEN_HDR" \
+  -X GET "http://localhost:1077/api/data/specs?band=LANDSAT_8/OLI_TIRS/sr_band1")
+
+echo $SPEC

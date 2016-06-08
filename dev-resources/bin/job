@@ -1,0 +1,14 @@
+#!/bin/bash
+
+X="-1909498"
+Y="2978512"
+T1="2013-01-01"
+T2="2014-01-01"
+
+
+JOB=$(curl -s \
+  -H "$LCMAP_ACCEPT_HDR" \
+  -H "$LCMAP_TOKEN_HDR" \
+  -X POST "http://localhost:1077/api/models/ndvi?x=$X&y=$Y&t1=$T1&t2=$T2")
+
+echo $JOB

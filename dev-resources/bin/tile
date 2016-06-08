@@ -1,0 +1,13 @@
+#!/bin/bash
+
+POINT="-1909498,2978512"
+TIME="2013-01-01/2014-01-01"
+BAND="LCMAP/SEE/NDVI"
+BAND="LANDSAT_8/OLI_TIRS/sr_band1"
+
+TILES=$(curl -s \
+  -H "$LCMAP_ACCEPT_HDR" \
+  -H "$LCMAP_TOKEN_HDR" \
+  "http://localhost:1077/api/data/tiles?band=$BAND&point=$POINT&time=$TIME")
+
+echo $TILES
