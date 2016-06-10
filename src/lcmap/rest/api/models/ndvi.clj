@@ -15,7 +15,9 @@
 (defroutes routes
   (context "/api/models/ndvi" []
     (POST "/" [token x y t1 t2 :as request]
-      (http/response :result (ndvi/run "job-id-tbd" x y t1 t2)))
+      (log/debug "Create NDVI job" x y t1 t2)
+      (let [result (ndvi/run "fake-job-id" x y t1 t2)]
+        (http/response :result result)))
     (GET "/:job-id" [job-id :as request]
       (job/get-job-result (:component request) job-id))))
 
