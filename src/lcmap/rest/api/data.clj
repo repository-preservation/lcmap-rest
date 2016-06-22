@@ -15,9 +15,11 @@
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; XXX MOVE?
 (defn base64-decode [tile]
   (assoc tile :data (Base64/decodeBase64 (tile :data))))
 
+;; XXX MOVE?
 (defn base64-encode [src-data]
   (let [size (- (.limit src-data) (.position src-data))
         copy (byte-array size)]
@@ -44,7 +46,7 @@
 
 (defn get-resources [context]
   (log/info (str "get-resources: " context))
-  {:links (map #(str context %) ["/tiles" "/rod"])})
+  {:links (map #(str context %) ["/tiles" "/rod" "/specs" "/scenes"])})
 
 (defn get-tiles
   ""
