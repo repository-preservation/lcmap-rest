@@ -4,15 +4,17 @@
             [clojure.tools.logging :as log]
             [clojusc.ring.xml :as ring-xml]
             [lcmap.rest.middleware.core :as core]
-            [lcmap.rest.middleware.http-util :as http]))
+            [lcmap.rest.middleware.http-util :as http]
+            [lcmap.rest.middleware.gdal-content :as gdal-content]))
 
 (defn json-handler
   "A Ring handler that converts the entire response to JSON and then updates
   the response body with that JSON."
   [handler]
   (fn [request]
-    (let [response (handler request)]
-      (assoc response :body (json/write-str response)))))
+    (let [response (handler request)
+          body (json/write-str response)]
+      (assoc response :body body))))
 
 (defn sexpr-handler
   "A Ring handler that converts a response to S-expressions and sets the body
@@ -40,6 +42,10 @@
   * json
   * xml
   * raw
+  * ENVI
+  * ERDAS
+  * geotiff
+  * netCDF
 
   If any other (i.e., unsupported) content-type values are provided, the default
   content-type handler will be returned.
@@ -71,14 +77,18 @@
       </body>
     </xml>"
   ([content-type]
-    (lookup-content-type-handler content-type #'json-handler))
+   (lookup-content-type-handler content-type #'json-handler))
   ([content-type default-type-hanlder]
-    (log/tracef "Looking up handler for content type '%s' ..." content-type)
-    (case (string/lower-case content-type)
-      "json" #'json-handler
-      "xml" #'xml-handler
-      "raw" #'core/identity-handler
-      default-type-hanlder)))
+   (log/tracef "Looking up handler for content type '%s' ..." content-type)
+   (case (string/lower-case content-type)
+     "json" #'json-handler
+     "xml" #'xml-handler
+     "envi" #'gdal-content/envi-handler
+     "erdas" #'gdal-content/erdas-handler
+     "netcdf" #'gdal-content/netcdf-handler
+     "geotiff" #'gdal-content/geotiff-handler
+     "raw" #'core/identity-handler
+     default-type-hanlder)))
 
 (defn get-content-type-wrapper
   "This is a utility function for extracting the route version from the request
