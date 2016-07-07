@@ -83,7 +83,7 @@
   {:links (map #(str context %) ["/tiles" "/rod" "/specs" "/scenes"])})
 
 (defn get-tiles
-  ""
+  "Find tiles (and related tile-spec) containing given point during time."
   [band point time db]
   (let [[x y]   (point->pair point)
         times   (iso8601->datetimes time)
@@ -93,7 +93,7 @@
     {:spec spec :tiles results}))
 
 (defn save-tile
-  ""
+  "Create a tile"
   [request db]
   (let [tile (-> request :body :tile)
         band (:ubid tile)
@@ -104,13 +104,13 @@
     (tile/save db keyspace table (base64-decode tile))))
 
 (defn get-specs
-  ""
+  "Get spec for given band (UBID)"
   [band db]
   (log/debug "GET spec" band)
   (tile-spec/find db {:ubid band}))
 
 (defn get-scenes
-  ""
+  "Get scene metadata for given scene ID"
   [scene db]
   (log/debug "GET scene" scene)
   (distinct (tile-scene/find db {:source scene})))
