@@ -5,6 +5,4 @@
   manner as the other LCMAP Ring handlers."
   [handler]
   (fn [request]
-    (let [response (handler request)]
-      (assoc response :body response))))
-
+    (handler request)))

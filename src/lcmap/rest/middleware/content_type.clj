@@ -11,9 +11,8 @@
   the response body with that JSON."
   [handler]
   (fn [request]
-    (let [response (handler request)
-          body (json/write-str response)]
-      (assoc response :body body))))
+    (let [response (handler request)]
+      (update response :body json/write-str))))
 
 (defn sexpr-handler
   "A Ring handler that converts a response to S-expressions and sets the body
@@ -40,7 +39,6 @@
 
   * json
   * xml
-  * raw
 
   If any other (i.e., unsupported) content-type values are provided, the default
   content-type handler will be returned.
@@ -78,11 +76,7 @@
    (case (string/lower-case content-type)
      "json" #'json-handler
      "xml" #'xml-handler
-     "raw" #'core/identity-handler
-     ;; oh no... identity-handler changes handler return expectations...
-     (fn [handler]
-       (fn [request]
-         (handler request))))))
+     #'core/identity-handler)))
 
 (defn get-content-type-wrapper
   "This is a utility function for extracting the route version from the request
