@@ -44,13 +44,13 @@
 ;;; Response Formats ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn to-json [response]
-  (let [tile-list (get-in response [:body :tiles])
+  (let [tile-list (get-in response [:body :result :tiles])
         tile-base64 (map base64-encode tile-list)]
-    (assoc-in response [:body :tiles] tile-base64)))
+    (assoc-in response [:body :result :tiles] tile-base64)))
 
 (defn to-netcdf [response]
-  (let [tile-spec (get-in response [:body :spec])
-        tile-list (get-in response [:body :tiles])
+  (let [tile-spec (get-in response [:body :result :spec])
+        tile-list (get-in response [:body :result :tiles])
         driver (gdal/subtype->driver "netcdf")
         file (clojure.java.io/file "temp.nc")]
     {:body (gdal/create-with-gdal file driver tile-spec tile-list)
@@ -58,8 +58,8 @@
      :status 200}))
 
 (defn to-geotiff [response]
-  (let [tile-spec (get-in response [:body :spec])
-        tile-list (get-in response [:body :tiles])
+  (let [tile-spec (get-in response [:body :result :spec])
+        tile-list (get-in response [:body :result :tiles])
         driver (gdal/subtype->driver "tiff")
         file (clojure.java.io/file "temp.tiff")]
     {:body (gdal/create-with-gdal file driver tile-spec tile-list)
@@ -119,9 +119,11 @@
     (GET "/" request
          (http/response :result (get-resources (:uri request))))
     (GET "/tiles" [band point time :as request]
-         (respond-to request {:body (get-tiles band point time (get-in request [:component :tiledb]))}))
+         (->> (get-tiles band point time (get-in request [:component :tiledb]))
+              (http/response :result)
+              (respond-to request)))
     (POST "/tiles" [:as request]
-          (http/response (save-tile request (get-in request [:component :tiledb]))))
+          (http/response :result (save-tile request (get-in request [:component :tiledb]))))
     (GET "/specs" [band :as request]
          (http/response :result (get-specs band (get-in request [:component :tiledb]))))
     (GET "/scenes" [scene :as request]
