@@ -50,6 +50,7 @@
                  [ring/ring-devel "1.5.0"]
                  [ring/ring-json "0.4.0"]
                  [ring/ring-defaults "0.2.1"]
+                 [jmorton/ring-accept "0.2.0-SNAPSHOT"]
                  [clojusc/ring-xml "0.0.6"]
                  ;; Authentication and authorization
                  [com.cemerick/friend "0.2.3"]
