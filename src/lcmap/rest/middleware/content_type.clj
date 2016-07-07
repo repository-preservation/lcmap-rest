@@ -4,91 +4,7 @@
             [clojure.tools.logging :as log]
             [clojusc.ring.xml :as ring-xml]
             [lcmap.rest.middleware.core :as core]
-            [lcmap.rest.middleware.http-util :as http]
-            [lcmap.rest.middleware.gdal-content :as gdal-content]))
-
-(defn parse-quality
-  "Convert the first 'q' parameter to a number (or 1.0)"
-  [extension]
-  (let [[_ qvalue] (re-find #";q=([0-9\.]+)" (or extension ""))]
-    (java.lang.Double. (or qvalue "1.0"))))
-
-(re-find #"(([\w\*]+)/([\w\.]+\+?([\w\.]*)))(;.*)?" "text/vnd.usgs.v0.5+html;q=1")
-
-(defn +media-range
-  ""
-  [accept]
-  (->> (re-find #"(([\w\*]+)/([\w\*\.]+\+?([\w\.]*)))(;.*)?" accept)
-       (zipmap [:original :media-range :type :subtype :suffix :parameters])))
-
-(defn +quality
-  "Takes first 'q' parameter with a "
-  [accept]
-  (->> (if-let [[_ q] (re-find #"q=([10]?\.?[0-9]+)" (:original accept))]
-         (java.lang.Double. q)
-         1.0)
-       (assoc accept :quality)))
-
-(defn +extensions
-  "Convert a single extensions string into a list of strings."
-  [accept]
-  (if-let [params (:parameters accept)]
-    (->> (clojure.string/replace-first params #"q=([10]?\.?[0-9]+)" "")
-         (re-seq #"[\w\.]+")
-         vec
-         (assoc accept :extensions))
-    (assoc accept :extensions [])))
-
-(defn +version
-  "Non-standard."
-  [accept]
-  (->> (:subtype accept)
-       (re-find #"v([0-9\.]+)")
-       last
-       (assoc accept :version)))
-
-(defn +suffix
-  ""
-  [accept]
-  (->> (:subtype accept)
-       (re-find #"\+([\w\.]+)")
-       last
-       (assoc accept :suffix)))
-
-(defn +specificity
-  "Used when sorting indidual accept values"
-  [accept]
-  (assoc accept :specificity
-         (cond->> 0
-           (not-empty (accept :extensions)) (+ 4)
-           (not= (accept :subtype) "*") (+ 2)
-           (not= (accept :type) "*") (+ 1))))
-
-(def accept-xf (comp (map +media-range)
-                     (map +quality)
-                     (map +extensions)
-                     (map +version)
-                     (map +suffix)
-                     (map +specificity)))
-
-(defn accept-builder
-  ""
-  [accept]
-  (if accept
-    (->> (clojure.string/split accept #"[,\s]+")
-         (sequence accept-xf)
-         (vec)
-         (sort-by (juxt :quality :specificity)
-                  #(compare %2 %1)))))
-
-(defn accept-handler
-  "A Ring handler that parses the Accept header and updates request
-   with a map of accept string components."
-  [handler]
-  (fn [request]
-    (if-let [header (get-in request [:headers "accept"])]
-      (handler (assoc request :accept (accept-builder header))
-               (handler request)))))
+            [lcmap.rest.middleware.http-util :as http]))
 
 (defn json-handler
   "A Ring handler that converts the entire response to JSON and then updates
@@ -125,10 +41,6 @@
   * json
   * xml
   * raw
-  * ENVI
-  * ERDAS
-  * geotiff
-  * netCDF
 
   If any other (i.e., unsupported) content-type values are provided, the default
   content-type handler will be returned.
@@ -166,12 +78,11 @@
    (case (string/lower-case content-type)
      "json" #'json-handler
      "xml" #'xml-handler
-     "envi"    #'gdal-content/base-handler
-     "erdas"   #'gdal-content/base-handler
-     "netcdf"  #'gdal-content/base-handler
-     "geotiff" #'gdal-content/base-handler
      "raw" #'core/identity-handler
-     default-type-hanlder)))
+     ;; oh no... identity-handler changes handler return expectations...
+     (fn [handler]
+       (fn [request]
+         (handler request))))))
 
 (defn get-content-type-wrapper
   "This is a utility function for extracting the route version from the request

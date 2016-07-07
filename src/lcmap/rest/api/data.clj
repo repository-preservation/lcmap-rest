@@ -4,19 +4,83 @@
             [clj-time.format :as time-fmt]
             [clj-time.coerce :as time-coerce]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
+            [ring.util.accept :refer [defaccept]]
             [lcmap.rest.middleware.http-util :as util]
-            [lcmap.client.data]
+            [lcmap.client.data :as data]
             [lcmap.rest.middleware.http-util :as http]
+            [lcmap.rest.util.gdal :as gdal]
             [lcmap.data.scene :as tile-scene]
             [lcmap.data.tile :as tile]
             [lcmap.data.tile-spec :as tile-spec])
   (:import [org.apache.commons.codec.binary Base64]))
 
+
+;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn base64-decode
+  "Helper for saving tiles sent as JSON."
+  [tile]
+  (assoc tile :data (Base64/decodeBase64 (tile :data))))
+
+(defn base64-encode
+  "Helper for responding to tile requests with JSON."
+  [{src-data :data :as tile}]
+  (let [size (- (.limit src-data) (.position src-data))
+        copy (byte-array size)]
+    (.get src-data copy)
+    (Base64/encodeBase64String copy)))
+
+(defn point->pair
+  "Convert a point x,y into a pair (a seq of ints)"
+  [point]
+  (map #(Integer/parseInt %) (re-seq #"\-?\d+" point)))
+
+(defn iso8601->datetimes
+  "Convert an ISO8610 string into a pair of DateTime"
+  [iso8601]
+  (let [parse #(time-fmt/parse (time-fmt/formatters :date) %)
+        dates (clojure.string/split iso8601 #"/")]
+    (map parse dates)))
+
+;;; Response Formants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn to-json [response]
+  (let [tile-list (get-in response [:body :tiles])
+        tile-base64 (map base64-encode tile-list)]
+    (assoc-in response [:body :tiles] tile-base64)))
+
+(defn to-netcdf [response]
+  (let [tile-spec (get-in response [:body :spec])
+        tile-list (get-in response [:body :tiles])
+        driver (gdal/subtype->driver "netcdf")
+        file (clojure.java.io/file "temp.nc")]
+    {:body (gdal/create-with-gdal file driver tile-spec tile-list)
+     :headers {"Content-Type" "application/vnd.usgs.lcmap.v0.5+netcdf"
+               "Content-Disposition" "attachment; filename=\"nice.nc\""}
+     :status 200}))
+
+(defn to-geotiff [response]
+  (let [tile-spec (get-in response [:body :spec])
+        tile-list (get-in response [:body :tiles])
+        driver (gdal/subtype->driver "tiff")
+        file (clojure.java.io/file "temp.tiff")]
+    {:body (gdal/create-with-gdal file driver tile-spec tile-list)
+     :headers {"Content-Type" "application/vnd.usgs.lcmap.v0.5+geotiff"
+               "Content-Disposition" "attachment; filename=\"nice.tiff\""}
+     :status 200}))
+
+;; This macro calls the function matching the media-type given in the
+;; parsed accept headers of the request map.
+(defaccept respond-to
+  "application/vnd.usgs.lcmap.v0.5+json" to-json
+  "application/vnd.usgs.lcmap.v0.5+geotiff" to-geotiff
+  "application/vnd.usgs.lcmap.v0.5+netcdf" to-netcdf)
+
 ;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn get-resources [context]
   (log/info (str "get-resources: " context))
-  {:links (map #(str context %) ["/tiles" "/specs" "/scenes"])})
+  {:links (map #(str context %) ["/tiles" "/rod" "/specs" "/scenes"])})
 
 (defn get-tiles
   ""
@@ -36,9 +100,8 @@
         spec (first (tile-spec/find db {:ubid band}))
         keyspace (:keyspace_name spec)
         table (:table_name spec)]
-    ;; XXX
     (log/debug "POST tile" (dissoc tile :data))
-    (tile/save db keyspace table tile)))
+    (tile/save db keyspace table (base64-decode tile))))
 
 (defn get-specs
   ""
@@ -60,20 +123,16 @@
       (http/response :result
         (get-resources (:uri request))))
     (GET "/tiles" [band point time :as request]
-      (http/response :result
-        (get-tiles band point time (get-in request [:component :tiledb]))))
+         (respond-to request {:body (get-tiles band point time (get-in request [:component :tiledb]))}))
     (POST "/tiles" [:as request]
       (http/response :result
                      (save-tile request (get-in request [:component :tiledb]))))
     (GET "/specs" [band :as request]
-      (http/response :result
-                     (get-specs band (get-in request [:component :tiledb]))))
+         (respond-to request {:body (get-specs band (get-in request [:component :tiledb]))}))
     (GET "/scenes" [scene :as request]
-      (http/response :result
-                     (get-scenes scene (get-in request [:component :tiledb]))))
+         (respond-to request {:body (get-scenes scene (get-in request [:component :tiledb]))}))
     (GET "/scenes/:scene" [scene :as request]
-      (http/response :result
-                     (get-scenes scene (get-in request [:component :tiledb]))))))
+         (respond-to request {:body (get-scenes scene (get-in request [:component :tiledb]))}))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

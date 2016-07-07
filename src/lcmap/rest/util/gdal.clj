@@ -1,4 +1,4 @@
-(ns lcmap.rest.middleware.gdal-content
+(ns lcmap.rest.util.gdal
   (:require [clojure.tools.logging :as log]
             [clojure.java.io :as io]
             [gdal.band :as band]
@@ -12,7 +12,7 @@
 
 (defn create-with-gdal
   ""
-  [file driver-name tile-spec tiles]
+  [file gdal-driver tile-spec tiles]
   (let [[xs ys]     (:data_shape tile-spec)
         zs          (count tiles)
         le-type     (-> tile-spec :data_type ->gdal-type)
@@ -21,8 +21,7 @@
         le-pixel-x  (:pixel_x tile-spec)
         le-pixel-y  (:pixel_y tile-spec)
         le-path     (.getAbsolutePath file)
-        le-driver   (gdal/get-driver-by-name driver-name)
-        le-dataset  (driver/create le-driver le-path xs ys zs le-type)
+        le-dataset  (driver/create gdal-driver le-path xs ys zs le-type)
         le-tile     (first tiles)
         le-array    (short-array (* xs ys))]
     (dataset/set-projection-str le-dataset (:projection tile-spec))
@@ -47,46 +46,18 @@
     (dataset/delete le-dataset) ;; mandatory, otherwise file may not have data
     file))
 
-(defn envi-handler
-  ""
-  [handler]
-  (fn [request]
-    (let [response (handler request)
-          tile-spec (get-in response [:body :result :spec])
-          tile-list (get-in response [:body :result :tiles])
-          file (io/file "meow.envi")]
-      (log/debug "representing response as ENVI")
-      (assoc response :body (create-with-gdal file "ENVI" tile-spec tile-list)))))
+;; use content subtype to determine driver...
+;; Not all GDAL drivers have a mime-type so we have to define
+;; an explicit map of content subtypes to driver names.
+(def mapping {"netcdf" "NetCDF"
+              "tiff"   "GTiff"
+              "envi"   "ENVI"
+              "erdas"  "HFA"})
 
-(defn erdas-handler
+(defn subtype->driver
   ""
-  [handler]
-  (fn [request]
-    (let [response (handler request)
-          tile-spec (get-in response [:body :result :spec])
-          tile-list (get-in response [:body :result :tiles])
-          file (io/file "meow.img")]
-      (log/debug "representing response as ERDAS")
-      (assoc response :body (create-with-gdal file "HFA" tile-spec tile-list)))))
-
-(defn geotiff-handler
-  ""
-  [handler]
-  (fn [request]
-    (let [response (handler request)
-          tile-spec (get-in response [:body :result :spec])
-          tile-list (get-in response [:body :result :tiles])
-          file (io/file "meow.tiff")]
-      (log/debug "representing response as geotiff")
-      (assoc response :body (create-with-gdal file "GTiff" tile-spec tile-list)))))
-
-(defn netcdf-handler
-  ""
-  [handler]
-  (fn [request]
-    (let [response (handler request)
-          tile-spec (get-in response [:body :result :spec])
-          tile-list (get-in response [:body :result :tiles])
-          file (io/file "meow.nc")]
-      (log/debug "representing response as netcdf")
-      (assoc response :body (create-with-gdal file "netCDF" tile-spec tile-list)))))
+  [subtype]
+  (-> subtype
+      clojure.string/lower-case
+      mapping
+      gdal/get-driver-by-name))
