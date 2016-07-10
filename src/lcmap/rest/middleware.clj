@@ -3,6 +3,7 @@
             [metrics.ring.instrument :as ring-instrument]
             [lcmap.client.system]
             [lcmap.rest.middleware.content-type :as content-type]
+            [lcmap.rest.middleware.problem :as problem]
             [lcmap.rest.middleware.versioned-api :as versioned-api]))
 
 (defn lcmap-handlers
@@ -11,6 +12,7 @@
   created should be chained here and not in ``lcmap.rest.app``."
   [default-version]
   (-> (versioned-api/handler default-version)
+      (problem/handler)
       (content-type/handler default-version)
       (ring-metrics/expose-metrics-as-json
         (str lcmap.client.system/metrics "/all"))

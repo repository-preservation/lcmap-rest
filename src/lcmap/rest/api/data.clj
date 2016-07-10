@@ -4,10 +4,11 @@
             [clj-time.format :as time-fmt]
             [clj-time.coerce :as time-coerce]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
+            [dire.core :refer [with-handler! with-handler supervise]]
             [ring.util.accept :refer [defaccept]]
-            [lcmap.rest.middleware.http-util :as util]
+            [ring.util.response :as ring-resp]
+            [schema.core :as schema]
             [lcmap.client.data :as data]
-            [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util.gdal :as gdal]
             [lcmap.data.scene :as tile-scene]
             [lcmap.data.tile :as tile]
@@ -63,8 +64,8 @@
         (assoc-in [:headers "Content-Disposition"] "attachment; filename=\"nice.json\""))))
 
 (defn to-netcdf [response]
-  (let [tile-spec (get-in response [:body :result :spec])
-        tile-list (get-in response [:body :result :tiles])
+  (let [tile-spec (get-in response [:body :spec])
+        tile-list (get-in response [:body :tiles])
         driver (gdal/subtype->driver "netcdf")
         file (clojure.java.io/file "temp.nc")]
     {:body (gdal/create-with-gdal file driver tile-spec tile-list)
@@ -72,8 +73,8 @@
      :status 200}))
 
 (defn to-geotiff [response]
-  (let [tile-spec (get-in response [:body :result :spec])
-        tile-list (get-in response [:body :result :tiles])
+  (let [tile-spec (get-in response [:body :spec])
+        tile-list (get-in response [:body :tiles])
         driver (gdal/subtype->driver "tiff")
         file (clojure.java.io/file "temp.tiff")]
     {:body (gdal/create-with-gdal file driver tile-spec tile-list)
@@ -135,14 +136,12 @@
   ;; rearrangement is performed.
   (context lcmap.client.data/context []
     (GET "/" request
-         (http/response :result (get-resources (:uri request))))
+         (get-resources (:uri request)))
     (GET "/tiles" [band point time :as request]
          (->> (get-tiles band point time (get-in request [:component :tiledb]))
               (assoc {} :result)
               (ring-resp/response)
               (respond-to request)))
-    (POST "/tiles" [:as request]
-          (http/response :result (save-tile request (get-in request [:component :tiledb]))))
     (GET "/specs" [band :as request]
          (->> (get-specs band (get-in request [:component :tiledb]))
               (assoc {} :result)
@@ -158,4 +157,4 @@
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; XXX TBD
+(with-handler! #'get-specs RuntimeException (fn [e & args] e))
