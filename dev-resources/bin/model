@@ -1,0 +1,14 @@
+#!/bin/bash
+
+LCMAP_ACCEPT_HDR="Accept: application/vnd.usgs.lcmap.v0.5+json"
+LCMAP_ENDPOINT="http://localhost:1077"
+
+RESULT_PATH=$(curl -s -O -X POST \
+    -H "$LCMAP_ACCEPT_HDR" -H "$LCMAP_TOKEN_HDR" \
+    -d "delay=120" -d "year=2017" \
+    "${LCMAP_ENDPOINT}/api/models/sample/os-process")
+echo $RESULT_PATH
+
+# | jq -r '.result.link.href'
+# curl -v -H "$LCMAP_ACCEPT_HDR" -H "$LCMAP_TOKEN_HDR" \
+#    "${LCMAP_ENDPOINT}${RESULT_PATH}"
