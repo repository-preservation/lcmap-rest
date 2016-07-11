@@ -23,7 +23,7 @@
        (clojure.string/join ":")
        (str "-Djava.library.path=")))
 
-(defproject gov.usgs.eros/lcmap-rest "0.5.0"
+(defproject gov.usgs.eros/lcmap-rest "0.5.1-SNAPSHOT"
   :description "LCMAP REST Service API"
   :url "https://github.com/USGS-EROS/lcmap-rest"
   :license {:name "NASA Open Source Agreement, Version 1.3"
@@ -89,6 +89,7 @@
                  [commons-codec "1.10"]
                  ;; Geospatial libraries
                  [clj-gdal "0.4.0-ALPHA"]
+                 [clj-gdal "0.4.0-SNAPSHOT"]
                  ;; Metrics
                  [metrics-clojure "2.7.0"]
                  [metrics-clojure-jvm "2.7.0"]
