@@ -1,9 +1,11 @@
 # lcmap-rest
+
+*The REST Service for the USGS Land Change Monitoring Assessment and Projection (LCMAP) Computation and Analysis Platform*
+
+
 [![Build Status][travis-badge]][travis][![Dependencies Status][deps-badge]][deps][![Clojars Project][clojars-badge]][clojars]
 
 [![LCMAP open source project logo][lcmap-logo]][lcmap-logo-large]
-
-*The REST Service for the USGS Land Change Monitoring Assessment and Projection (LCMAP) Computation and Analysis Platform*
 
 
 **IMPORTANT**: This project is under active development and should be
@@ -94,11 +96,7 @@ The codebase for lcmap.rest is structured along the following lines:
     * ``data`` - resources for querying stored data
     * ``jobs`` - resources for submitting, checking, and updating jobs
     * ``models`` - model execution resources
-    * ``notifications`` - subscribtion and notification resources
-    * ``operations`` - resources for chaining REST calls in a manner analgous
-      to that used in functional programming languages (composition, map,
-      reduce, etc.)
-    * ``users`` - resources for user data
+    * ``system`` - resources such as metrics
 * ``lcmap.rest.auth`` - Logic for logging in and out of the LCMAP system
 * ``lcmap.rest.components`` - This is where all major parts of the system are
   defined so that they may be easily started and stopped in the correct order.
@@ -109,6 +107,8 @@ The codebase for lcmap.rest is structured along the following lines:
 * ``lcmap.rest.exceptions`` - Custom LCMAP exceptions
 * ``lcmap.rest.job`` - Job tracking business logic
 * ``lcmap.rest.logger`` - Logging support setup
+* ``lcmap.rest.middleware`` - Custom Ring middleware needed by LCMAP REST
+* ``lcmap.rest.types`` - Custom Schema types for such things as validation
 * ``lcmap.rest.user`` - User management logic and storage functions
 * ``lcmap.rest.util`` - Utility functions
 
