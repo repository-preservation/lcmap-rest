@@ -33,38 +33,36 @@
                  [org.clojure/data.codec "0.1.0"]
                  [org.clojure/data.json "0.2.6"]
                  [org.clojure/data.xml "0.1.0-beta1"]
-                 [org.clojure/core.memoize "0.5.8"]
+                 [org.clojure/core.memoize "0.5.9"]
                  ;; Componentization
-                 [com.stuartsierra/component "0.3.0"]
+                 [com.stuartsierra/component "0.3.1"]
                  ;; Logging and Error Handling -- note that we need to explicitly pull
                  ;; in a version of slf4j so that we don't get conflict messages on the
                  ;; console
                  [ring.middleware.logger "0.5.0" :exclusions [org.slf4j/slf4j-log4j12]]
-                 [dire "0.5.3"]
+                 [dire "0.5.4"]
                  [slingshot "0.12.2"]
                  ;; REST
-                 [compojure "1.4.0"]
-                 [http-kit "2.1.17"]
-                 [ring/ring-jetty-adapter "1.4.0"]
-                 [ring/ring-core "1.4.0"]
-                 [ring/ring-devel "1.4.0"]
+                 [compojure "1.5.1"]
+                 [http-kit "2.2.0"]
+                 [ring/ring-jetty-adapter "1.5.0"]
+                 [ring/ring-core "1.5.0"]
+                 [ring/ring-devel "1.5.0"]
                  [ring/ring-json "0.4.0"]
-                 [ring/ring-defaults "0.1.5"]
+                 [ring/ring-defaults "0.2.1"]
                  [clojusc/ring-xml "0.0.6"]
                  ;; Authentication and authorization
-                 [com.cemerick/friend "0.2.1"]
-                 ;; Event system support
-                 [com.novemberain/langohr "3.5.0"]
+                 [com.cemerick/friend "0.2.3"]
                  ;; Job Tracker
-                 [org.clojure/core.memoize "0.5.6"] ; These two are not used directly, but
-                 [org.clojure/core.cache "0.6.4"]   ; without them an exception is raised
-                 [co.paralleluniverse/pulsar "0.7.3"]
+                 ;;[org.clojure/core.memoize "0.5.6"] ; These two are not used directly, but
+                 [org.clojure/core.cache "0.6.5"]   ; without them an exception is raised
+                 [co.paralleluniverse/pulsar "0.7.5"]
                  [org.clojars.hozumi/clj-commons-exec "1.2.0"]
                  [digest "1.4.4"]
                  ;; DB
                  [clojurewerkz/cassaforte "2.0.2"]
                  [net.jpountz.lz4/lz4 "1.3.0"]
-                 [org.xerial.snappy/snappy-java "1.1.2"]
+                 [org.xerial.snappy/snappy-java "1.1.2.6"]
                  ;; Note that the projects in ./checkouts override these:
                  [gov.usgs.eros/lcmap-config "0.5.0-SNAPSHOT"]
                  [gov.usgs.eros/lcmap-logger "0.5.0-SNAPSHOT"]
@@ -79,25 +77,25 @@
                  ;; is worked around by explicitly including Apache Java HTTP
                  ;; client library).
                  ;; XXX temp dependencies:
-                 [org.apache.httpcomponents/httpclient "4.5"]
+                 [org.apache.httpcomponents/httpclient "4.5.2"]
                  [clojure-ini "0.0.2"]
-                 [clj-http "2.0.0"]
+                 [clj-http "3.1.0"]
                  ;; Data types, encoding, validation, etc.
                  [prismatic/schema "1.1.0"]
-                 [byte-streams "0.2.0"]
-                 [clj-time "0.11.0"]
-                 [commons-codec "1.9"]
+                 [byte-streams "0.2.2"]
+                 [clj-time "0.12.0"]
+                 [commons-codec "1.10"]
                  ;; Geospatial libraries
                  [clj-gdal "0.3.5-SNAPSHOT"]
                  ;; Metrics
-                 [metrics-clojure "2.6.1"]
-                 [metrics-clojure-jvm "2.6.1"]
-                 [metrics-clojure-ring "2.6.1"]
+                 [metrics-clojure "2.7.0"]
+                 [metrics-clojure-jvm "2.7.0"]
+                 [metrics-clojure-ring "2.7.0"]
                  ;; Dev and project metadata
-                 [leiningen-core "2.5.3"]]
+                 [leiningen-core "2.6.1"]]
   :plugins [[lein-ring "0.9.7"]
-            [lein-pprint "1.1.1"]
-            [lein-codox "0.9.1"]
+            [lein-pprint "1.1.2"]
+            [lein-codox "0.9.5"]
             [lein-simpleton "1.3.0"]]
   :source-paths ["src" "test/support/auth-server/src"]
   :java-agents [[co.paralleluniverse/quasar-core "0.7.3"]]
