@@ -23,4 +23,4 @@
   :profiles {:uberjar {:aot :all}
              :dev {
               :env {:ip "0.0.0.0"
-                    :port 8888}}})
+                    :port 9999}}})
