@@ -1,4 +1,5 @@
-# lcmap-rest [![Build Status][travis-badge]][travis][![Clojars Project][clojars-badge]][clojars]
+# lcmap-rest
+[![Build Status][travis-badge]][travis][![Dependencies Status][deps-badge]][deps][![Clojars Project][clojars-badge]][clojars]
 
 [![LCMAP open source project logo][lcmap-logo]][lcmap-logo-large]
 
@@ -224,8 +225,11 @@ NASA Open Source Agreement, Version 1.3
 
 [travis]: https://travis-ci.org/USGS-EROS/lcmap-rest
 [travis-badge]: https://travis-ci.org/USGS-EROS/lcmap-rest.png?branch=master
+[deps]: http://jarkeeper.com/usgs-eros/lcmap-rest
+[deps-badge]: http://jarkeeper.com/usgs-eros/lcmap-rest/status.svg
 [lcmap-logo]: resources/images/lcmap-logo-1-250px.png
 [lcmap-logo-large]: resources/images/lcmap-logo-1-1000px.png
 [clojars]: https://clojars.org/gov.usgs.eros/lcmap-rest
 [clojars-badge]: https://img.shields.io/clojars/v/gov.usgs.eros/lcmap-rest.svg
-
+[tag-badge]: https://img.shields.io/github/tag/usgs-eros/lcmap-rest.svg?maxAge=2592000
+[tag]: https://github.com/usgs-eros/lcmap-rest/tags
