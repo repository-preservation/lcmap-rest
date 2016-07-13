@@ -1,6 +1,6 @@
 # Other Versions
 
-## LCMAP REST
+## lcmap.rest
 
 ### API Reference
 
