@@ -4,7 +4,7 @@
             [ring.middleware.json :as ring-json]
             [ring.middleware.logger :as ring-logger]
             [com.stuartsierra.component :as component]
-            [twig.core :as logger]
+            [clojusc.twig :as logger]
             [lcmap.rest.components :as components]
             [lcmap.rest.middleware :as middleware]
             [lcmap.rest.util :as util])

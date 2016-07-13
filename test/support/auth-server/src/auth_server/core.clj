@@ -6,7 +6,7 @@
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
             [ring.middleware.logger :as logger]
-            [twig.core :as twig]
+            [clojusc.twig :as logger]
             [leiningen.core.project :as lein-prj])
   (:gen-class))
 
@@ -101,7 +101,7 @@
         ;; This would be for display purposes, showing what's getting listened
         ;; on when 0.0.0.0 is used as the server IP address ...
         local-ip  (.getHostAddress (java.net.InetAddress/getLocalHost))]
-    (twig/set-level! '[auth-server] :info)
+    (logger/set-level! '[auth-server] :info)
     (log/info "Test auth server's local IP address:" local-ip)
     (log/infof "Starting test auth server on port %s:%s ..." ip port)
     (httpkit/run-server #'app {:ip ip
