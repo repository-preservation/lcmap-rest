@@ -1,4 +1,4 @@
-VERSION=0.0.2
+VERSION=0.5.0
 PROJECT=lcmap-rest
 STANDALONE=target/$(PROJECT)-$(VERSION)-SNAPSHOT-standalone.jar
 ROOT_DIR = $(shell pwd)
