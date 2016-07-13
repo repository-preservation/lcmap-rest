@@ -1,4 +1,4 @@
-# lcmap-rest
+# lcmap.rest
 
 *Published Documentation for the LCMAP-REST server project*
 
