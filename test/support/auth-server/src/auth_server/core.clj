@@ -5,7 +5,7 @@
             [ring.util.response :as ring]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [ring.middleware.json :refer [wrap-json-response]]
-            [ring.middleware.logger :as logger]
+            [ring.middleware.logger :as ring-logger]
             [clojusc.twig :as logger]
             [leiningen.core.project :as lein-prj])
   (:gen-class))
@@ -66,7 +66,7 @@
   (-> v1
       (wrap-defaults api-defaults)
       (wrap-json-response)
-      (logger/wrap-with-logger)))
+      (ring-logger/wrap-with-logger)))
 
 (defn get-env [env-key]
   (let [env-val (System/getenv env-key)]
