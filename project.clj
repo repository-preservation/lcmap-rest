@@ -81,7 +81,7 @@
                  [clojure-ini "0.0.2"]
                  [clj-http "3.1.0"]
                  ;; Data types, encoding, validation, etc.
-                 [prismatic/schema "1.1.0"]
+                 [prismatic/schema "1.1.2"]
                  [byte-streams "0.2.2"]
                  [clj-time "0.12.0"]
                  [commons-codec "1.10"]
