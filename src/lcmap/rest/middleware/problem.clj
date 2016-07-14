@@ -1,35 +1,27 @@
 (ns lcmap.rest.middleware.problem
   ""
-  (:require [ring.util.response :as rr]
+  (:require [clojure.tools.logging :as log]
+            [ring.util.accept :refer [defaccept]]
+            [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.problem :refer :all]))
 
-(defn build-problem
-  "Convert problematic values into a Problem record."
-  [response]
-  (if (satisfies? Problematic (response :body))
-    (update response :body ->problem)
-    response))
+(defaccept respond-to
+  "application/problem+json" http/to-json
+  "application/problem+xml"  http/to-xml)
 
-(defn set-status
-  "Set HTTP status header to Problem's status value."
-  [response]
-  (if-let [status (get-in response [:body :status])]
-    (rr/status response status)
-    response))
-
-;; XXX Determine if this is something that should be handled
-;;     by other middleware.
-;; XXX Provide XML response if requested.
-(defn set-content-type
-  "Set response content-type to match preferred media-type of request."
+(defn handle-problem
+  "Convert problematic body into acceptable representation."
   [request response]
-  (rr/content-type response "application/problem+json"))
+  (if (satisfies? Problematic (response :body))
+    (let [as-problem (update response :body ->problem)
+          as-content (respond-to request as-problem)
+          status-code (get-in response [:body :status] 500)]
+      (assoc as-content :status status-code))
+    response))
 
 (defn handler
   "Build problem and update HTTP headers."
   [handler]
   (fn [request]
     (->> (handler request)
-         (build-problem)
-         (set-content-type request)
-         (set-status))))
+         (handle-problem request))))

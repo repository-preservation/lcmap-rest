@@ -1,5 +1,7 @@
 (ns lcmap.rest.middleware.http-util
-  (:require [clojure.tools.logging :as log]
+  (:require [clojure.data.json :as json]
+            [clojure.tools.logging :as log]
+            [clojusc.ring.xml :as ring-xml]
             [ring.util.response :as ring]
             [dire.core :refer [with-handler!]]
             [lcmap.client.http :as http]
@@ -133,3 +135,15 @@
   [root [:status status]
         (headers->sexp headers)
         (body->sexp body)])
+
+(defn to-json
+  "Convert response body to JSON"
+  [response]
+  (update response :body json/write-str))
+
+(defn to-xml
+  "Convert response body to XML"
+  [response]
+  (assoc response :body (-> (response :body)
+                            (response->sexp :root :xml)
+                            (ring-xml/->xml {:sexprs true}))))

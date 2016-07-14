@@ -7,6 +7,10 @@
 
 (defprotocol Problematic (->problem [e]))
 
+(extend-type Problem
+  Problematic
+  (->problem [p] p))
+
 (extend-type RuntimeException
   Problematic
   (->problem [e]

@@ -139,3 +139,7 @@
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (with-handler! #'get-specs RuntimeException (fn [e & args] e))
+
+(with-handler! #'get-scenes RuntimeException (fn [e & args] e))
+
+(with-handler! #'get-tiles RuntimeException (fn [e & args] e))
