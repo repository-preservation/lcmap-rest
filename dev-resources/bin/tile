@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LCMAP_ACCEPT_HDR="Accept: application/vnd.usgs.lcmap.v0.5+netcdf"
+LCMAP_ACCEPT_HDR="Accept: application/vnd.usgs.lcmap.v0.5+json, application/problem+json"
 LCMAP_HOST="http://localhost:1077"
 POINT="-2062080,2952960"
 TIME="2002-05-01/2002-06-01"
