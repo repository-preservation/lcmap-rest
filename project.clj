@@ -95,7 +95,11 @@
                  [leiningen-core "2.6.1"]]
   :plugins [[lein-ring "0.9.7"]
             [lein-pprint "1.1.2"]
-            [lein-codox "0.9.5"]
+            ;; XXX Codox 0.9.4 and 0.9.5 are broken with the lcmap-rest
+            ;; codebase. Not sure what's going on ... maybe issues with
+            ;; metadata in functions? lcmap-see has the same issue, but
+            ;; all the other lcmap-* projects work fine with 0.9.5.
+            [lein-codox "0.9.3"]
             [lein-simpleton "1.3.0"]]
   :source-paths ["src" "test/support/auth-server/src"]
   :java-agents [[co.paralleluniverse/quasar-core "0.7.3"]]
