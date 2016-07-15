@@ -1,0 +1,11 @@
+#!/bin/bash
+
+LCMAP_ACCEPT_HDR="Accept: application/vnd.usgs.lcmap.v0.5+json, application/problem+json"
+LCMAP_HOST="http://localhost:1077"
+
+AUTH=$(curl -v -s -X POST \
+  -H "$LCMAP_ACCEPT_HDR" \
+  -d "token=not-a-token" \
+  "$LCMAP_HOST/api/auth/logout")
+
+echo $AUTH

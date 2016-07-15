@@ -15,8 +15,7 @@
 
 (defn get-resources [context]
   (log/info (str "get-resources: " context))
-  (http/response :result
-    {:links (map #(str context %) ["login" "logout"])}))
+  {:links (map #(str context %) ["login" "logout"])})
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

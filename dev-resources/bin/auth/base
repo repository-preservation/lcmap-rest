@@ -5,10 +5,8 @@ LCMAP_HOST="http://localhost:1077"
 LCMAP_USER="alice"
 LCMAP_PASS="secret-bad"
 
-AUTH=$(curl -v -s -X POST \
+BASE=$(curl -s -X GET \
   -H "$LCMAP_ACCEPT_HDR" \
-  -d "username=$LCMAP_USER" \
-  -d "password=$LCMAP_PASS" \
-  "$LCMAP_HOST/api/auth/login")
+  "$LCMAP_HOST/api/auth")
 
-echo $AUTH
+echo $BASE

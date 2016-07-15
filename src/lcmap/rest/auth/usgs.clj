@@ -131,9 +131,10 @@
       (save-session-data user-data token))))
 
 (defn logout [component token]
-  ; (let [rest-cfg (get-config component)
-  ;       user-db (get-db component)]
-  ;   (remove-session-data (:conn user-db) token)
-  ;   (log/debug (str "Successfully removed token %s and associated "
-  ;                   "session data") token)
-  )
+  (let [rest-cfg (get-config component)
+        user-db (get-db component)]
+    (remove-session-data (:conn user-db) token)
+    (log/debug (str "Successfully removed token %s and associated "
+                    "session data") token)
+    ;;; XXX What is the best value?
+    {:logout token}))
