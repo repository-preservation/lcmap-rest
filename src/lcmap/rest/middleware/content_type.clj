@@ -24,6 +24,10 @@
   "application/vnd.usgs.lcmap.v0.1+json" http/to-json
   "application/vnd.usgs.lcmap.v0.1+xml"  http/to-xml)
 
+(defn respond-to-fn [request response]
+  (log/debug "Applying default content-type response handler")
+  (respond-to request response))
+
 (defn handler
   "This custom Ring handler responds with the best representation
   for a given request Accept header.
@@ -36,5 +40,5 @@
   (fn [request]
     (let [response (handler request)]
       (if (empty? (get-in response [:headers "Content-Type"]))
-        (respond-to request response)
+        (respond-to-fn request response)
         response))))
