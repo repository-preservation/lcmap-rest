@@ -19,7 +19,7 @@
 (defn get-resources [context]
   (log/info (str "get-resources: " context))
   (http/response
-    :result {:links (map #(str context %) ["" ":job-id" "status/:job-id"])}))
+    :body {:links (map #(str context %) ["" ":job-id" "status/:job-id"])}))
 
 (defn get-job-status
   ([result]
@@ -27,16 +27,16 @@
   ([component job-id]
     (match [(first @(db/job? (db/get-conn component) job-id))]
       [[]]
-        (http/response :errors ["Job not found."]
+        (http/response :body ["Job not found."]
                        :status status/no-resource)
       [nil]
-        (http/response :errors ["Job not found."]
+        (http/response :body ["Job not found."]
                        :status status/no-resource)
       [({:status (st :guard #'status/pending?)} :as result)]
-        (http/response :result :pending
+        (http/response :body :pending
                        :status status/pending)
       [({:status st} :as result)]
-        (http/response :result (get-result-path job-id)
+        (http/response :body (get-result-path job-id)
                        :status st))))
 
 (defn get-job-result
@@ -49,11 +49,11 @@
     (db/get-job-result conn job-id result-table func)))
 
 (defn update-job [component job-id]
-  (http/response :result "sample job update tbd"
+  (http/response :body "sample job update tbd"
                  :status status/pending))
 
 (defn get-info [component job-id]
-  (http/response :result "sample job info tbd"))
+  (http/response :body "sample job info tbd"))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
