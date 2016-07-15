@@ -1,0 +1,16 @@
+#!/bin/bash
+
+LCMAP_ACCEPT_HDR="Accept: application/vnd.usgs.lcmap.v0.5+json, application/problem+json"
+LCMAP_HOST="http://localhost:1077"
+
+X="-2062080"
+Y="2952960"
+T1="2002-01-01"
+T2="2003-01-01"
+
+JOB=$(curl -s -v \
+  -H "$LCMAP_ACCEPT_HDR" \
+  -H "$LCMAP_TOKEN_HDR" \
+  -X POST "$LCMAP_HOST/api/models/ndvi?x=$X&y=$Y&t1=$T1&t2=$T2")
+
+echo $JOB
