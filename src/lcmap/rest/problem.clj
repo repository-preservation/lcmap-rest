@@ -1,7 +1,6 @@
 (ns lcmap.rest.problem
   "Provide conversion of Problematic types into a Problem record.
-  A conversion for RuntimeExceptions is provided."
-  (:import [com.datastax.driver.core.exceptions DriverException]))
+  A conversion for RuntimeExceptions is provided.")
 
 (defrecord Problem [type title status detail instance])
 

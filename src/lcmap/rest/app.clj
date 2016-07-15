@@ -1,9 +1,9 @@
 (ns lcmap.rest.app
   (:require [clojure.tools.logging :as log]
-            [ring.middleware.accept :as ring-accept]
-            [ring.middleware.defaults :as ring-defaults]
-            [ring.middleware.json :as ring-json]
-            [ring.middleware.logger :as ring-logger]
+            [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
+            [ring.middleware.accept :refer [wrap-accept]]
+            [ring.middleware.json :refer [wrap-json-body]]
+            [ring.middleware.logger :refer [wrap-with-logger]]
             [com.stuartsierra.component :as component]
             [clojusc.twig :as logger]
             [lcmap.rest.components :as components]
@@ -15,14 +15,17 @@
 
 (def app
   (-> (middleware/lcmap-handlers default-version)
-      ;; XXX once we support SSL, api-defaults needs to be changed to
-      ;; ring-defaults/secure-api-defaults
-      (ring-defaults/wrap-defaults ring-defaults/api-defaults)
-      (ring-accept/wrap-accept)
-      (ring-json/wrap-json-body {:keywords? true})
-      ;; XXX maybe move this handler into the httpd component setup, that way
-      ;; we could enable it conditionally, based upon some configuration value.
-      (ring-logger/wrap-with-logger)))
+      ;; Turn request accept header into sorted list of maps
+      ;; with properties extracted.
+      (wrap-accept)
+      ;; Converts JSON request body into a map.
+      (wrap-json-body {:keywords? true})
+      ;; XXX When SSL support is added, change api-defaults
+      ;; to secure-api-defaults
+      (wrap-defaults api-defaults)
+      ;; XXX Consider how to conditionally enable logging
+      ;; configuration using components?
+      (wrap-with-logger)))
 
 (defn -main
   "This is the entry point. Note, however, that the system components are

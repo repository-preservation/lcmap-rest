@@ -128,8 +128,7 @@
     (let [user-data (get-user-data rest-cfg token)]
       (log/debugf "Got user data %s for token %s" user-data token)
       ; (save-session-data (:conn user-db) user-data token)
-      (-> (http/response)
-          (http/add-result (save-session-data user-data token))))))
+      (save-session-data user-data token))))
 
 (defn logout [component token]
   ; (let [rest-cfg (get-config component)

@@ -1,5 +1,6 @@
 (ns lcmap.rest.middleware
-  (:require [metrics.ring.expose :as ring-metrics]
+  (:require [ring.middleware.accept :as ring-accept]
+            [metrics.ring.expose :as ring-metrics]
             [metrics.ring.instrument :as ring-instrument]
             [lcmap.client.system]
             [lcmap.rest.middleware.content-type :as content-type]
@@ -12,8 +13,10 @@
   created should be chained here and not in ``lcmap.rest.app``."
   [default-version]
   (-> (versioned-api/handler default-version)
+      ;; turn problematic response body into acceptable representation
       (problem/handler)
-      (content-type/handler default-version)
+      ;; turn unprocessed response body into acceptable default representation
+      (content-type/handler)
       (ring-metrics/expose-metrics-as-json
         (str lcmap.client.system/metrics "/all"))
       (ring-instrument/instrument)))

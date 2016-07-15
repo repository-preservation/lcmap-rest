@@ -1,4 +1,4 @@
-(ns lcmap.rest.middleware.content-type
+q(ns lcmap.rest.middleware.content-type
   (:require [clojure.tools.logging :as log]
             [lcmap.rest.middleware.http-util :as http]
             [ring.util.accept :refer [defaccept]]))
@@ -32,7 +32,7 @@
   body that has already been converted to that representation. An
   unset response content-type header implies the body has not
   been transformed."
-  [handler default-version]
+  [handler]
   (fn [request]
     (let [response (handler request)]
       (if (empty? (get-in response [:headers "Content-Type"]))

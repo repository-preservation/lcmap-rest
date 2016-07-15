@@ -2,6 +2,7 @@
   (:import [java.lang Runtime])
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
+            [ring.util.response :as ring-resp]
             [lcmap.client.auth]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.auth.usgs :as usgs]
@@ -22,11 +23,14 @@
 (defroutes routes
   (context lcmap.client.auth/context []
     (GET "/" request
-      (get-resources (:uri request)))
+         (->> (get-resources (:uri request))
+              (ring-resp/response)))
     (POST "/login" [username password :as request]
-      (usgs/login (:component request) username password))
+          (->> (usgs/login (:component request) username password)
+               (ring-resp/response)))
     (POST "/logout" [token :as request]
-      (usgs/logout (:component request) token))))
+          (->> (usgs/logout (:component request) token)
+               (ring-resp/response)))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
