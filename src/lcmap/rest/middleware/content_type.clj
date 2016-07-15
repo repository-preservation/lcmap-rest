@@ -1,4 +1,4 @@
-q(ns lcmap.rest.middleware.content-type
+(ns lcmap.rest.middleware.content-type
   (:require [clojure.tools.logging :as log]
             [lcmap.rest.middleware.http-util :as http]
             [ring.util.accept :refer [defaccept]]))
