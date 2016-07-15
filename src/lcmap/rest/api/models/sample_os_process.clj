@@ -1,6 +1,7 @@
 (ns lcmap.rest.api.models.sample-os-process
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
+            [ring.util.response :as ring-resp]
             [schema.core :as schema]
             [lcmap.client.models.sample-os-process]
             [lcmap.client.status-codes :as status]
@@ -46,18 +47,19 @@
       seconds
       year)
     (log/debug "Called sample-runner ...")
-    (http/response :result {:link {:href (job/get-result-path job-id)}}
-                   :status status/pending-link)))
+    {:link {:href (job/get-result-path job-id)}}))
+
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
   (context lcmap.client.models.sample-os-process/context []
     (POST "/" [token delay year :as request]
-      ;; XXX use token to check user/session/authorization
-      (model/validate #'run-model request delay year))
+          (->> (model/validate #'run-model request delay year)
+               (http/response :body)))
     (GET "/:job-id" [job-id :as request]
-      (job/get-job-result (:component request) job-id))))
+         (->> (job/get-job-result (:component request) job-id)
+              (http/response*)))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

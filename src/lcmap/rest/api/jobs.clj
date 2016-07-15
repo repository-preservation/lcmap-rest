@@ -16,10 +16,10 @@
 
 ;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; XXX consider RFC 6570 - URI Templates for link syntax
 (defn get-resources [context]
   (log/info (str "get-resources: " context))
-  (http/response
-    :body {:links (map #(str context %) ["" ":job-id" "status/:job-id"])}))
+  {:links (map #(str context %) ["" ":job-id" "status/:job-id"])})
 
 (defn get-job-status
   ([result]
@@ -27,17 +27,17 @@
   ([component job-id]
     (match [(first @(db/job? (db/get-conn component) job-id))]
       [[]]
-        (http/response :body ["Job not found."]
-                       :status status/no-resource)
+        {:body ["Job not found."]
+         :status status/no-resource}
       [nil]
-        (http/response :body ["Job not found."]
-                       :status status/no-resource)
+        {:body ["Job not found."]
+         :status status/no-resource}
       [({:status (st :guard #'status/pending?)} :as result)]
-        (http/response :body :pending
-                       :status status/pending)
+        {:body :pending
+         :status status/pending}
       [({:status st} :as result)]
-        (http/response :body (get-result-path job-id)
-                       :status st))))
+        {:body (get-result-path job-id)
+         :status st})))
 
 (defn get-job-result
   ([component job-id]
@@ -49,26 +49,30 @@
     (db/get-job-result conn job-id result-table func)))
 
 (defn update-job [component job-id]
-  (http/response :body "sample job update tbd"
-                 :status status/pending))
+  "sample job update tbd")
 
 (defn get-info [component job-id]
-  (http/response :body "sample job info tbd"))
+  "sample job info tbd")
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
   (context lcmap.client.jobs/context []
     (GET "/" request
-      (get-resources (:uri request)))
+         (->> (get-resources (:uri request))
+              (http/response :body)))
     (GET "/:job-id" [job-id :as request]
-      (get-job-result (:component request) job-id))
+         (->> (get-job-result (:component request) job-id)
+              (http/response*)))
     (PUT "/:job-id" [job-id :as request]
-      (update-job (:component request) job-id))
+         (->> (update-job (:component request) job-id)
+              (http/response :status status/pending :body)))
     (HEAD "/:job-id" [job-id :as request]
-      (get-info (:component request) job-id))
+          (->> (get-info (:component request) job-id)
+               (http/response :status status/ok :body)))
     (GET "/status/:job-id" [job-id :as request]
-      (get-job-status (:component request) job-id))))
+         (->> (get-job-status (:component request) job-id)
+              (http/response*)))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

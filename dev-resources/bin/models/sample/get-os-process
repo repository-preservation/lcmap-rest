@@ -1,0 +1,12 @@
+#!/bin/bash
+
+LCMAP_ACCEPT_HDR="Accept: application/vnd.usgs.lcmap.v0.5+json, application/problem+json"
+LCMAP_HOST="http://localhost:1077"
+ID="2582eaf5372edf4eb9751dec27fcfe36"
+
+JOB=$(curl -s -v \
+  -H "$LCMAP_ACCEPT_HDR" \
+  -H "$LCMAP_TOKEN_HDR" \
+  -X GET "$LCMAP_HOST/api/models/sample/os-process/$ID")
+
+echo $JOB

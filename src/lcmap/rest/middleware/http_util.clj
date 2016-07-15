@@ -9,12 +9,24 @@
             [lcmap.rest.problem :as problem]))
 
 (defn response
-  "If the developer is inclinded, this function allows one to set the result,
+  "If the developer is inclined, this function allows one to set the result,
   errors, headers, and status in one call. Otherwise, one may use individual
   functions for each (see above), if that better suits one's needs."
   [& {:keys [body status content-type headers]
       :or {body nil status 200 content-type nil headers {}}
       :as args}]
+  (-> (ring-resp/response body)
+      (assoc :headers headers)
+      (ring-resp/content-type content-type)
+      (ring-resp/status status)))
+
+;; Supplement of `response` -- works better with threading macro
+;; when supplied value is a response-like map.
+(defn response*
+  ""
+  [{:keys [body status content-type headers]
+    :or {body nil status 200 content-type nil headers {}}
+    :as args}]
   (-> (ring-resp/response body)
       (assoc :headers headers)
       (ring-resp/content-type content-type)
