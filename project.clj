@@ -23,7 +23,7 @@
        (clojure.string/join ":")
        (str "-Djava.library.path=")))
 
-(defproject gov.usgs.eros/lcmap-rest "0.5.0-SNAPSHOT"
+(defproject gov.usgs.eros/lcmap-rest "0.5.0"
   :description "LCMAP REST Service API"
   :url "https://github.com/USGS-EROS/lcmap-rest"
   :license {:name "NASA Open Source Agreement, Version 1.3"
@@ -66,11 +66,11 @@
                  ;; LCMAP Components - note that the projects in ./checkouts
                  ;; override these:
                  [gov.usgs.eros/lcmap-config "0.5.0"]
-                 [gov.usgs.eros/lcmap-client-clj "0.5.0-SNAPSHOT"]
-                 [gov.usgs.eros/lcmap-logger "0.5.0-SNAPSHOT"]
-                 [gov.usgs.eros/lcmap-event "0.5.0-SNAPSHOT"]
-                 [gov.usgs.eros/lcmap-see "0.5.0-SNAPSHOT"]
-                 [gov.usgs.eros/lcmap-data "0.5.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-client-clj "0.5.0"]
+                 [gov.usgs.eros/lcmap-logger "0.5.0"]
+                 [gov.usgs.eros/lcmap-event "0.5.0"]
+                 [gov.usgs.eros/lcmap-see "0.5.0"]
+                 [gov.usgs.eros/lcmap-data "0.5.0"]
                  ;; XXX note that we may still need to explicitly include the
                  ;; Apache Java HTTP client, since the version used by the LCMAP
                  ;; client is more recent than that used by Chas Emerick's
@@ -87,7 +87,7 @@
                  [clj-time "0.12.0"]
                  [commons-codec "1.10"]
                  ;; Geospatial libraries
-                 [clj-gdal "0.3.5-SNAPSHOT"]
+                 [clj-gdal "0.4.0-ALPHA"]
                  ;; Metrics
                  [metrics-clojure "2.7.0"]
                  [metrics-clojure-jvm "2.7.0"]
