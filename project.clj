@@ -89,7 +89,6 @@
                  [commons-codec "1.10"]
                  ;; Geospatial libraries
                  [clj-gdal "0.4.0-ALPHA"]
-                 [clj-gdal "0.4.0-SNAPSHOT"]
                  ;; Metrics
                  [metrics-clojure "2.7.0"]
                  [metrics-clojure-jvm "2.7.0"]
