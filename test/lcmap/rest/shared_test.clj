@@ -25,9 +25,3 @@
        (do ~@body)
        (finally
          (component/stop ~binding)))))
-
-;; XXX lcmap-client-clj does not use a component for configuration in
-;; this namespace. Given the utility-like nature of these functions
-;; I don't think adapting it to use components make sense for now.
-#_ (alter-var-root #'lcmap.client.http/*http-config*
-                (fn [_] (cfg-opts :lcmap.client)))
