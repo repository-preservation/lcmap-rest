@@ -7,6 +7,6 @@ BAND="LANDSAT_7/ETM/sr_band1"
 SPEC=$(curl -v -s \
   -H "$LCMAP_ACCEPT_HDR" \
   -H "$LCMAP_TOKEN_HDR" \
-  -X GET "$LCMAP_HOST/api/data/specs?foo=$BAND")
+  -X GET "$LCMAP_HOST/api/data/specs?band=$BAND")
 
 echo $SPEC
