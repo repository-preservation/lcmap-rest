@@ -23,7 +23,7 @@
 
 (defn base64-encode
   "Helper for responding to tile requests with JSON."
-  [{src-data :data :as tile}]
+  [src-data]
   (let [size (- (.limit src-data) (.position src-data))
         copy (byte-array size)]
     (.get src-data copy)
@@ -35,18 +35,32 @@
   (map #(Integer/parseInt %) (re-seq #"\-?\d+" point)))
 
 (defn iso8601->datetimes
-  "Convert an ISO8610 string into a pair of DateTime"
+  "Convert an ISO8601 string into a pair of DateTime"
   [iso8601]
   (let [parse #(time-fmt/parse (time-fmt/formatters :date) %)
         dates (clojure.string/split iso8601 #"/")]
     (map parse dates)))
 
+(defn date->iso8601
+  "Convert a DateTime to an ISO8601 string"
+  [date]
+  (time-fmt/unparse (time-fmt/formatters :date-time-no-ms)
+                    (time-coerce/from-date date)))
+
 ;;; Response Formats ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; This is a preliminary step, this relies on the http-util json-handler
+;; to transform the response body into a JSON string.
 (defn to-json [response]
   (let [tile-list (get-in response [:body :result :tiles])
-        tile-base64 (map base64-encode tile-list)]
-    (assoc-in response [:body :result :tiles] tile-base64)))
+        tile-base64 (map #(assoc %
+                                 :data (base64-encode (% :data))
+                                 :acquired (date->iso8601 (% :acquired)))
+                         tile-list)]
+    (log/debug "Base64 encoding tile response")
+    (-> response
+        (assoc-in [:body :result :tiles] tile-base64)
+        (assoc-in [:headers "Content-Disposition"] "attachment; filename=\"nice.json\""))))
 
 (defn to-netcdf [response]
   (let [tile-spec (get-in response [:body :result :spec])
@@ -115,19 +129,32 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
+  ;; XXX the http-util response helper doesn't work with the threading
+  ;; macro; each of the underlying functions returns a data structure
+  ;; that is oblivious to the response body structure, so an explicity
+  ;; rearrangement is performed.
   (context lcmap.client.data/context []
     (GET "/" request
          (http/response :result (get-resources (:uri request))))
     (GET "/tiles" [band point time :as request]
          (->> (get-tiles band point time (get-in request [:component :tiledb]))
-              (http/response :result)
+              (assoc {} :result)
+              (ring-resp/response)
               (respond-to request)))
     (POST "/tiles" [:as request]
           (http/response :result (save-tile request (get-in request [:component :tiledb]))))
     (GET "/specs" [band :as request]
-         (http/response :result (get-specs band (get-in request [:component :tiledb]))))
+         (->> (get-specs band (get-in request [:component :tiledb]))
+              (assoc {} :result)
+              (ring-resp/response)))
     (GET "/scenes" [scene :as request]
-         (http/response :result (get-scenes scene (get-in request [:component :tiledb]))))))
+         (->> (get-scenes scene (get-in request [:component :tiledb]))
+              (assoc {} :result)
+              (ring-resp/response)))
+    (POST "/tiles" [:as request]
+          (->> (save-tile request (get-in request [:component :tiledb]))
+               (assoc {} :result)
+               (ring-resp/response)))))
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
