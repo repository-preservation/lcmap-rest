@@ -143,7 +143,9 @@
               (ring-resp/response)
               (respond-to request)))
     (POST "/tiles" [:as request]
-          (http/response :result (save-tile request (get-in request [:component :tiledb]))))
+          (->> (save-tile request (get-in request [:component :tiledb]))
+               (assoc {} :result)
+               (ring-resp/response)))
     (GET "/specs" [band :as request]
          (->> (get-specs band (get-in request [:component :tiledb]))
               (assoc {} :result)
