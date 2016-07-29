@@ -1,11 +1,10 @@
 (ns lcmap.rest.api.data
   (:require [clojure.tools.logging :as log]
-            [clojure.data.json :as json]
             [clj-time.format :as time-fmt]
             [clj-time.coerce :as time-coerce]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [ring.util.accept :refer [defaccept]]
-            [lcmap.rest.middleware.http-util :as util]
+            [ring.util.response :as ring-resp]
             [lcmap.client.data :as data]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.util.gdal :as gdal]
