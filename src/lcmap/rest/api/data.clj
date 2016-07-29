@@ -88,7 +88,9 @@
 
 ;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn get-resources [context]
+(defn get-resources
+  "Provide links to sub-resources of the data resource"
+  [context]
   (log/info (str "get-resources: " context))
   {:links (map #(str context %) ["/tiles" "/rod" "/specs" "/scenes"])})
 
