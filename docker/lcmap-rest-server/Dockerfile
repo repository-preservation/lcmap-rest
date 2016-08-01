@@ -1,7 +1,10 @@
 FROM usgseros/ubuntu-gis-clj
 MAINTAINER USGS LCMAP http://eros.usgs.gov
 
+RUN mkdir /lcmap-rest
 COPY build /lcmap-rest
-RUN cd /lcmap-rest && lein deps && lein compile
+WORKDIR /lcmap-rest
 
-ENTRYPOINT ["/lcmap-rest/bin/run"]
+VOLUME ["/root/.usgs"]
+
+ENTRYPOINT ["java", "-javaagent:/lcmap-rest/quasar-core-0.7.5.jar", "-jar", "/lcmap-rest/lcmap-rest-0.5.1-SNAPSHOT-standalone.jar"]
