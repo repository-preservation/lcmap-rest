@@ -8,10 +8,6 @@
 [![LCMAP open source project logo][lcmap-logo]][lcmap-logo-large]
 
 
-**IMPORTANT**: This project is under active development and should be
-considered a work-in-progress.
-
-
 #### Contents
 
 * [About](#about-)
