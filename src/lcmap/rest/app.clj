@@ -1,5 +1,6 @@
 (ns lcmap.rest.app
   (:require [clojure.tools.logging :as log]
+            [ring.middleware.accept :as ring-accept]
             [ring.middleware.defaults :as ring-defaults]
             [ring.middleware.json :as ring-json]
             [ring.middleware.logger :as ring-logger]
@@ -17,6 +18,7 @@
       ;; XXX once we support SSL, api-defaults needs to be changed to
       ;; ring-defaults/secure-api-defaults
       (ring-defaults/wrap-defaults ring-defaults/api-defaults)
+      (ring-accept/wrap-accept)
       (ring-json/wrap-json-body {:keywords? true})
       ;; XXX maybe move this handler into the httpd component setup, that way
       ;; we could enable it conditionally, based upon some configuration value.

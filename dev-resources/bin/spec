@@ -1,9 +1,12 @@
 #!/bin/bash
 
+LCMAP_ACCEPT_HDR="Accept: application/vnd.usgs.lcmap.v0.5+json"
+LCMAP_HOST="http://localhost:1077"
 BAND="LANDSAT_7/ETM/sr_band1"
-SPEC=$(curl -s \
+
+SPEC=$(curl -v -s \
   -H "$LCMAP_ACCEPT_HDR" \
   -H "$LCMAP_TOKEN_HDR" \
-  -X GET "http://localhost:1077/api/data/specs?band=$BAND")
+  -X GET "$LCMAP_HOST/api/data/specs?band=$BAND")
 
 echo $SPEC

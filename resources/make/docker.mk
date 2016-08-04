@@ -10,6 +10,10 @@ DOCKERHUB_LCMAP_JUPYTER = $(DOCKER_ORG)/$(LCMAP_JUPYTER_REPO):$(VERSION)
 LCMAP_REST_DEPLOY = lcmap-rest-deploy:$(VERSION)
 LCMAP_REST_CCDC_DEPLOY = lcmap-rest-ccdc-deploy:$(VERSION)
 LCMAP_JUPYTER_DEPLOY = lcmap-jupyter-deploy:$(VERSION)
+QUASAR_VERSION=0.7.5
+QUASAR_JAR=quasar-core-$(QUASAR_VERSION).jar
+QUASAR_PATH=$(HOME)/.m2/repository/co/paralleluniverse/quasar-core/$(QUASAR_VERSION)/quasar-core-$(QUASAR_VERSION).jar
+
 
 .PHONY: docker
 
@@ -19,26 +23,11 @@ docker-server-build: CONTEXT=./docker/lcmap-rest-server
 docker-server-build: BUILD_DIR=$(CONTEXT)/build
 docker-server-build:
 	@mkdir -p $(BUILD_DIR)
-	@rm -rf $(BUILD_DIR)
-	-@cp -r . $(BUILD_DIR)
-	-@rm -rf \
-	$(BUILD_DIR)/.* \
-	$(BUILD_DIR)/downloads \
-	$(BUILD_DIR)/target \
-	$(BUILD_DIR)/docker \
-	$(BUILD_DIR)/checkouts/*
-	@cp -r ../lcmap-client-clj $(BUILD_DIR)/checkouts/
-	@cp -r ../lcmap-see $(BUILD_DIR)/checkouts/
-	@docker build -t $(DOCKERHUB_LCMAP_REST) $(CONTEXT)
-	@rm -rf $(BUILD_DIR)
-
-docker-deploy-build: CONTEXT=./docker/lcmap-rest-deploy
-docker-deploy-build: BUILD_DIR=$(CONTEXT)/build
-docker-deploy-build:
-	-@mkdir -p $(BUILD_DIR)
-	@rm -rf $(BUILD_DIR)/*
-	@cp ~/.usgs/lcmap.ini $(BUILD_DIR)
-	@docker build -t $(LCMAP_REST_DEPLOY) $(CONTEXT)
+	@lein uberjar
+	@cp $(STANDALONE) $(BUILD_DIR)
+	@cp $(QUASAR_PATH) $(BUILD_DIR)
+	@cp project.clj $(BUILD_DIR) # XXX determine how to avoid this
+	docker build --tag $(DOCKERHUB_LCMAP_REST) $(CONTEXT)
 	@rm -rf $(BUILD_DIR)
 
 docker-ccdc-deploy-build: CONTEXT=./docker/lcmap-rest-ccdc-deploy

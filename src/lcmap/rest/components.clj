@@ -39,6 +39,7 @@
   (:require [com.stuartsierra.component :as component]
             [lcmap.config.components.config :as config]
             [lcmap.data.components.database :as tile-db]
+            [lcmap.data.components.gdal :as gdal]
             [lcmap.event.components.messaging :as event]
             [lcmap.logger.components.logger :as logger]
             [lcmap.rest.components.httpd :as httpd]
@@ -52,7 +53,8 @@
   (component/system-map
    ;; XXX instead of specifying defaults here, it would
    ;; be best to pass them as a param to init
-    :cfg (config/new-configuration lcmap.rest.config/defaults)
+   :cfg (config/new-configuration lcmap.rest.config/defaults)
+   :gdal (gdal/new-gdal)
     :logger (component/using
               (logger/new-logger)
               [:cfg])
@@ -87,6 +89,7 @@
     :sys (component/using
            (system/new-lcmap-toplevel)
            [:cfg
+            :gdal
             :logger
             :jobdb
             :eventd

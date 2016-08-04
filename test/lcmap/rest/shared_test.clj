@@ -18,13 +18,10 @@
 
 (def cfg-opts (merge rest-config/defaults {:ini cfg-file}))
 
-(defn get-system []
-  (-> rest-app/app
-      (rest-components/init)
-      (component/start)))
-
-;; XXX lcmap-client-clj does not use a component for configuration in
-;; this namespace. Given the utility-like nature of these functions
-;; I don't think adapting it to use components make sense for now.
-(alter-var-root #'lcmap.client.http/*http-config*
-                (fn [_] (cfg-opts :lcmap.client)))
+(defmacro with-system
+  [[binding cfg-opts] & body]
+  `(let [~binding (component/start (rest-components/init rest-app/app))]
+     (try
+       (do ~@body)
+       (finally
+         (component/stop ~binding)))))

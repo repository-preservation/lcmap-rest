@@ -1,12 +1,12 @@
 #!/bin/bash
 
+LCMAP_ACCEPT_HDR="Accept: application/vnd.usgs.lcmap.v0.5+netcdf"
+LCMAP_HOST="http://localhost:1077"
 POINT="-2062080,2952960"
-TIME="2002-01-01/2003-01-01"
+TIME="2002-05-01/2002-06-01"
 BAND="LANDSAT_7/ETM/sr_band1"
 
-TILES=$(curl -s \
+TILES=$(curl -v -s -O -J \
   -H "$LCMAP_ACCEPT_HDR" \
   -H "$LCMAP_TOKEN_HDR" \
-  "http://localhost:1077/api/data/tiles?band=$BAND&point=$POINT&time=$TIME")
-
-echo $TILES
+  "$LCMAP_HOST/api/data/tiles?band=$BAND&point=$POINT&time=$TIME")

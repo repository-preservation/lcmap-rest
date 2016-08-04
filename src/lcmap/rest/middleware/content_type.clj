@@ -12,7 +12,7 @@
   [handler]
   (fn [request]
     (let [response (handler request)]
-      (assoc response :body (json/write-str response)))))
+      (update response :body json/write-str))))
 
 (defn sexpr-handler
   "A Ring handler that converts a response to S-expressions and sets the body
@@ -39,7 +39,6 @@
 
   * json
   * xml
-  * raw
 
   If any other (i.e., unsupported) content-type values are provided, the default
   content-type handler will be returned.
@@ -71,21 +70,17 @@
       </body>
     </xml>"
   ([content-type]
-    (lookup-content-type-handler content-type #'json-handler))
+   (lookup-content-type-handler content-type #'json-handler))
   ([content-type default-type-hanlder]
-    (log/tracef "Looking up handler for content type '%s' ..." content-type)
-    (case (string/lower-case content-type)
-      "json" #'json-handler
-      "xml" #'xml-handler
-      "raw" #'core/identity-handler
-      default-type-hanlder)))
+   (log/tracef "Looking up handler for content type '%s' ..." content-type)
+   (case (string/lower-case content-type)
+     "json" #'json-handler
+     "xml" #'xml-handler
+     #'core/identity-handler)))
 
 (defn get-content-type-wrapper
   "This is a utility function for extracting the route version from the request
-  and then getting a supported route that matches the requested version.
-
-  This is a custom Ring handler for extracting the content-type from the Accept
-  header and then selecting the appropriate response wrapper."
+  and then getting a supported route that matches the requested version."
   [request default-version]
   (-> request
       (http/get-accept default-version)
