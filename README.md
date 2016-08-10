@@ -1,9 +1,8 @@
 # lcmap-rest
 
-*The REST Service for the USGS Land Change Monitoring Assessment and Projection (LCMAP) Computation and Analysis Platform*
-
-
 [![Build Status][travis-badge]][travis][![Dependencies Status][deps-badge]][deps][![Clojars Project][clojars-badge]][clojars]
+
+*The REST Service for the USGS Land Change Monitoring Assessment and Projection (LCMAP) Computation and Analysis Platform*
 
 [![LCMAP open source project logo][lcmap-logo]][lcmap-logo-large]
 
