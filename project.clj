@@ -23,7 +23,7 @@
        (clojure.string/join ":")
        (str "-Djava.library.path=")))
 
-(defproject gov.usgs.eros/lcmap-rest "0.5.1-SNAPSHOT"
+(defproject gov.usgs.eros/lcmap-rest "1.0.0-SNAPSHOT"
   :description "LCMAP REST Service API"
   :url "https://github.com/USGS-EROS/lcmap-rest"
   :license {:name "NASA Open Source Agreement, Version 1.3"
@@ -66,12 +66,12 @@
                  [org.xerial.snappy/snappy-java "1.1.2.6"]
                  ;; LCMAP Components - note that the projects in ./checkouts
                  ;; override these:
-                 [gov.usgs.eros/lcmap-config "0.5.0"]
-                 [gov.usgs.eros/lcmap-client-clj "0.5.0"]
-                 [gov.usgs.eros/lcmap-logger "0.5.0"]
-                 [gov.usgs.eros/lcmap-event "0.5.0"]
-                 [gov.usgs.eros/lcmap-see "0.5.0"]
-                 [gov.usgs.eros/lcmap-data "0.5.0"]
+                 [gov.usgs.eros/lcmap-config "1.0.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-client-clj "1.0.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-logger "1.0.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-event "1.0.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-see "1.0.0-SNAPSHOT"]
+                 [gov.usgs.eros/lcmap-data "1.0.0-SNAPSHOT"]
                  ;; XXX note that we may still need to explicitly include the
                  ;; Apache Java HTTP client, since the version used by the LCMAP
                  ;; client is more recent than that used by Chas Emerick's
@@ -126,6 +126,7 @@
                        com.datastax.driver
                        co.paralleluniverse]
   :profiles {
+    :uberjar {:aot :all}
     ;; configuration for dev environment -- if you need to make local changes,
     ;; copy `:env { ... }` into `{:user ...}` in your ~/.lein/profiles.clj and
     ;; then override values there
