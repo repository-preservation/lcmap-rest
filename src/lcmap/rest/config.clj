@@ -15,13 +15,13 @@
                 :auth-endpoint schema/Str
                 schema/Keyword schema/Str}})
 
-(def logging-schema
-  {:lcmap.logging {:level schema/Str
+(def logger-schema
+  {:lcmap.logger {:level schema/Str
                    :namespaces [schema/Str]}})
 
 (def cfg-schema
   (merge rest-schema
-         logging-schema
+         logger-schema
          client-cfg/client-schema
          data-cfg/data-schema
          see-cfg/see-schema
