@@ -133,7 +133,7 @@
     :dev {
       ;; XXX 0.3.0-alpha3 breaks reload
       :jvm-opts [~(get-lib-path)]
-      :dependencies [[org.clojure/tools.namespace "0.2.11"]
+      :dependencies [[org.clojure/tools.namespace "0.3.0-alpha3"]
                      [slamhound "1.5.5"]]
       :aliases {"slamhound" ["run" "-m" "slam.hound"]}
       :source-paths ["dev-resources/src"]
