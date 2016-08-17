@@ -3,6 +3,7 @@
             [lcmap.client.config :as client-cfg]
             [lcmap.data.config :as data-cfg]
             [lcmap.event.config :as event-cfg]
+            [lcmap.logger.config :as logger-cfg]
             [lcmap.see.config :as see-cfg]
             [schema.core :as schema]))
 
@@ -15,13 +16,9 @@
                 :auth-endpoint schema/Str
                 schema/Keyword schema/Str}})
 
-(def logger-schema
-  {:lcmap.logger {:level schema/Str
-                   :namespaces [schema/Str]}})
-
 (def cfg-schema
   (merge rest-schema
-         logger-schema
+         logger-cfg/logger-schema
          client-cfg/client-schema
          data-cfg/data-schema
          see-cfg/see-schema
