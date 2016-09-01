@@ -1,3 +1,5 @@
+sudo: required
+dist: trusty
 # We can't use Clojure due to a premature call to lein prior to the
 # before_install step by Travis CI. Calling lein before we've installed to the
 # local Maven repo causes an error with lein-parent and Sonatype.
