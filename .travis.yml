@@ -4,8 +4,10 @@
 #language: clojure
 language: java
 install: test/support/travis_install.sh
-after_install: test/support/setup_deps.sh
-before_script: lein version && lein deps && lein compile
+# XXX for some reason, after_install is not executing on Travis for this
+# project ...?
+#after_install: test/support/setup_deps.sh
+before_script: test/support/setup_deps.sh && lein version && lein deps && lein compile
 script: make check
 jdk:
   - oraclejdk8
