@@ -40,6 +40,7 @@ db-user = cassandra
 db-pass = cassandra
 job-keyspace = lcmap
 job-table = jobs
+backend = native
 
 [lcmap.config]
 log-level = debug
