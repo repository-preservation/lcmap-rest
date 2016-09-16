@@ -10,8 +10,9 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any StrInt StrYear]]
             [lcmap.rest.util :as util]
+            [lcmap.see.backend.core :as see]
             [lcmap.see.job.db :as db]
-            [lcmap.see.model.sample :as sample-runner]))
+            [lcmap.see.backend.native.models.sample]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -33,12 +34,16 @@
    ^StrInt seconds
    ^StrYear year]
   (log/debugf "run-model got args: [%s %s]" seconds year)
+  (log/debug "Got see-component:" (get-in request [:component :see :backend]))
+  ;(log/debug "Got run-sample-model:" (see/get-model (get-in request [:component :see :backend])) "sample-runner"))
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where sample result will
   ;; be
-  (let [job-id (util/get-args-hash
+  (let [see-backend (get-in request [:component :see :backend])
+        run-sample-model (see/get-model see-backend "sample")
+        job-id (util/get-args-hash
                  science-model-name :delay seconds :year year)]
-    (sample-runner/run-model
+    (run-sample-model
       (:component request)
       job-id
       (make-default-row job-id)

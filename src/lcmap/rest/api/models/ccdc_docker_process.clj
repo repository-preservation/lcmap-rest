@@ -10,7 +10,8 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any Str StrBool StrInt StrDate]]
             [lcmap.rest.util :as util]
-            [lcmap.see.model.ccdc-docker :as ccdc-docker-runner]))
+            [lcmap.see.backend.core :as see]
+            [lcmap.see.model.ccdc-docker]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -41,11 +42,14 @@
    ^Any scene-list
    ^StrBool verbose]
   (log/debugf "run-model got args: %s" [spectra x-val y-val start-time end-time
-                                        row col in-dir out-dir scene-list verbose])
+                                        row col in-dir out-dir scene-list
+                                        verbose])
   ;; generate job-id from hash of args
-  ;; return status code 200 with body that has link to where the ccdc result will
-  ;; be
-  (let [job-id (util/get-args-hash science-model-name
+  ;; return status code 200 with body that has link to where the ccdc result
+  ;; will be
+  (let [see-backend (get-in request [:component :see :backend])
+        run-ccdc-docker-model (see/get-model see-backend "ccdc-docker")
+        job-id (util/get-args-hash science-model-name
                                    :spectra spectra
                                    :x-val x-val
                                    :y-val y-val
@@ -59,7 +63,7 @@
                                    :verbose verbose)]
     ;;(log/debugf "ccdc model run (job id: %s)" job-id)
     ;;(log/debugf "default row: %s" default-row)
-    (ccdc-docker-runner/run-model
+    (run-ccdc-docker-model
       (:component request)
       job-id
       (make-default-row job-id)

@@ -10,7 +10,8 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any Str StrYear]]
             [lcmap.rest.util :as util]
-            [lcmap.see.model.sample-docker :as sample-docker-runner]))
+            [lcmap.see.backend.core :as see]
+            [lcmap.see.model.sample-docker]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -35,9 +36,11 @@
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where sample result will
   ;; be
-  (let [job-id (util/get-args-hash
+  (let [see-backend (get-in request [:component :see :backend])
+        run-sample-docker-model (see/get-model see-backend "sample-docker")
+        job-id (util/get-args-hash
                  science-model-name :docker-tag docker-tag :year year)]
-    (sample-docker-runner/run-model
+    (run-sample-docker-model
       (:component request)
       job-id
       (make-default-row job-id)

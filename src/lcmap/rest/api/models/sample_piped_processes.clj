@@ -10,7 +10,8 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any OptionalStrBool]]
             [lcmap.rest.util :as util]
-            [lcmap.see.model.sample-pipe :as sample-pipe-runner]))
+            [lcmap.see.backend.core :as see]
+            [lcmap.see.model.sample-pipe]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -35,10 +36,12 @@
    ^OptionalStrBool words
    ^OptionalStrBool lines]
   (log/debugf "run-model got args: %s" [number count bytes words lines])
-  (let [job-id (util/get-args-hash
+  (let [see-backend (get-in request [:component :see :backend])
+        run-sample-pipe-model (see/get-model see-backend "sample-pipe")
+        job-id (util/get-args-hash
                  science-model-name :number number :count count
                  :bytes bytes :words words :lines lines)]
-    (sample-pipe-runner/run-model
+    (run-sample-pipe-model
       (:component request)
       (make-default-row job-id)
       result-table

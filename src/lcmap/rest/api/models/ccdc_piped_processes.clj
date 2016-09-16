@@ -10,8 +10,9 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any Str StrBool StrInt StrDate]]
             [lcmap.rest.util :as util]
+            [lcmap.see.backend.core :as see]
             [lcmap.see.job.db :as db]
-            [lcmap.see.model.ccdc-pipe :as ccdc-pipe-runner]))
+            [lcmap.see.model.ccdc-pipe]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -46,7 +47,9 @@
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where the ccdc result will
   ;; be
-  (let [job-id (util/get-args-hash science-model-name
+  (let [see-backend (get-in request [:component :see :backend])
+        run-ccdc-pipe-model (see/get-model see-backend "ccdc-pipe")
+        job-id (util/get-args-hash science-model-name
                                    :spectra spectra
                                    :x-val x-val
                                    :y-val y-val
@@ -58,7 +61,7 @@
                                    :out-dir out-dir
                                    :scene-list scene-list
                                    :verbose verbose)]
-    (ccdc-pipe-runner/run-model
+    (run-ccdc-pipe-model
       (:component request)
       job-id
       (make-default-row job-id)
