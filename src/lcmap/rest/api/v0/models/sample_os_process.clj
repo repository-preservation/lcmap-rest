@@ -24,7 +24,6 @@
   ;; be
   (log/debugf "run-model got args: [%s %s]" seconds year)
   (let [db (:jobdb component)
-        eventd (:eventd component)
         job-id (util/get-args-hash science-model-name
                                    :delay seconds
                                    :year year)

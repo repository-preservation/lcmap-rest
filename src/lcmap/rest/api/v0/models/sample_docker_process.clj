@@ -24,7 +24,6 @@
   ;; be
   (log/debugf "run-model got args: [%s %s]" docker-tag year)
   (let [db (:jobdb component)
-        eventd (:eventd component)
         job-id (util/get-args-hash science-model-name
                                    :docker-tag docker-tag
                                    :year year)

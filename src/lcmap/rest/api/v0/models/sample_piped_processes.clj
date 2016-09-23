@@ -26,7 +26,6 @@
   ;; be
   (log/debugf "run-model got args: %s" [number count bytes words lines])
   (let [db (:jobdb component)
-        eventd (:eventd component)
         job-id (util/get-args-hash science-model-name
                                    :number number
                                    :count count
