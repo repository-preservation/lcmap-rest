@@ -59,10 +59,7 @@
     :logger (component/using
               (logger/new-logger)
               [:cfg])
-    :see (component/using
-           (see-backend/new-backend)
-             [:cfg
-              :logger])
+
     :metrics (component/using
                (metrics/new-metrics)
                [:cfg])
@@ -70,27 +67,30 @@
               (event/new-messaging-client)
               [:cfg
                :logger])
-    :jobdb (component/using
-             (see-db/new-job-client)
-             [:cfg
-              :logger
-              :msging])
     :tiledb (component/using
              (tile-db/new-database)
               [:cfg
                :logger])
+    :jobdb (component/using
+             (see-db/new-job-client)
+             [:cfg
+              :logger])
     :job (component/using
             (job/new-job-tracker)
             [:cfg
-             :logger])
+             :logger
+             :jobdb])
+    :see (component/using
+           (see-backend/new-backend)
+             [:cfg
+              :logger
+              :job])
     :httpd (component/using
              (httpd/new-server app)
              [:cfg
               :logger
               :see
-              :jobdb
               :tiledb
-              :job
               :msging])
     :sys (component/using
            (system/new-lcmap-toplevel)
@@ -98,8 +98,6 @@
             :gdal
             :logger
             :see
-            :jobdb
-            :job
             :httpd
             :msging])))
 
