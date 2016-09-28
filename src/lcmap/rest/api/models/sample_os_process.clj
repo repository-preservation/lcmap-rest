@@ -38,30 +38,26 @@
    ^StrInt seconds
    ^StrYear year]
   (log/debugf "run-model got args: [%s %s]" seconds year)
-  (let [see-backend (get-in request [:component :see :backend])
-        ;; XXX before refactor, make sure that see-backend is actually an
-        ;; implementation, which we can call ...
-        _ (log/debugf "Got backend in REST API: %s (%s)" see-backend (type see-backend))
-        ;; XXX remove this next -- don't bother with it, once the actual run-model
-        ;; protocol method is defined (and implemented)
-        run-sample-model (see/get-model see-backend "sample")
+  (let [component (:component request)
+        backend-impl (get-in component [:see :backend])
         ;; XXX move into lcmap.see
         job-id (util/get-args-hash
                  science-model-name :delay seconds :year year)]
-    ;; XXX just make the call directly: (see-backend/run-model ...)
-    (log/debug "Got backend model function:" run-sample-model)
+    (log/debugf "Got backend in REST API: %s (%s)" backend-impl (type backend-impl))
     (log/debug "Using job id: " job-id)
-    (run-sample-model
-      (:component request)
-      ;; XXX move next three args into lcmap.see
-      job-id
-      (make-default-row job-id)
-      result-table
-      seconds
-      year)
+    (see/run-model
+      backend-impl
+      "sample"
+      [component
+       ;; XXX move next three args into lcmap.see
+       job-id
+       (make-default-row job-id)
+       result-table
+       seconds
+       year])
+    (log/debug "Called sample-runner ...")
     ;; XXX running the model needs to return the job id; this will then be used
     ;; in the HTTP response
-    (log/debug "Called sample-runner ...")
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
 

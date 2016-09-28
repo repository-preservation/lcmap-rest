@@ -9,10 +9,13 @@
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; XXX move into lcmap.see
+;; XXX move into configuration
 (def result-keyspace "lcmap")
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; XXX move into lcmap.see
 (defn make-default-row
   ""
   ([id table model-name]

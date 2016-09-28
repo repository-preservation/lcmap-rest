@@ -15,11 +15,14 @@
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; XXX move these into lcmap.see
 (def result-table "ccdcmodel")
+;; XXX if we use a fully-qualified namespace, we won't need the model name hack
 (def science-model-name "ccdc")
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; XXX move into lcmap.see
 (defn make-default-row
   ""
   [id]
@@ -47,8 +50,9 @@
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where the ccdc result
   ;; will be
-  (let [see-backend (get-in request [:component :see :backend])
-        run-ccdc-docker-model (see/get-model see-backend "ccdc-docker")
+  (let [component (:component request)
+        backend-impl (get-in component [:see :backend])
+        ;; XXX move into lcmap.see
         job-id (util/get-args-hash science-model-name
                                    :spectra spectra
                                    :x-val x-val
@@ -61,15 +65,18 @@
                                    :out-dir out-dir
                                    :scene-list scene-list
                                    :verbose verbose)]
-    ;;(log/debugf "ccdc model run (job id: %s)" job-id)
-    ;;(log/debugf "default row: %s" default-row)
-    (run-ccdc-docker-model
-      (:component request)
-      job-id
-      (make-default-row job-id)
-      result-table
-      row col in-dir out-dir scene-list verbose)
-    (log/debug "Called ccdc-runner ...")
+    (see/run-model
+      backend-impl
+      "ccdc-docker"
+      [component
+       ;; XXX move next three args into lcmap.see
+       job-id
+       (make-default-row job-id)
+       result-table
+       row col in-dir out-dir scene-list verbose])
+    (log/debug "Called ccdc-docker model-runner ...")
+    ;; XXX running the model needs to return the job id; this will then be used
+    ;; in the HTTP response
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
 

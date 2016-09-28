@@ -15,11 +15,14 @@
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; XXX move these into lcmap.see
 (def result-table "samplemodel")
+;; XXX if we use a fully-qualified namespace, we won't need the model name hack
 (def science-model-name "sample model")
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; XXX move into lcmap.see
 (defn make-default-row
   ""
   [id]
@@ -36,21 +39,27 @@
    ^OptionalStrBool words
    ^OptionalStrBool lines]
   (log/debugf "run-model got args: %s" [number count bytes words lines])
-  (let [see-backend (get-in request [:component :see :backend])
-        run-sample-pipe-model (see/get-model see-backend "sample-pipe")
+  (let [component (:component request)
+        backend-impl (get-in component [:see :backend])
+        ;; XXX move into lcmap.see
         job-id (util/get-args-hash
                  science-model-name :number number :count count
                  :bytes bytes :words words :lines lines)]
-    (run-sample-pipe-model
-      (:component request)
-      (make-default-row job-id)
-      result-table
-      number
-      count
-      bytes
-      words
-      lines)
+    (see/run-model
+      backend-impl
+      "sample-pipe"
+      [component
+       ;; XXX move next three args into lcmap.see
+       (make-default-row job-id)
+       result-table
+       number
+       count
+       bytes
+       words
+       lines])
     (log/debug "Called sample-piped-processes runner ...")
+    ;; XXX running the model needs to return the job id; this will then be used
+    ;; in the HTTP response
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
 
