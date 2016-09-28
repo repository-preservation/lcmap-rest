@@ -10,7 +10,7 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any OptionalStrBool]]
             [lcmap.rest.util :as util]
-            [lcmap.see.backend.core :as see]
+            [lcmap.see.backend :as see]
             [lcmap.see.model.sample-pipe]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

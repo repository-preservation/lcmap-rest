@@ -10,9 +10,10 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any StrInt StrYear]]
             [lcmap.rest.util :as util]
-            [lcmap.see.backend.core :as see]
+            [lcmap.see.backend :as see]
             [lcmap.see.job.db :as db]
-            [lcmap.see.backend.native.models.sample]))
+            [lcmap.see.backend.native.models.sample]
+            [lcmap.see.backend.mesos.models.sample]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -48,6 +49,8 @@
         job-id (util/get-args-hash
                  science-model-name :delay seconds :year year)]
     ;; XXX just make the call directly: (see-backend/run-model ...)
+    (log/debug "Got backend model function:" run-sample-model)
+    (log/debug "Using job id: " job-id)
     (run-sample-model
       (:component request)
       ;; XXX move next three args into lcmap.see

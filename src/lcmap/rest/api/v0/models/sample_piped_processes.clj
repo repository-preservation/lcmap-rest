@@ -10,7 +10,6 @@
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.util :as util]
-            [lcmap.see.job.db :as db]
             [lcmap.see.model.sample-pipe :as sample-pipe-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -25,8 +24,7 @@
   ;; return status code 200 with body that has link to where sample result will
   ;; be
   (log/debugf "run-model got args: %s" [number count bytes words lines])
-  (let [db (:jobdb component)
-        job-id (util/get-args-hash science-model-name
+  (let [job-id (util/get-args-hash science-model-name
                                    :number number
                                    :count count
                                    :bytes bytes
