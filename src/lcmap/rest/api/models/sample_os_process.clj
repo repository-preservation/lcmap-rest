@@ -16,11 +16,14 @@
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; XXX move these into lcmap.see
 (def result-table "samplemodel")
+;; XXX if we use a fully-qualified namespace, we won't need the model name hack
 (def science-model-name "sample model")
 
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; XXX move into lcmap.see
 (defn make-default-row
   ""
   [id]
@@ -34,22 +37,27 @@
    ^StrInt seconds
    ^StrYear year]
   (log/debugf "run-model got args: [%s %s]" seconds year)
-  (log/debug "Got see-component:" (get-in request [:component :see :backend]))
-  ;(log/debug "Got run-sample-model:" (see/get-model (get-in request [:component :see :backend])) "sample-runner"))
-  ;; generate job-id from hash of args
-  ;; return status code 200 with body that has link to where sample result will
-  ;; be
   (let [see-backend (get-in request [:component :see :backend])
+        ;; XXX before refactor, make sure that see-backend is actually an
+        ;; implementation, which we can call ...
+        _ (log/debugf "Got backend in REST API: %s (%s)" see-backend (type see-backend))
+        ;; XXX remove this next -- don't bother with it, once the actual run-model
+        ;; protocol method is defined (and implemented)
         run-sample-model (see/get-model see-backend "sample")
+        ;; XXX move into lcmap.see
         job-id (util/get-args-hash
                  science-model-name :delay seconds :year year)]
+    ;; XXX just make the call directly: (see-backend/run-model ...)
     (run-sample-model
       (:component request)
+      ;; XXX move next three args into lcmap.see
       job-id
       (make-default-row job-id)
       result-table
       seconds
       year)
+    ;; XXX running the model needs to return the job id; this will then be used
+    ;; in the HTTP response
     (log/debug "Called sample-runner ...")
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
