@@ -10,7 +10,7 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any StrInt StrYear]]
             [lcmap.rest.util :as util]
-            [lcmap.see.backend.core :as see]
+            [lcmap.see.backend :as see]
             [lcmap.see.job.db :as db]
             [lcmap.see.backend.native.models.sample]))
 

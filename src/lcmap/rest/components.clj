@@ -48,7 +48,7 @@
             [lcmap.rest.config]
             [lcmap.see.components.backend :as see-backend]
             [lcmap.see.components.db :as see-db]
-            [lcmap.see.components.eventd :as eventd]))
+            [lcmap.see.components.job :as job]))
 
 (defn init [app]
   (component/system-map
@@ -59,10 +59,7 @@
     :logger (component/using
               (logger/new-logger)
               [:cfg])
-    :see (component/using
-           (see-backend/new-backend)
-             [:cfg
-              :logger])
+
     :metrics (component/using
                (metrics/new-metrics)
                [:cfg])
@@ -70,27 +67,30 @@
               (event/new-messaging-client)
               [:cfg
                :logger])
-    :jobdb (component/using
-             (see-db/new-job-client)
-             [:cfg
-              :logger
-              :msging])
     :tiledb (component/using
              (tile-db/new-database)
               [:cfg
                :logger])
-    :eventd (component/using
-              (eventd/new-event-server)
-              [:cfg
-               :logger])
+    :jobdb (component/using
+             (see-db/new-job-client)
+             [:cfg
+              :logger])
+    :job (component/using
+            (job/new-job-tracker)
+            [:cfg
+             :logger
+             :jobdb])
+    :see (component/using
+           (see-backend/new-backend)
+             [:cfg
+              :logger
+              :job])
     :httpd (component/using
              (httpd/new-server app)
              [:cfg
               :logger
               :see
-              :jobdb
               :tiledb
-              :eventd
               :msging])
     :sys (component/using
            (system/new-lcmap-toplevel)
@@ -98,8 +98,6 @@
             :gdal
             :logger
             :see
-            :jobdb
-            :eventd
             :httpd
             :msging])))
 

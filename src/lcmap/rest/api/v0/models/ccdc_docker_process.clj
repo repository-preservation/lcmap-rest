@@ -22,9 +22,7 @@
 
 (defn run-model [component row col in-dir out-dir scene-list verbose]
   (log/debugf "run-model got args: %s" [row col in-dir out-dir scene-list verbose])
-  (let [db (:jobdb component)
-        eventd (:eventd component)
-        job-id (util/get-args-hash science-model-name
+  (let [job-id (util/get-args-hash science-model-name
                                    :row row
                                    :col col
                                    :in-dir in-dir

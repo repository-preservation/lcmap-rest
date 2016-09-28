@@ -23,9 +23,7 @@
   ;; return status code 200 with body that has link to where sample result will
   ;; be
   (log/debugf "run-model got args: [%s %s]" docker-tag year)
-  (let [db (:jobdb component)
-        eventd (:eventd component)
-        job-id (util/get-args-hash science-model-name
+  (let [job-id (util/get-args-hash science-model-name
                                    :docker-tag docker-tag
                                    :year year)
         default-row {:science_model_name science-model-name
