@@ -40,7 +40,12 @@ db-user = cassandra
 db-pass = cassandra
 job-keyspace = lcmap
 job-table = jobs
+results-keyspace = lcmap
+results-table = results
 backend = native
+mesos-host = mndltl01
+mesos-port = 5050
+
 
 [lcmap.config]
 log-level = debug
