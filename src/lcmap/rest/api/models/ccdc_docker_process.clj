@@ -13,21 +13,6 @@
             [lcmap.see.backend :as see]
             [lcmap.see.model.ccdc-docker]))
 
-;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; XXX move these into lcmap.see
-(def result-table "ccdcmodel")
-;; XXX if we use a fully-qualified namespace, we won't need the model name hack
-(def science-model-name "ccdc")
-
-;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; XXX move into lcmap.see
-(defn make-default-row
-  ""
-  [id]
-  (model/make-default-row id result-table science-model-name))
-
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (schema/defn run-model
@@ -52,31 +37,10 @@
   ;; will be
   (let [component (:component request)
         backend-impl (get-in component [:see :backend])
-        ;; XXX move into lcmap.see
-        job-id (util/get-args-hash science-model-name
-                                   :spectra spectra
-                                   :x-val x-val
-                                   :y-val y-val
-                                   :start-time start-time
-                                   :end-time end-time
-                                   :row row
-                                   :col col
-                                   :in-dir in-dir
-                                   :out-dir out-dir
-                                   :scene-list scene-list
-                                   :verbose verbose)]
-    (see/run-model
-      backend-impl
-      "ccdc-docker"
-      [component
-       ;; XXX move next three args into lcmap.see
-       job-id
-       (make-default-row job-id)
-       result-table
-       row col in-dir out-dir scene-list verbose])
-    (log/debug "Called ccdc-docker model-runner ...")
-    ;; XXX running the model needs to return the job id; this will then be used
-    ;; in the HTTP response
+        job-id (see/run-model
+                 backend-impl
+                 ["ccdc-docker" spectra x-val y-val start-time end-time
+                  row col in-dir out-dir scene-list verbose])]
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
 

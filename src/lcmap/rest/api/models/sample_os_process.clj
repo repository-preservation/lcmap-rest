@@ -15,21 +15,6 @@
             [lcmap.see.backend.native.models.sample]
             [lcmap.see.backend.mesos.models.sample]))
 
-;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; XXX move these into lcmap.see
-(def result-table "samplemodel")
-;; XXX if we use a fully-qualified namespace, we won't need the model name hack
-(def science-model-name "sample model")
-
-;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; XXX move into lcmap.see
-(defn make-default-row
-  ""
-  [id]
-  (model/make-default-row id result-table science-model-name))
-
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (schema/defn run-model
@@ -40,24 +25,13 @@
   (log/debugf "run-model got args: [%s %s]" seconds year)
   (let [component (:component request)
         backend-impl (get-in component [:see :backend])
-        ;; XXX move into lcmap.see
-        job-id (util/get-args-hash
-                 science-model-name :delay seconds :year year)]
+        job-id (see/run-model
+                backend-impl
+                ["sample" seconds year])]
+        ; job-id "dummy"]
     (log/debugf "Got backend in REST API: %s (%s)" backend-impl (type backend-impl))
-    (log/debug "Using job id: " job-id)
-    (see/run-model
-      backend-impl
-      "sample"
-      [component
-       ;; XXX move next three args into lcmap.see
-       job-id
-       (make-default-row job-id)
-       result-table
-       seconds
-       year])
-    (log/debug "Called sample-runner ...")
-    ;; XXX running the model needs to return the job id; this will then be used
-    ;; in the HTTP response
+    (log/debug "Called sample-runner; got id: " job-id)
+    (log/debug "Type of job-id:" (type job-id))
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
 

@@ -7,30 +7,6 @@
             [lcmap.rest.errors :as errors]
             [lcmap.rest.middleware.http-util :as http]))
 
-;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; XXX move into lcmap.see
-;; XXX move into configuration
-(def result-keyspace "lcmap")
-
-;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; XXX move into lcmap.see
-(defn make-default-row
-  ""
-  ([id table model-name]
-    (make-default-row
-      id result-keyspace table model-name status/pending))
-  ([id keyspace table model-name]
-    (make-default-row
-      id keyspace table model-name status/pending))
-  ([id keyspace table model-name default-status]
-    {:science_model_name model-name
-     :result_keyspace keyspace
-     :result_table table
-     :result_id id
-     :status default-status}))
-
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn validate

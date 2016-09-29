@@ -13,21 +13,6 @@
             [lcmap.see.backend :as see]
             [lcmap.see.model.sample-docker]))
 
-;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; XXX move these into lcmap.see
-(def result-table "samplemodel")
-;; XXX if we use a fully-qualified namespace, we won't need the model name hack
-(def science-model-name "sample docker")
-
-;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; XXX move into lcmap.see
-(defn make-default-row
-  ""
-  [id]
-  (model/make-default-row id result-table science-model-name))
-
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (schema/defn run-model
@@ -41,20 +26,11 @@
   ;; be
   (let [component (:component request)
         backend-impl (get-in component [:see :backend])
-        ;; XXX move into lcmap.see
-        job-id (util/get-args-hash
-                 science-model-name :docker-tag docker-tag :year year)]
-    (see/run-model
-      backend-impl
-      "sample-docker"
-      [component
-       ;; XXX move next three args into lcmap.see
-       job-id
-       (make-default-row job-id)
-       result-table
-       docker-tag
-       year])
-    (log/debug "Called sample-docker-runner ...")
+        job-id (see/run-model
+                 backend-impl
+                 ["sample-docker" docker-tag year])]
+    (log/debugf "Got backend in REST API: %s (%s)" backend-impl (type backend-impl))
+    (log/debug "Called sample-docker; got id: " job-id)
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
 

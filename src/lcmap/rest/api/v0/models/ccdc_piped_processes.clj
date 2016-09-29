@@ -8,7 +8,7 @@
             [lcmap.client.models.ccdc-piped-processes]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.util :as util]
+            [lcmap.see.util :as util]
             [lcmap.see.model.ccdc-pipe :as ccdc-pipe-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

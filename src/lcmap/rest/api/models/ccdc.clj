@@ -12,21 +12,6 @@
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]))
 
-;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; XXX move these into lcmap.see
-(def result-table "ccdcmodel")
-;; XXX if we use a fully-qualified namespace, we won't need the model name hack
-(def science-model-name "ccdc")
-
-;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; XXX move into lcmap.see
-(defn make-default-row
-  ""
-  [id]
-  (model/make-default-row id result-table science-model-name))
-
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (schema/defn run-model
@@ -49,36 +34,15 @@
   ;; return status code 200 with body that has link to where the ccdc result will
   ;; be
   (let [component (:component request)
-        backend-impl (get-in component [:see :backend])
-        ;; XXX move into lcmap.see
-        job-id (util/get-args-hash science-model-name
-                                   :spectra spectra
-                                   :x-val x-val
-                                   :y-val y-val
-                                   :start-time start-time
-                                   :end-time end-time
-                                   :row row
-                                   :col col
-                                   :in-dir in-dir
-                                   :out-dir out-dir
-                                   :scene-list scene-list
-                                   :verbose verbose)]
-    (log/warn "Mesos infrastructure not yet in place!")
-    ; (see/run-model
-    ;   backend-impl
-    ;   "ccdc"
-    ;   [component
-    ;    ;; XXX move next three args into lcmap.see
-    ;    job-id
-    ;    (make-default-row job-id)
-    ;    result-table
-    ;    spectra x-val y-val start-time end-time
-    ;    row col in-dir out-dir scene-list verbose])
-    ; (log/debug "Called ccdc runner ...")
-    ;; XXX running the model needs to return the job id; this will then be used
-    ;; in the HTTP response
+        backend-impl (get-in component [:see :backend])]
+    (throw (new Exception (str backend-impl)))
+      (let  [_ (println "\n\nGot backend: " backend-impl "\n\n")
+        job-id (see/run-model
+                 backend-impl
+                 ["ccdc" spectra x-val y-val start-time end-time
+                  row col in-dir out-dir scene-list verbose])]
     (http/response :result {:link {:href (job/get-result-path job-id)}}
-                   :status status/pending-link)))
+                   :status status/pending-link))))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

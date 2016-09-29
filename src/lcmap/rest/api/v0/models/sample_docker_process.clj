@@ -8,7 +8,7 @@
             [lcmap.client.models.sample-docker-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.util :as util]
+            [lcmap.see.util :as util]
             [lcmap.see.model.sample-docker :as sample-docker-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

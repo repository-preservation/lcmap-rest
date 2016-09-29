@@ -9,7 +9,7 @@
             [lcmap.client.models.ccdc-docker-process]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.util :as util]
+            [lcmap.see.util :as util]
             [lcmap.see.job.db :as db]
             [lcmap.see.model.ccdc-docker :as ccdc-docker-runner]))
 

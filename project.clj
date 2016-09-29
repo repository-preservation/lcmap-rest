@@ -109,7 +109,8 @@
   :plugins [[lein-parent "0.3.0"]]
   :source-paths ["src" "test/support/auth-server/src"]
   :java-agents [[co.paralleluniverse/quasar-core "0.7.6"]]
-  :jvm-opts ["-Dco.paralleluniverse.fibers.detectRunawayFibers=false"]
+  :jvm-opts ["-Dco.paralleluniverse.fibers.detectRunawayFibers=false"
+             "-Dco.paralleluniverse.pulsar.instrument.auto=all"]
   :repl-options {:init-ns lcmap.rest.dev}
   :main lcmap.rest.app
   :codox {:project {:name "lcmap.rest"
@@ -135,7 +136,9 @@
     ;; then override values there
     :dev {
       ;; XXX 0.3.0-alpha3 breaks reload
-      :jvm-opts [~(get-lib-path)]
+      :jvm-opts [~(get-lib-path)
+                 "-Dco.paralleluniverse.fibers.verifyInstrumentation=true"
+                 "-Dco.paralleluniverse.pulsar.instrument.auto=all"]
       :aliases {"slamhound" ["run" "-m" "slam.hound"]}
       :source-paths ["dev-resources/src"]
       :env
