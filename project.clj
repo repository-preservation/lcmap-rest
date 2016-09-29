@@ -110,7 +110,8 @@
   :source-paths ["src" "test/support/auth-server/src"]
   :java-agents [[co.paralleluniverse/quasar-core "0.7.6"]]
   :jvm-opts ["-Dco.paralleluniverse.fibers.detectRunawayFibers=false"]
-  :repl-options {:init-ns lcmap.rest.dev}
+  :repl-options {:init-ns lcmap.rest.dev
+                 :timeout 60000}
   :main lcmap.rest.app
   :codox {:project {:name "lcmap.rest"
                     :description "The REST Service for the USGS Land Change Monitoring Assessment and Projection (LCMAP) Computation and Analysis Platform"}
