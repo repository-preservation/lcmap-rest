@@ -26,8 +26,8 @@
   (let [component (:component request)
         backend-impl (get-in component [:see :backend])
         job-id (see/run-model
-                backend-impl
-                ["sample" seconds year])]
+                 backend-impl
+                 ["sample" seconds year])]
     (log/debugf "Got backend in REST API: %s (%s)" backend-impl (type backend-impl))
     (log/debug "Called sample-runner; got id: " job-id)
     (log/debug "Type of job-id:" (type job-id))
