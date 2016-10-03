@@ -1,8 +1,8 @@
-(ns lcmap.rest.api.models.ccdc-piped-processes
+(ns lcmap.rest.api.models.ccdc-pipe
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [schema.core :as schema]
-            [lcmap.client.models.ccdc-piped-processes]
+            [lcmap.client.models.ccdc-pipe]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.api.jobs :as job]
             [lcmap.rest.api.models.core :as model]
@@ -47,7 +47,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.ccdc-piped-processes/context []
+  (context lcmap.client.models.ccdc-pipe/context []
     (POST "/" [token spectra x-val y-val start-time end-time
                      row col in-dir out-dir scene-list verbose :as request]
       (model/validate
