@@ -47,8 +47,7 @@
             [lcmap.rest.components.system :as system]
             [lcmap.rest.config]
             [lcmap.see.components.backend :as see-backend]
-            [lcmap.see.components.db :as see-db]
-            [lcmap.see.components.job :as job]))
+            [lcmap.see.components.db :as see-db]))
 
 (defn init [app]
   (component/system-map
@@ -75,16 +74,11 @@
              (see-db/new-job-client)
              [:cfg
               :logger])
-    :job (component/using
-            (job/new-job-tracker)
-            [:cfg
-             :logger
-             :jobdb])
     :see (component/using
            (see-backend/new-backend)
              [:cfg
               :logger
-              :job])
+              :jobdb])
     :httpd (component/using
              (httpd/new-server app)
              [:cfg
