@@ -9,8 +9,11 @@ cd checkouts && \
     git clone https://github.com/USGS-EROS/lcmap-see.git && \
     # delete the following line once the topic/rename-eventd branch is merged
     # to lcmap-see/master
-    cd lcmap-see && git checkout topic/model-updates-for-protocols && cd - && \
+    cd lcmap-see && git checkout topic/mesos-job-creation && cd - && \
     git clone https://github.com/USGS-EROS/lcmap-client-clj.git && \
+    # delete the following line once the topic/rename-eventd branch is merged
+    # to lcmap-see/master
+    cd lcmap-client-clj && git checkout topic/mesos-job-creation && cd - && \
     cd ../
 
 sudo apt-add-repository ppa:ubuntugis/ppa -y
