@@ -37,7 +37,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.sample-docker-process/context []
+  (context lcmap.client.models.sample-docker/context []
     (POST "/" [token docker-tag year :as request]
       ;; XXX use token to check user/session/authorization
       ;;(log/debug "Request data keys in routes:" (keys request))

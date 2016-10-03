@@ -36,7 +36,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.sample-piped-processes/context []
+  (context lcmap.client.models.sample-pipe/context []
     (POST "/" [token number count bytes words lines :as request]
       ;; XXX use token to check user/session/authorization
       (model/validate #'run-model request number count bytes words lines))

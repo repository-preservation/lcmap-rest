@@ -20,6 +20,7 @@
     (schema/with-fn-validation
       (apply func args))
     (catch RuntimeException e
+      (log/error e)
       (-> (.getMessage e)
           (exceptions/type-error)
           (throw+)))))

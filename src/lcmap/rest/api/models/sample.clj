@@ -37,7 +37,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.sample-os-process/context []
+  (context lcmap.client.models.sample/context []
     (POST "/" [token delay year :as request]
       ;; XXX use token to check user/session/authorization
       (model/validate #'run-model request delay year))
