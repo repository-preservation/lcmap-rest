@@ -43,7 +43,3 @@
       (model/validate #'run-model request delay year))
     (GET "/:job-id" [job-id :as request]
       (job/get-job-result (:component request) job-id))))
-
-;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; TBD
