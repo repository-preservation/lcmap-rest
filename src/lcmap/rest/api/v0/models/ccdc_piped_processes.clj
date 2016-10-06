@@ -5,7 +5,7 @@
             [lcmap.rest.api.v0.jobs.ccdc-piped-processes :refer [get-result-path
                                                                  get-job-result
                                                                  result-table]]
-            [lcmap.client.models.ccdc-piped-processes]
+            [lcmap.client.models.ccdc-pipe]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.see.util :as util]
@@ -60,7 +60,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.ccdc-piped-processes/context []
+  (context lcmap.client.models.ccdc-pipe/context []
     (POST "/" [token spectra x-val y-val start-time end-time
                      row col in-dir out-dir scene-list verbose :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
