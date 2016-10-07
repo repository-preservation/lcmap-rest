@@ -9,7 +9,7 @@
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.see.util :as util]
-            [lcmap.see.model.sample :as sample-runner]))
+            [lcmap.see.backend.native.models.sample :as sample-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

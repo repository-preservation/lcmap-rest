@@ -11,7 +11,7 @@
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.see.util :as util]
             [lcmap.see.job.db :as db]
-            [lcmap.see.model.ccdc-docker :as ccdc-docker-runner]))
+            [lcmap.see.backend.native.models.ccdc-docker :as ccdc-docker-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

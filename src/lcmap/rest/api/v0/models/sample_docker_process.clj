@@ -9,7 +9,7 @@
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.see.util :as util]
-            [lcmap.see.model.sample-docker :as sample-docker-runner]))
+            [lcmap.see.backend.native.models.sample-docker :as sample-docker-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
