@@ -11,7 +11,8 @@
             [lcmap.rest.types :refer [Any Str StrBool StrInt StrDate]]
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]
-            [lcmap.see.backend.native.models.ccdc]))
+            ;[lcmap.see.backend.native.models.ccdc]
+            ))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -38,10 +39,11 @@
         backend-impl (get-in component [:see :backend])]
     (throw (new Exception (str backend-impl)))
       (let  [_ (println "\n\nGot backend: " backend-impl "\n\n")
-        job-id (see/run-model
-                 backend-impl
-                 ["ccdc" spectra x-val y-val start-time end-time
-                  row col in-dir out-dir scene-list verbose])]
+        job-id "bogus" ;(see/run-model
+                 ;backend-impl
+                 ;["ccdc" spectra x-val y-val start-time end-time
+                 ; row col in-dir out-dir scene-list verbose])
+                 ]
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link))))
 
