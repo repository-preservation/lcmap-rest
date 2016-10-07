@@ -9,7 +9,7 @@
             [lcmap.rest.types :refer [Any Str StrBool StrInt StrDate]]
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]
-            [lcmap.see.model.ndvi :as ndvi]))
+            [lcmap.see.backend.native.models.ndvi]))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

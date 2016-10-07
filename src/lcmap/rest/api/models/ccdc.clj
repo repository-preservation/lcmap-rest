@@ -10,7 +10,8 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any Str StrBool StrInt StrDate]]
             [lcmap.rest.util :as util]
-            [lcmap.see.backend :as see]))
+            [lcmap.see.backend :as see]
+            [lcmap.see.backend.native.models.ccdc]))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

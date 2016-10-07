@@ -11,7 +11,7 @@
             [lcmap.rest.types :refer [Any Str StrYear]]
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]
-            [lcmap.see.model.sample-docker]))
+            [lcmap.see.backend.native.models.sample-docker]))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

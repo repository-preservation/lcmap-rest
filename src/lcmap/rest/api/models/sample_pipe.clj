@@ -11,7 +11,7 @@
             [lcmap.rest.types :refer [Any OptionalStrBool]]
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]
-            [lcmap.see.model.sample-pipe]))
+            [lcmap.see.backend.native.models.sample-pipe]))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
