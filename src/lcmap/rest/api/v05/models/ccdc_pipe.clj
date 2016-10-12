@@ -39,7 +39,7 @@
         backend-impl (get-in component [:see :backend])
         job-id (see/run-model
                  backend-impl
-                 ["ccdc-piped" spectra x-val y-val start-time end-time
+                 ["ccdc-pipe" spectra x-val y-val start-time end-time
                   row col in-dir out-dir scene-list verbose])]
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
