@@ -37,10 +37,8 @@
         backend-impl (get-in component [:see :backend])]
     (throw (new Exception (str backend-impl)))
       (let  [_ (println "\n\nGot backend: " backend-impl "\n\n")
-        job-id (see/run-model
-                 backend-impl
-                 ["ccdc" spectra x-val y-val start-time end-time
-                  row col in-dir out-dir scene-list verbose])]
+             ; XXX model doesn't exist for this version
+             job-id "dummy"]
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link))))
 
