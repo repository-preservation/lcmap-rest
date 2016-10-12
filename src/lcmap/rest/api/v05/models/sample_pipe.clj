@@ -11,7 +11,7 @@
             [lcmap.rest.types :refer [Any OptionalStrBool]]
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]
-            [lcmap.see.model.sample-pipe]))
+            [lcmap.see.backend.native.models.sample-pipe]))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -36,7 +36,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.sample-piped-processes/context []
+  (context lcmap.client.models.sample-pipe/context []
     (POST "/" [token number count bytes words lines :as request]
       ;; XXX use token to check user/session/authorization
       (model/validate #'run-model request number count bytes words lines))

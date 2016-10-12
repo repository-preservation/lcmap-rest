@@ -12,7 +12,7 @@
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]
             [lcmap.see.job.db :as db]
-            [lcmap.see.model.ccdc-pipe]))
+            [lcmap.see.backend.native.models.ccdc-pipe]))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

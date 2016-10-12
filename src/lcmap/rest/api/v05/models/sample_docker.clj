@@ -11,7 +11,7 @@
             [lcmap.rest.types :refer [Any Str StrYear]]
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]
-            [lcmap.see.model.sample-docker]))
+            [lcmap.see.backend.native.models.sample-docker]))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -37,7 +37,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.sample-docker-process/context []
+  (context lcmap.client.models.sample-docker/context []
     (POST "/" [token docker-tag year :as request]
       ;; XXX use token to check user/session/authorization
       ;;(log/debug "Request data keys in routes:" (keys request))
