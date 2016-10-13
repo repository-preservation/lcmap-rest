@@ -138,7 +138,13 @@
       :aot :all
       :jvm-opts [~(get-lib-path)
                  "-Dco.paralleluniverse.fibers.verifyInstrumentation=true"]
-      :aliases {"slamhound" ["run" "-m" "slam.hound"]}
       :source-paths ["dev-resources/src"]
       :env
-        {:active-profile "development"}}})
+        {:active-profile "development"}
+      :aliases {
+        "slamhound" ["run" "-m" "slam.hound"]
+        "see"
+          ^{:doc (str "Command line interface for LCMAP SEE commands.\n"
+                      "For more info run `lein see --help`\n")}
+          ^:pass-through-help
+          ["run" "-m" "lcmap.see.app"]}}})
