@@ -48,7 +48,7 @@
             [lcmap.rest.config]
             [lcmap.see.components.backend :as see-backend]
             [lcmap.see.components.db :as see-db]
-            [lcmap.see.components.eventd :as eventd]))
+            [lcmap.see.components.job :as job]))
 
 (defn init [app]
   (component/system-map
@@ -79,10 +79,10 @@
              (tile-db/new-database)
               [:cfg
                :logger])
-    :eventd (component/using
-              (eventd/new-event-server)
-              [:cfg
-               :logger])
+    :job (component/using
+            (job/new-job-tracker)
+            [:cfg
+             :logger])
     :httpd (component/using
              (httpd/new-server app)
              [:cfg
@@ -90,7 +90,7 @@
               :see
               :jobdb
               :tiledb
-              :eventd
+              :job
               :msging])
     :sys (component/using
            (system/new-lcmap-toplevel)
@@ -99,7 +99,7 @@
             :logger
             :see
             :jobdb
-            :eventd
+            :job
             :httpd
             :msging])))
 

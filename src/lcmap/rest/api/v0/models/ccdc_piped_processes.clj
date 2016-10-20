@@ -26,7 +26,6 @@
   (log/debugf "run-model got args: %s" [spectra x-val y-val start-time end-time
                                         row col in-dir out-dir scene-list verbose])
   (let [db (:jobdb component)
-        eventd (:eventd component)
         job-id (util/get-args-hash science-model-name
                                    :spectra spectra
                                    :x-val x-val
