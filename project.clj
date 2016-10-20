@@ -110,7 +110,8 @@
   :source-paths ["src" "test/support/auth-server/src"]
   :java-agents [[co.paralleluniverse/quasar-core "0.7.6"]]
   :jvm-opts ["-Dco.paralleluniverse.fibers.detectRunawayFibers=false"]
-  :repl-options {:init-ns lcmap.rest.dev}
+  :repl-options {:init-ns lcmap.rest.dev
+                 :timeout 60000}
   :main lcmap.rest.app
   :codox {:project {:name "lcmap.rest"
                     :description "The REST Service for the USGS Land Change Monitoring Assessment and Projection (LCMAP) Computation and Analysis Platform"}
@@ -135,7 +136,8 @@
     ;; then override values there
     :dev {
       ;; XXX 0.3.0-alpha3 breaks reload
-      :jvm-opts [~(get-lib-path)]
+      :jvm-opts [~(get-lib-path)
+                 "-Dco.paralleluniverse.fibers.verifyInstrumentation=true"]
       :aliases {"slamhound" ["run" "-m" "slam.hound"]}
       :source-paths ["dev-resources/src"]
       :env

@@ -9,7 +9,7 @@
             [lcmap.client.models.sample-piped-processes]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.util :as util]
+            [lcmap.see.util :as util]
             [lcmap.see.model.sample-pipe :as sample-pipe-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

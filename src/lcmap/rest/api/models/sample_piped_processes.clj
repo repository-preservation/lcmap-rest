@@ -13,18 +13,6 @@
             [lcmap.see.backend :as see]
             [lcmap.see.model.sample-pipe]))
 
-;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(def result-table "samplemodel")
-(def science-model-name "sample model")
-
-;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn make-default-row
-  ""
-  [id]
-  (model/make-default-row id result-table science-model-name))
-
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (schema/defn run-model
@@ -36,21 +24,12 @@
    ^OptionalStrBool words
    ^OptionalStrBool lines]
   (log/debugf "run-model got args: %s" [number count bytes words lines])
-  (let [see-backend (get-in request [:component :see :backend])
-        run-sample-pipe-model (see/get-model see-backend "sample-pipe")
-        job-id (util/get-args-hash
-                 science-model-name :number number :count count
-                 :bytes bytes :words words :lines lines)]
-    (run-sample-pipe-model
-      (:component request)
-      (make-default-row job-id)
-      result-table
-      number
-      count
-      bytes
-      words
-      lines)
-    (log/debug "Called sample-piped-processes runner ...")
+  (let [component (:component request)
+        backend-impl (get-in component [:see :backend])
+        job-id (see/run-model
+                 backend-impl
+                 ["sample-pipe" number count bytes words lines])]
+    (log/debug "Called sample-pipe ...")
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
 

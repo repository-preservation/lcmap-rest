@@ -6,7 +6,7 @@
                                                  get-job-result
                                                  result-table]]
             [lcmap.rest.components.httpd :as httpd]
-            [lcmap.rest.util :as util]))
+            [lcmap.see.util :as util]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

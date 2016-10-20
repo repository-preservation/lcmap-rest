@@ -13,18 +13,6 @@
             [lcmap.see.backend :as see]
             [lcmap.see.model.sample-docker]))
 
-;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(def result-table "samplemodel")
-(def science-model-name "sample docker")
-
-;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defn make-default-row
-  ""
-  [id]
-  (model/make-default-row id result-table science-model-name))
-
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (schema/defn run-model
@@ -36,18 +24,13 @@
   ;; generate job-id from hash of args
   ;; return status code 200 with body that has link to where sample result will
   ;; be
-  (let [see-backend (get-in request [:component :see :backend])
-        run-sample-docker-model (see/get-model see-backend "sample-docker")
-        job-id (util/get-args-hash
-                 science-model-name :docker-tag docker-tag :year year)]
-    (run-sample-docker-model
-      (:component request)
-      job-id
-      (make-default-row job-id)
-      result-table
-      docker-tag
-      year)
-    (log/debug "Called sample-docker-runner ...")
+  (let [component (:component request)
+        backend-impl (get-in component [:see :backend])
+        job-id (see/run-model
+                 backend-impl
+                 ["sample-docker" docker-tag year])]
+    (log/debugf "Got backend in REST API: %s (%s)" backend-impl (type backend-impl))
+    (log/debug "Called sample-docker; got id: " job-id)
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
 

@@ -12,12 +12,6 @@
         :else
           (str args)))
 
-(defn get-args-hash [model-name & args]
-  (->> args
-       (serialize)
-       (str model-name)
-       (digest/md5)))
-
 (defn add-shutdown-handler [func]
   (.addShutdownHook (Runtime/getRuntime)
                     (Thread. func)))
