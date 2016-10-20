@@ -5,11 +5,11 @@
             [lcmap.rest.api.v0.jobs.sample-docker-process :refer [get-result-path
                                                                   get-job-result
                                                                   result-table]]
-            [lcmap.client.models.sample-docker-process]
+            [lcmap.client.models.sample-docker]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.see.util :as util]
-            [lcmap.see.model.sample-docker :as sample-docker-runner]))
+            [lcmap.see.backend.native.models.sample-docker :as sample-docker-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -50,7 +50,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.sample-docker-process/context []
+  (context lcmap.client.models.sample-docker/context []
     (POST "/" [token docker-tag year :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
       (run-model (:component request)

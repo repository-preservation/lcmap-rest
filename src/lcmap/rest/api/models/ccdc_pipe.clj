@@ -1,8 +1,8 @@
-(ns lcmap.rest.api.models.ccdc
+(ns lcmap.rest.api.models.ccdc-pipe
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [schema.core :as schema]
-            [lcmap.client.models.ccdc]
+            [lcmap.client.models.ccdc-pipe]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.api.jobs :as job]
             [lcmap.rest.api.models.core :as model]
@@ -11,8 +11,8 @@
             [lcmap.rest.types :refer [Any Str StrBool StrInt StrDate]]
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]
-            ;[lcmap.see.backend.native.models.ccdc]
-            ))
+            [lcmap.see.job.db :as db]
+            [lcmap.see.backend.native.models.ccdc-pipe]))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -36,21 +36,18 @@
   ;; return status code 200 with body that has link to where the ccdc result will
   ;; be
   (let [component (:component request)
-        backend-impl (get-in component [:see :backend])]
-    (throw (new Exception (str backend-impl)))
-      (let  [_ (println "\n\nGot backend: " backend-impl "\n\n")
-        job-id "bogus" ;(see/run-model
-                 ;backend-impl
-                 ;["ccdc" spectra x-val y-val start-time end-time
-                 ; row col in-dir out-dir scene-list verbose])
-                 ]
+        backend-impl (get-in component [:see :backend])
+        job-id (see/run-model
+                 backend-impl
+                 ["ccdc-piped" spectra x-val y-val start-time end-time
+                  row col in-dir out-dir scene-list verbose])]
     (http/response :result {:link {:href (job/get-result-path job-id)}}
-                   :status status/pending-link))))
+                   :status status/pending-link)))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.ccdc/context []
+  (context lcmap.client.models.ccdc-pipe/context []
     (POST "/" [token spectra x-val y-val start-time end-time
                      row col in-dir out-dir scene-list verbose :as request]
       (model/validate

@@ -1,30 +1,27 @@
-(ns lcmap.rest.api.v0.jobs.sample-piped-processes
+(ns lcmap.rest.api.v05.jobs
   (:require [clojure.tools.logging :as log]
             [clojure.core.match :refer [match]]
-            [ring.util.response :as ring]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
-            [lcmap.client.jobs.sample-pipe]
+            [lcmap.client.jobs]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.see.job.db :as db]))
 
-;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(def result-table "samplemodel")
-
 ;;; Supporting Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn get-result-path
   [result-id]
-  (format "%s/%s"
-          lcmap.client.jobs.sample-pipe/context
-          result-id))
+  (format "%s/%s" lcmap.client.jobs/context result-id))
 
-(defn get-job-resources [request]
-  (http/response :result "sample job resources tbd"))
+;;; API Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn -job-status
+(defn get-resources [context]
+  (log/info (str "get-resources: " context))
+  (http/response
+    :result {:links (map #(str context %) ["" ":job-id" "status/:job-id"])}))
+
+(defn get-job-status
   ([result]
     (apply #'http/response (mapcat identity result)))
   ([component job-id]
@@ -39,30 +36,17 @@
         (http/response :result :pending
                        :status status/pending)
       [({:status st} :as result)]
-        (http/response :result  (get-result-path job-id)
+        (http/response :result (get-result-path job-id)
                        :status st))))
-
-(defn get-job-status [db job-id]
-  (let [result (-job-status db job-id)]
-    (-> result
-      (ring/response)
-      (ring/status (:status result)))))
-
-;; XXX
-(defn parse-job [arg]
-  (log/debug "Parsing job ...")
-  (log/debug "Got args:" arg)
-  arg)
 
 (defn get-job-result
   ([component job-id]
-    (get-job-result (db/get-conn component) job-id result-table #'-job-status))
-  ([db-conn job-id table func]
-    (-> (db/get-job-result db-conn job-id table func)
-        ;; XXX
-        (parse-job)
-        (ring/response)
-        (ring/status status/ok))))
+    (let [conn (db/get-conn component)
+          result-table (db/get-results-table conn job-id)]
+      (log/debugf "Got result-table: %s (type: %s)" result-table (type result-table))
+      (get-job-result conn job-id result-table #'get-job-status)))
+  ([conn job-id result-table func]
+    (db/get-job-result conn job-id result-table func)))
 
 (defn update-job [component job-id]
   (http/response :result "sample job update tbd"
@@ -74,9 +58,9 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.jobs.sample-pipe/context []
+  (context lcmap.client.jobs/context []
     (GET "/" request
-      (get-job-resources (:uri request)))
+      (get-resources (:uri request)))
     (GET "/:job-id" [job-id :as request]
       (get-job-result (:component request) job-id))
     (PUT "/:job-id" [job-id :as request]
@@ -88,4 +72,4 @@
 
 ;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; XXX TBD
+;; TBD

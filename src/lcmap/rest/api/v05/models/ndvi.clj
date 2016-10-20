@@ -1,4 +1,4 @@
-(ns lcmap.rest.api.models.ndvi
+(ns lcmap.rest.api.v05.models.ndvi
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [schema.core :as schema]
@@ -9,7 +9,7 @@
             [lcmap.rest.types :refer [Any Str StrBool StrInt StrDate]]
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]
-            [lcmap.see.backend.native.models.ndvi]))
+            [lcmap.see.backend.native.models.ndvi :as ndvi]))
 
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

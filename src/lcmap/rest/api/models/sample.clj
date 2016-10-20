@@ -1,8 +1,8 @@
-(ns lcmap.rest.api.models.sample-os-process
+(ns lcmap.rest.api.models.sample
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [schema.core :as schema]
-            [lcmap.client.models.sample-os-process]
+            [lcmap.client.models.sample]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.api.jobs :as job]
             [lcmap.rest.api.models.core :as model]
@@ -26,9 +26,8 @@
   (let [component (:component request)
         backend-impl (get-in component [:see :backend])
         job-id (see/run-model
-                backend-impl
-                ["sample" seconds year])]
-        ; job-id "dummy"]
+                 backend-impl
+                 ["sample" seconds year])]
     (log/debugf "Got backend in REST API: %s (%s)" backend-impl (type backend-impl))
     (log/debug "Called sample-runner; got id: " job-id)
     (log/debug "Type of job-id:" (type job-id))
@@ -38,13 +37,9 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.sample-os-process/context []
+  (context lcmap.client.models.sample/context []
     (POST "/" [token delay year :as request]
       ;; XXX use token to check user/session/authorization
       (model/validate #'run-model request delay year))
     (GET "/:job-id" [job-id :as request]
       (job/get-job-result (:component request) job-id))))
-
-;;; Exception Handling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; TBD

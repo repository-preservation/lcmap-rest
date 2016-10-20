@@ -1,4 +1,4 @@
-(ns lcmap.rest.api.models
+(ns lcmap.rest.api.v05.models
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [lcmap.client.models]

@@ -1,4 +1,4 @@
-(ns lcmap.rest.api.models.core
+(ns lcmap.rest.api.v05.models.core
   (:require [clojure.tools.logging :as log]
             [slingshot.slingshot :refer [throw+]]
             [schema.core :as schema]
@@ -20,7 +20,6 @@
     (schema/with-fn-validation
       (apply func args))
     (catch RuntimeException e
-      (log/error e)
       (-> (.getMessage e)
           (exceptions/type-error)
           (throw+)))))

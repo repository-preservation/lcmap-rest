@@ -6,11 +6,11 @@
             [lcmap.rest.api.v0.jobs.sample-piped-processes :refer [get-result-path
                                                                    get-job-result
                                                                    result-table]]
-            [lcmap.client.models.sample-piped-processes]
+            [lcmap.client.models.sample-pipe]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.components.httpd :as httpd]
             [lcmap.see.util :as util]
-            [lcmap.see.model.sample-pipe :as sample-pipe-runner]))
+            [lcmap.see.backend.native.models.sample-pipe :as sample-pipe-runner]))
 
 ;;; Supporting Constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -53,7 +53,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.sample-piped-processes/context []
+  (context lcmap.client.models.sample-pipe/context []
     (POST "/" [token number count bytes words lines :as request]
       ;;(log/debug "Request data keys in routes:" (keys request))
       (run-model (:component request)

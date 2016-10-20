@@ -1,4 +1,4 @@
-(ns lcmap.rest.api.models.ccdc
+(ns lcmap.rest.api.v05.models.ccdc
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [schema.core :as schema]
@@ -10,9 +10,7 @@
             [lcmap.rest.middleware.http-util :as http]
             [lcmap.rest.types :refer [Any Str StrBool StrInt StrDate]]
             [lcmap.rest.util :as util]
-            [lcmap.see.backend :as see]
-            ;[lcmap.see.backend.native.models.ccdc]
-            ))
+            [lcmap.see.backend :as see]))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -39,11 +37,8 @@
         backend-impl (get-in component [:see :backend])]
     (throw (new Exception (str backend-impl)))
       (let  [_ (println "\n\nGot backend: " backend-impl "\n\n")
-        job-id "bogus" ;(see/run-model
-                 ;backend-impl
-                 ;["ccdc" spectra x-val y-val start-time end-time
-                 ; row col in-dir out-dir scene-list verbose])
-                 ]
+             ; XXX model doesn't exist for this version
+             job-id "dummy"]
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link))))
 

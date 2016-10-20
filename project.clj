@@ -135,32 +135,16 @@
     ;; copy `:env { ... }` into `{:user ...}` in your ~/.lein/profiles.clj and
     ;; then override values there
     :dev {
-      ;; XXX 0.3.0-alpha3 breaks reload
+      :aot :all
       :jvm-opts [~(get-lib-path)
                  "-Dco.paralleluniverse.fibers.verifyInstrumentation=true"]
-      :aliases {"slamhound" ["run" "-m" "slam.hound"]}
       :source-paths ["dev-resources/src"]
       :env
-        {:active-profile "development"
-         :log-level :debug}}
-    ;; configuration for testing environment
-    :testing {
-      :env
-        {:active-profile "testing"
-         :db {}
-         :http {}
-         :log-level :info}}
-    ;; configuration for staging environment
-    :staging {
-      :env
-        {:active-profile "staging"
-         :db {}
-         :http {}
-         :log-level :warn}}
-    ;; configuration for production environment
-    :prod {
-      :env
-        {:active-profile "production"
-         :db {}
-         :http {}
-         :log-level :error}}})
+        {:active-profile "development"}
+      :aliases {
+        "slamhound" ["run" "-m" "slam.hound"]
+        "see"
+          ^{:doc (str "Command line interface for LCMAP SEE commands.\n"
+                      "For more info run `lein see --help`\n")}
+          ^:pass-through-help
+          ["run" "-m" "lcmap.see.app"]}}})

@@ -1,8 +1,8 @@
-(ns lcmap.rest.api.models.ccdc-piped-processes
+(ns lcmap.rest.api.v05.models.ccdc-pipe
   (:require [clojure.tools.logging :as log]
             [compojure.core :refer [GET HEAD POST PUT context defroutes]]
             [schema.core :as schema]
-            [lcmap.client.models.ccdc-piped-processes]
+            [lcmap.client.models.ccdc-pipe]
             [lcmap.client.status-codes :as status]
             [lcmap.rest.api.jobs :as job]
             [lcmap.rest.api.models.core :as model]
@@ -12,7 +12,7 @@
             [lcmap.rest.util :as util]
             [lcmap.see.backend :as see]
             [lcmap.see.job.db :as db]
-            [lcmap.see.model.ccdc-pipe]))
+            [lcmap.see.backend.native.models.ccdc-pipe]))
 
 ;;; Science Model Execution ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -39,7 +39,7 @@
         backend-impl (get-in component [:see :backend])
         job-id (see/run-model
                  backend-impl
-                 ["ccdc-piped" spectra x-val y-val start-time end-time
+                 ["ccdc-pipe" spectra x-val y-val start-time end-time
                   row col in-dir out-dir scene-list verbose])]
     (http/response :result {:link {:href (job/get-result-path job-id)}}
                    :status status/pending-link)))
@@ -47,7 +47,7 @@
 ;;; Routes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defroutes routes
-  (context lcmap.client.models.ccdc-piped-processes/context []
+  (context lcmap.client.models.ccdc-pipe/context []
     (POST "/" [token spectra x-val y-val start-time end-time
                      row col in-dir out-dir scene-list verbose :as request]
       (model/validate

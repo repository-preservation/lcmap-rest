@@ -24,6 +24,14 @@
             [lcmap.rest.api.v0.models]
             [lcmap.rest.api.v0.system]
             ;; v0.5
+            [lcmap.rest.api.v05.auth]
+            [lcmap.rest.api.v05.compatibility]
+            [lcmap.rest.api.v05.data]
+            [lcmap.rest.api.v05.four-oh-four]
+            [lcmap.rest.api.v05.jobs]
+            [lcmap.rest.api.v05.models]
+            [lcmap.rest.api.v05.system]
+            ;; v1.0
             [lcmap.rest.api.auth]
             [lcmap.rest.api.compatibility]
             [lcmap.rest.api.data]
@@ -41,7 +49,19 @@
   lcmap.rest.api.v0.system/routes
   lcmap.rest.api.v0.four-oh-four/routes)
 
-(defroutes v0.5
+(defroutes v05
+  lcmap.rest.api.v05.auth/routes
+  lcmap.rest.api.v05.compatibility/routes
+  lcmap.rest.api.v05.data/routes
+  lcmap.rest.api.v05.jobs/routes
+  lcmap.rest.api.v05.models/routes
+  ;;lcmap.rest.api.v05.notifications/routes
+  ;;lcmap.rest.api.v05.operations/routes
+  lcmap.rest.api.v05.system/routes
+  ;;lcmap.rest.api.v05.users/routes
+  lcmap.rest.api.v05.four-oh-four/routes)
+
+(defroutes v1
   lcmap.rest.api.auth/routes
   lcmap.rest.api.compatibility/routes
   lcmap.rest.api.data/routes
@@ -51,13 +71,6 @@
   ;;lcmap.rest.api.operations/routes
   lcmap.rest.api.system/routes
   ;;lcmap.rest.api.users/routes
-  lcmap.rest.api.four-oh-four/routes)
-
-(defroutes v1
-  ;; LCMAP Core Functionality
-  ;; Support functionality
-  lcmap.rest.api.auth/routes
-  lcmap.rest.api.system/routes
   lcmap.rest.api.four-oh-four/routes)
 
 (defroutes v2
@@ -72,7 +85,7 @@
   [version-str default]
   (case version-str
     "v0.0" #'v0
-    "v0.5" #'v0.5
+    "v0.5" #'v05
     "v1.0" #'v1
     "v2.0" #'v2
     ;; If no case applies, do the lookup using the default
