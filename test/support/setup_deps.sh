@@ -9,7 +9,7 @@ cd checkouts && \
     git clone https://github.com/USGS-EROS/lcmap-see.git && \
     # delete the following line once the topic/rename-eventd branch is merged
     # to lcmap-see/master
-    cd lcmap-see && git checkout topic/dynamic-job-tracker && cd - && \
+    cd lcmap-see && git checkout topic/add-mesos-tracker && cd - && \
     git clone https://github.com/USGS-EROS/lcmap-client-clj.git && \
     cd ../
 
